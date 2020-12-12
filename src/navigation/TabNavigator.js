@@ -38,7 +38,7 @@ export default function BottomTabNavigator() {
         component={Account}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="ios-circle-person-outline" size={30} color="#4F8EF7" />
+            <Icon name="ios-person-outline" size={30} color="#4F8EF7" />
           ),
         }}
       />

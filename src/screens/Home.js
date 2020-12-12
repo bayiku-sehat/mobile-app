@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import HomeNavItem from '../components/HomeNavItem';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -25,6 +28,7 @@ export default function Home({navigation}) {
         <View style={styles.body}>
           <View style={{flex: 1}}>
             <View style={[styles.container, styles.inner]}>
+              {/* PROFILE */}
               <View style={styles.profileContainer}>
                 <View style={styles.photoContainer}>
                   <Image
@@ -36,10 +40,28 @@ export default function Home({navigation}) {
                   />
                 </View>
                 <View style={styles.data}>
-                  <Text>Ibu Suseno</Text>
+                  <Text>Bu Melody</Text>
                   <Text>Orang Tua</Text>
                   <Text>+62 812 1000 1000</Text>
                 </View>
+              </View>
+
+              {/* NAVIGATION */}
+              <View style={styles.homeNavigation}>
+                <HomeNavItem
+                  icon="MaterialCommunityIcons"
+                  name="baby-face-outline"
+                  text="Bayiku"
+                />
+                <HomeNavItem name="ios-calendar-outline" text="Jadwal Vaksin" />
+
+                <HomeNavItem name="ios-call-outline" text="Hubungi Dokter" />
+
+                <HomeNavItem
+                  name="ios-settings-outline"
+                  text="Pengaturan"
+                  borderBottom={false}
+                />
               </View>
             </View>
           </View>
@@ -55,7 +77,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     backgroundColor: '#eee',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     paddingTop: 24,
     minHeight: ScreenHeight,
   },
@@ -92,17 +114,22 @@ const styles = StyleSheet.create({
     width: 90,
   },
 
-  input: {
-    paddingLeft: 24,
-    marginTop: 8,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 25,
-    width: 250,
-    height: 44,
-    zIndex: 5,
+  data: {
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 24,
   },
+
+  homeNavigation: {
+    marginTop: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    backgroundColor: 'white',
+    width: ScreenWidth * 0.9,
+    borderRadius: 16,
+  },
+
   scrollView: {
     backgroundColor: '#eee',
   },
