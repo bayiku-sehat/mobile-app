@@ -18,7 +18,13 @@ export const MainStackNavigator = () => {
         component={Login}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Home" component={BottomTabNavigator} />
+      <Stack.Screen
+        name="Home"
+        component={BottomTabNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="BabyDetails" component={BabyDetails} />
     </Stack.Navigator>
   );

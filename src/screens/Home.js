@@ -103,57 +103,6 @@ const styles = StyleSheet.create({
     height: 44,
     zIndex: 5,
   },
-  countdownContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  boardContainer: {
-    flex: 7,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionsContainer: {
-    flex: 2,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-start',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 5,
-  },
-  countdown: {
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  cell: {
-    backgroundColor: 'rgb(130, 213, 129)',
-    margin: 4,
-    textAlign: 'center',
-    height: 30,
-    width: 30,
-    color: 'black',
-    borderRadius: 8,
-  },
-  cell3: {
-    marginRight: 16,
-  },
-  row3: {
-    marginBottom: 16,
-  },
-  disabled: {
-    color: 'black',
-    fontWeight: 'bold',
-    backgroundColor: '#ddd',
-  },
-  isFocused: {
-    // color: 'black',
-    backgroundColor: 'powderblue',
-  },
   scrollView: {
     backgroundColor: '#eee',
   },
