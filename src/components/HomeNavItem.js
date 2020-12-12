@@ -11,13 +11,16 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import TextBase from './TextBase';
+
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
 export default function HomeNavItem({
   icon = 'Ionicons',
   name,
-  size = 30,
+  size = 24,
+  color = '#585858',
   text,
   onPress,
   borderBottom = true,
@@ -27,16 +30,16 @@ export default function HomeNavItem({
       <View style={styles.navItem}>
         <View style={styles.navIcon}>
           {icon === 'Ionicons' ? (
-            <Icon name={name} size={size} />
+            <Icon name={name} size={size} color={color} />
           ) : (
-            <MaterialCommunityIcon name={name} size={size} />
+            <MaterialCommunityIcon name={name} size={size} color={color} />
           )}
         </View>
         <View style={styles.navTextContainer}>
-          <Text style={styles.navText}>{text}</Text>
+          <TextBase style={styles.navText}>{text}</TextBase>
         </View>
         <View style={styles.navArrow}>
-          <Icon name="ios-arrow-forward" size={size} />
+          <Icon name="ios-arrow-forward" size={size} color={color} />
         </View>
       </View>
       {borderBottom && <View style={styles.borderBottom} />}
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navIcon: {
-    width: 50,
+    width: 44,
   },
   navTextContainer: {
     flex: 1,

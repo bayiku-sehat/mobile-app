@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   SafeAreaView,
@@ -16,8 +16,9 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-console.log('login');
 export default function Login({navigation}) {
+  const [focus, setFocus] = useState(null);
+
   function login() {
     // alert('Login');
     navigation.replace('Home');
@@ -30,15 +31,27 @@ export default function Login({navigation}) {
         style={styles.scrollView}>
         <View style={styles.body}>
           <View style={{flex: 1}}>
-            <View style={styles.circle1}></View>
+            <View style={styles.circle1} />
             <View style={[styles.container, styles.inner]}>
               <View>
                 <Text style={styles.label}>Username</Text>
-                <TextInput style={styles.input} />
+                <TextInput
+                  style={[
+                    styles.input,
+                    focus === 'username' && styles.inputFocus,
+                  ]}
+                  onFocus={() => setFocus('username')}
+                />
               </View>
-              <View style={{marginTop: 24}}>
+              <View>
                 <Text style={styles.label}>Password</Text>
-                <TextInput style={styles.input} />
+                <TextInput
+                  style={[
+                    styles.input,
+                    focus === 'password' && styles.inputFocus,
+                  ]}
+                  onFocus={() => setFocus('password')}
+                />
               </View>
 
               <ButtonBase
@@ -51,7 +64,7 @@ export default function Login({navigation}) {
                 marginTop={24}
               />
             </View>
-            <View style={styles.circle2}></View>
+            <View style={styles.circle2} />
           </View>
         </View>
       </ScrollView>
@@ -103,12 +116,26 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     marginTop: 8,
     marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    // borderWidth: 1,
+    // borderColor: '#ccc',
     borderRadius: 25,
     width: 250,
     height: 44,
     zIndex: 5,
+    backgroundColor: '#eee',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.52,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  },
+  inputFocus: {
+    borderWidth: 2,
+    borderColor: '#1E88E5',
   },
   scrollView: {
     backgroundColor: '#eee',
@@ -116,7 +143,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     color: '#666',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   text: {
     fontSize: 16,

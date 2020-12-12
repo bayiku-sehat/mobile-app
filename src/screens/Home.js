@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeNavItem from '../components/HomeNavItem';
+import TextBase from '../components/TextBase';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -28,8 +29,9 @@ export default function Home({navigation}) {
         <View style={styles.body}>
           <View style={{flex: 1}}>
             <View style={[styles.container, styles.inner]}>
+              <View style={styles.circle1}></View>
               {/* PROFILE */}
-              <View style={styles.profileContainer}>
+              <View style={[styles.profileContainer, styles.shadowLarge]}>
                 <View style={styles.photoContainer}>
                   <Image
                     style={styles.avatar}
@@ -40,14 +42,16 @@ export default function Home({navigation}) {
                   />
                 </View>
                 <View style={styles.data}>
-                  <Text>Bu Melody</Text>
-                  <Text>Orang Tua</Text>
-                  <Text>+62 812 1000 1000</Text>
+                  <TextBase bold size={16}>
+                    Bu Melody
+                  </TextBase>
+                  <TextBase light>Orang Tua</TextBase>
+                  <TextBase>+62 812 1000 1000</TextBase>
                 </View>
               </View>
 
               {/* NAVIGATION */}
-              <View style={styles.homeNavigation}>
+              <View style={[styles.homeNavigation, styles.shadowLarge]}>
                 <HomeNavItem
                   icon="MaterialCommunityIcons"
                   name="baby-face-outline"
@@ -63,6 +67,7 @@ export default function Home({navigation}) {
                   borderBottom={false}
                 />
               </View>
+              <View style={styles.circle2} />
             </View>
           </View>
         </View>
@@ -84,6 +89,7 @@ const styles = StyleSheet.create({
 
   body: {
     // backgroundColor: Colors.white,
+    zIndex: 5,
   },
   inner: {
     padding: 24,
@@ -107,6 +113,17 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     top: -45,
+  },
+  shadowLarge: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+
+    elevation: 17,
   },
 
   avatar: {
@@ -141,5 +158,25 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'black',
+  },
+  circle1: {
+    backgroundColor: '#1E88E5',
+    height: ScreenWidth * 1.25,
+    width: ScreenWidth * 1.25,
+    borderRadius: 1000,
+    position: 'absolute',
+    top: ScreenWidth * -0.85,
+    left: -100,
+    right: -100,
+    bottom: -250,
+  },
+  circle2: {
+    backgroundColor: '#1E88E5',
+    height: 200,
+    width: 200,
+    borderRadius: 1000,
+    position: 'absolute',
+    top: ScreenHeight - 80,
+    left: ScreenWidth - 150,
   },
 });

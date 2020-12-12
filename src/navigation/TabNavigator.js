@@ -19,7 +19,7 @@ export default function BottomTabNavigator() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
-            <Icon name="ios-home-outline" size={30} color="#4F8EF7" />
+            <Icon name="ios-home-outline" size={24} color="#4F8EF7" />
           ),
         }}
       />
@@ -27,9 +27,9 @@ export default function BottomTabNavigator() {
         name="Chat"
         component={Chat}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
-            <Icon name="ios-chatbox-outline" size={30} color="#4F8EF7" />
+            <Icon name="ios-chatbox-outline" size={24} color="#4F8EF7" />
           ),
         }}
       />
@@ -38,7 +38,7 @@ export default function BottomTabNavigator() {
         component={Account}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="ios-person-outline" size={30} color="#4F8EF7" />
+            <Icon name="ios-person-outline" size={24} color="#4F8EF7" />
           ),
         }}
       />

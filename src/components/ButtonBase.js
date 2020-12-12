@@ -1,7 +1,7 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import React from 'react';
+import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 
-TouchableOpacity.defaultProps = { activeOpacity: 0.8 }
+TouchableOpacity.defaultProps = {activeOpacity: 0.8};
 
 const ButtonBase = ({
   onPress,
@@ -25,16 +25,15 @@ const ButtonBase = ({
           size === 'sm' ? 8 : size === 'lg' ? 9 : size === 'xl' ? 10 : '',
       },
       // width && { width },
-      backgroundColor && { backgroundColor },
-      (accessibilityLabel = { accessibilityLabel }),
-      { ...props },
-    ]}
-  >
-    <Text style={[styles.appButtonText, size === 'sm' && { fontSize: 14 }]}>
+      backgroundColor && {backgroundColor},
+      (accessibilityLabel = {accessibilityLabel}),
+      {...props},
+    ]}>
+    <Text style={[styles.appButtonText, size === 'sm' && {fontSize: 14}]}>
       {title}
     </Text>
   </TouchableOpacity>
-)
+);
 
 const styles = StyleSheet.create({
   screenContainer: {
@@ -57,6 +56,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textTransform: 'uppercase',
   },
-})
+});
 
-export default ButtonBase
+export default ButtonBase;
