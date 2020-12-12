@@ -12,6 +12,7 @@ import {
 import ButtonBase from '../components/ButtonBase';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -21,8 +22,21 @@ export default function Login({navigation}) {
 
   function login() {
     // alert('Login');
+    // storeData('parent');
     navigation.replace('Home');
   }
+
+  function loginDoctor() {
+    navigation.replace('HomeDoctor');
+  }
+  // const storeData = async (value) => {
+  //   try {
+  //     await AsyncStorage.setItem('@role', value);
+  //   } catch (e) {
+  //     // saving error
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <SafeAreaView>
@@ -55,10 +69,18 @@ export default function Login({navigation}) {
               </View>
 
               <ButtonBase
-                size="xl"
+                // size="xl"
                 onPress={() => login()}
-                title="Log In"
-                accessibilityLabel="Log In button"
+                title="Parent Log In"
+                borderRadius={25}
+                width={250}
+                marginTop={24}
+              />
+
+              <ButtonBase
+                // size="xl"
+                onPress={() => loginDoctor()}
+                title="Doctor Log In"
                 borderRadius={25}
                 width={250}
                 marginTop={24}

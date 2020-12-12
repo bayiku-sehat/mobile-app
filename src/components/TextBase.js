@@ -11,7 +11,6 @@ export default function TextBase({
   light = false,
   ...props
 }) {
-  console.log(props, '<<<< props textbase');
   return (
     <Text
       style={[

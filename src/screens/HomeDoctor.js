@@ -9,40 +9,27 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
+import {Link} from '@react-navigation/native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AssignmentListItem from '../components/AssignmentListItem';
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-// const getData = async () => {
-//   try {
-//     const value = await AsyncStorage.getItem('@role');
-//     if (value !== null) {
-//       // value previously stored
-//     }
-//   } catch (e) {
-//     // error reading value
-//   }
-// };
-
-// let role = getData();
-export default function Home({navigation}) {
-  // console.log(role);
-
+export default function HomeDoctor({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={styles.scrollView}>
-        <View style={{alignItems: 'flex-end'}}>
+        <View style={{alignItems: 'flex-end', zIndex: 10}}>
           <ButtonBase
             size="sm"
             onPress={() => navigation.replace('Login')}
@@ -57,50 +44,90 @@ export default function Home({navigation}) {
             <View style={[styles.container, styles.inner]}>
               <View style={styles.circle1}></View>
               {/* PROFILE */}
-              <View style={[styles.profileContainer, styles.shadowLarge]}>
+              <View
+                style={[
+                  styles.profileContainer,
+                  styles.shadowLarge,
+                  styles.filter,
+                ]}>
                 <View style={styles.photoContainer}>
                   <Image
                     style={styles.avatar}
                     source={{
                       uri:
-                        'https://cdn1-production-images-kly.akamaized.net/CASsRi73DznnCPVGy_MO48zCeMA=/640x640/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/2786209/original/029379000_1556018610-Melody_Nurramdhani.jpg',
+                        'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
                     }}
                   />
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    Bu Melody
+                    dr. Camila
                   </TextBase>
-                  <TextBase light>Orang Tua</TextBase>
-                  <TextBase>+62 812 1000 1000</TextBase>
+                  <TextBase light>Dokter</TextBase>
+                  <TextBase>+62 812 9999 9999</TextBase>
                 </View>
               </View>
 
-              {/* NAVIGATION */}
-              <View style={[styles.homeNavigation, styles.shadowLarge]}>
-                <HomeNavItem
+              {/* ASSIGNMENTS FILTER */}
+              <View
+                style={[
+                  styles.frame,
+                  styles.shadowLarge,
+                  {flexDirection: 'row'},
+                ]}>
+                {/* <HomeNavItem
                   icon="MaterialCommunityIcons"
                   name="baby-face-outline"
-                  text="Bayiku"
-                  onPress={() => navigation.navigate('Bayiku')}
-                />
-                <HomeNavItem
-                  name="ios-calendar-outline"
-                  text="Jadwal Vaksin"
-                  onPress={() => navigation.navigate('JadwalVaksin')}
-                />
+                  text="My Assignments"
+                /> */}
+                <View style={styles.filterItem}>
+                  <Text>MY ASSIGNMENTS</Text>
+                </View>
+                <View style={styles.filterItem}>
+                  <Text>ALL</Text>
+                </View>
+                <View style={styles.filterItem}>
+                  <Text>OPEN</Text>
+                </View>
+                <View style={styles.filterItem}>
+                  <Text>CLOSED</Text>
+                </View>
+              </View>
 
-                <HomeNavItem
-                  name="ios-call-outline"
-                  text="Hubungi Dokter"
-                  onPress={() => navigation.navigate('HubungiDokter')}
-                />
+              {/* OPEN ASSIGNMENTS */}
 
-                <HomeNavItem
-                  name="ios-settings-outline"
-                  text="Pengaturan"
-                  borderBottom={false}
-                  onPress={() => navigation.navigate('Pengaturan')}
+              <View style={[styles.frame, styles.shadowLarge, {zIndex: 10}]}>
+                <TextBase
+                  bold
+                  size={20}
+                  // color="#1E88E5"
+                  marginTop={6}
+                  style={styles.sectionTitle}>
+                  Open Assignments
+                </TextBase>
+                <View style={styles.assignmentList}>
+                  <AssignmentListItem
+                    name="Daryal Fuaddin"
+                    address="Menteng"
+                    status={-1}
+                  />
+                  <AssignmentListItem
+                    name="Adrian"
+                    address="Pondok Indah"
+                    status={-2}
+                  />
+                  <AssignmentListItem name="Yogi" address="BSD" status={-3} />
+                </View>
+                <AssignmentListItem name="Ogi" address="Ciputat" status={-3} />
+                <AssignmentListItem
+                  name="Septian"
+                  address="Manggarai"
+                  status={-1}
+                />
+                <AssignmentListItem
+                  name="Deo"
+                  address="Cempaka Putih"
+                  status={-1}
                 />
               </View>
               <View style={styles.circle2} />
@@ -121,6 +148,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingTop: 24,
     minHeight: ScreenHeight,
+  },
+
+  signout: {
+    marginTop: 10,
+    marginRight: 10,
   },
 
   body: {
@@ -174,13 +206,46 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
 
-  homeNavigation: {
+  frame: {
     marginTop: 24,
     paddingVertical: 12,
     paddingHorizontal: 18,
     backgroundColor: 'white',
     width: ScreenWidth * 0.9,
     borderRadius: 16,
+  },
+
+  filter: {},
+
+  filterItem: {
+    width: (ScreenWidth * 0.9 - 24) / 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  sectionTitle: {
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+
+  assignmentList: {},
+
+  statusCircle: {
+    height: 24,
+    width: 24,
+    borderRadius: 100,
+    backgroundColor: 'green',
+    marginRight: 24,
+  },
+
+  assignmentListItem: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  actions: {
+    justifyContent: 'center',
   },
 
   scrollView: {
@@ -212,7 +277,8 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 1000,
     position: 'absolute',
-    top: ScreenHeight - 80,
+    top: 500,
     left: ScreenWidth - 150,
+    zIndex: 1,
   },
 });
