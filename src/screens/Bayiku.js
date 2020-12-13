@@ -282,7 +282,7 @@ export default function HomeDoctor({navigation}) {
                         style={{marginHorizontal: -10, height: xAxisHeight}}
                         data={umur}
                         xAccessor={({item}) => item}
-                        formatLabel={(value, index) => `${index} bln`}
+                        formatLabel={(value, index) => `${value} bln`}
                         contentInset={{left: 10, right: 10}}
                         svg={axesSvg}
                       />
@@ -384,8 +384,9 @@ export default function HomeDoctor({navigation}) {
                       </AreaChart>
                       <XAxis
                         style={{marginHorizontal: -10, height: xAxisHeight}}
+                        xAccessor={({item}) => item}
                         data={umur}
-                        formatLabel={(value, index) => `${index} bln`}
+                        formatLabel={(value, index) => `${value} bln`}
                         contentInset={{left: 10, right: 10}}
                         svg={axesSvg}
                       />
