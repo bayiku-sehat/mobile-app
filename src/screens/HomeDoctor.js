@@ -15,7 +15,7 @@ import {Link} from '@react-navigation/native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AssignmentListItem from '../components/AssignmentListItem';
+import CaseListItem from '../components/CaseListItem';
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
@@ -68,7 +68,7 @@ export default function HomeDoctor({navigation}) {
                 </View>
               </View>
 
-              {/* ASSIGNMENTS FILTER */}
+              {/* CASES FILTER */}
               <View
                 style={[
                   styles.frame,
@@ -78,10 +78,10 @@ export default function HomeDoctor({navigation}) {
                 {/* <HomeNavItem
                   icon="MaterialCommunityIcons"
                   name="baby-face-outline"
-                  text="My Assignments"
+                  text="My Cases"
                 /> */}
                 <View style={styles.filterItem}>
-                  <Text>MY ASSIGNMENTS</Text>
+                  <Text>MY CASES</Text>
                 </View>
                 <View style={styles.filterItem}>
                   <Text>ALL</Text>
@@ -94,7 +94,7 @@ export default function HomeDoctor({navigation}) {
                 </View>
               </View>
 
-              {/* OPEN ASSIGNMENTS */}
+              {/* OPEN CASES */}
 
               <View style={[styles.frame, styles.shadowLarge, {zIndex: 10}]}>
                 <TextBase
@@ -103,31 +103,61 @@ export default function HomeDoctor({navigation}) {
                   // color="#1E88E5"
                   marginTop={6}
                   style={styles.sectionTitle}>
-                  Open Assignments
+                  Open Cases
                 </TextBase>
-                <View style={styles.assignmentList}>
-                  <AssignmentListItem
+                <View style={{flexDirection: 'row'}}>
+                  <TextBase>Desa/Kel:</TextBase>
+                  <TextBase bold marginLeft={8}>
+                    Pengadegan
+                  </TextBase>
+                </View>
+                <TextBase>Pancoran, Jakarta Selatan</TextBase>
+
+                <TextBase marginVertical={6}>6 bayi butuh penanganan</TextBase>
+
+                <View style={styles.caseList}>
+                  <CaseListItem
                     name="Daryal Fuaddin"
                     address="Menteng"
                     status={-1}
+                    age={6}
+                    updatedAt="1 jam 25 menit"
                   />
-                  <AssignmentListItem
+                  <CaseListItem
                     name="Adrian"
                     address="Pondok Indah"
                     status={-2}
+                    age={10}
+                    updatedAt="2 hari 3 jam"
                   />
-                  <AssignmentListItem name="Yogi" address="BSD" status={-3} />
+                  <CaseListItem
+                    name="Yogi"
+                    address="BSD"
+                    status={-3}
+                    age={12}
+                    updatedAt="6 jam 37 menit"
+                  />
                 </View>
-                <AssignmentListItem name="Ogi" address="Ciputat" status={-3} />
-                <AssignmentListItem
+                <CaseListItem
+                  name="Ogi"
+                  address="Ciputat"
+                  status={-3}
+                  age={15}
+                  updatedAt="1 hari 4 jam"
+                />
+                <CaseListItem
                   name="Septian"
                   address="Manggarai"
                   status={-1}
+                  age={18}
+                  updatedAt="1 hari 8jam"
                 />
-                <AssignmentListItem
-                  name="Deo"
+                <CaseListItem
+                  name="Ikhrom"
                   address="Cempaka Putih"
                   status={-1}
+                  age={2}
+                  updatedAt="3 hari 1jam"
                 />
               </View>
               <View style={styles.circle2} />
@@ -228,7 +258,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  assignmentList: {},
+  caseList: {},
 
   statusCircle: {
     height: 24,
@@ -238,7 +268,7 @@ const styles = StyleSheet.create({
     marginRight: 24,
   },
 
-  assignmentListItem: {
+  caseListItem: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

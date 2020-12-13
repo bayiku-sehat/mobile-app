@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
-export default function AssignmentListItem({
+export default function CaseListItem({
   name,
   address,
   status,
@@ -16,8 +16,7 @@ export default function AssignmentListItem({
   borderBottom = true,
 }) {
   return (
-    <View
-      style={[styles.assignmentListItem, borderBottom && styles.borderBottom]}>
+    <View style={[styles.caseListItem, borderBottom && styles.borderBottom]}>
       <View style={styles.status}>
         {status === -1 ? (
           <FA5Icon name="frown" color="#ffbd15" size={32} />
@@ -35,14 +34,14 @@ export default function AssignmentListItem({
             <TextBase bold size={16}>
               {name},
             </TextBase>
-            <TextBase style={{marginLeft: 6}}>{address}</TextBase>
+            <TextBase style={{marginLeft: 6}}>{age} bulan</TextBase>
           </View>
-          <TextBase>1 jam 25 menit</TextBase>
+          <TextBase>Last updated: {updatedAt}</TextBase>
         </View>
       </TouchableOpacity>
       <View style={styles.actions}>
         <TouchableOpacity>
-          <Icon name="ios-person-add-outline" color="#1E88E5" size={24} />
+          <Icon name="ios-add" color="#1E88E5" size={24} />
         </TouchableOpacity>
       </View>
     </View>
@@ -50,7 +49,7 @@ export default function AssignmentListItem({
 }
 
 const styles = StyleSheet.create({
-  assignmentListItem: {
+  caseListItem: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

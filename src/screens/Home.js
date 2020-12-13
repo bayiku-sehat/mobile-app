@@ -55,7 +55,8 @@ export default function Home({navigation}) {
         <View style={styles.body}>
           <View style={{flex: 1}}>
             <View style={[styles.container, styles.inner]}>
-              <View style={styles.circle1}></View>
+              <View style={styles.circle1} />
+
               {/* PROFILE */}
               <View style={[styles.profileContainer, styles.shadowLarge]}>
                 <View style={styles.photoContainer}>

@@ -11,7 +11,6 @@ import Account from '../screens/Account';
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
-  console.log(MainStackNavigator);
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -19,8 +18,12 @@ export default function BottomTabNavigator() {
         component={Home}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="ios-home-outline" size={24} color="#4F8EF7" />
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="ios-home-outline"
+              size={24}
+              color={focused ? '#4F8EF7' : '#bdbdbd'}
+            />
           ),
         }}
       />
@@ -29,8 +32,12 @@ export default function BottomTabNavigator() {
         component={Chat}
         options={{
           tabBarLabel: 'Chat',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="ios-chatbox-outline" size={24} color="#4F8EF7" />
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="ios-chatbox-outline"
+              size={24}
+              color={focused ? '#4F8EF7' : '#bdbdbd'}
+            />
           ),
         }}
       />
@@ -38,8 +45,12 @@ export default function BottomTabNavigator() {
         name="Account"
         component={Account}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="ios-person-outline" size={24} color="#4F8EF7" />
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="ios-person-outline"
+              size={24}
+              color={focused ? '#4F8EF7' : '#bdbdbd'}
+            />
           ),
         }}
       />
