@@ -52,7 +52,7 @@ const beratObj = [
 const beratStatus = [0, 0, 0, -1, 0, 0, 0];
 const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
 const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
-const umur = [1, 2, 3, 4, 5, 6, 7];
+const umur = [0, 1, 2, 3, 4, 5, 6];
 
 const axesSvg = {fontSize: 10, fill: '#686868'};
 const verticalContentInset = {top: 10, bottom: 10};
