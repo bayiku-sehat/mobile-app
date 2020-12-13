@@ -86,6 +86,7 @@ export default function Login({navigation}) {
                 marginTop={24}
               />
             </View>
+
             <View style={styles.circle2} />
           </View>
         </View>

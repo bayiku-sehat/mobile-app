@@ -17,6 +17,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
+import statusToEmoji from '../helpers/statusToEmoji';
+
+import {
+  Grid,
+  LineChart,
+  XAxis,
+  YAxis,
+  AreaChart,
+} from 'react-native-svg-charts';
+import {Path} from 'react-native-svg';
+import * as shape from 'd3-shape';
+
 import AssignmentListItem from '../components/AssignmentListItem';
 
 import HomeNavItem from '../components/HomeNavItem';
@@ -24,6 +36,31 @@ import TextBase from '../components/TextBase';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
+
+const tinggi = [47, 51, 52.5, 56, 57.5, 60, 62];
+const tinggiStatus = [0, 0, -1, 0, -1, 0, 0];
+const berat = [3, 3.6, 4, 4.5, 5.5, 6.7, 7.8];
+const beratObj = [
+  {v: 3, s: 0},
+  {v: 3.6, s: 0},
+  {v: 4, s: 0},
+  {v: 4.5, s: -1},
+  {v: 5.5, s: 0},
+  {v: 6.7, s: 0},
+  {v: 7.8, s: 0},
+];
+const beratStatus = [0, 0, 0, -1, 0, 0, 0];
+const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
+const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
+const umur = [1, 2, 3, 4, 5, 6, 7];
+
+const axesSvg = {fontSize: 10, fill: '#686868'};
+const verticalContentInset = {top: 10, bottom: 10};
+const xAxisHeight = 30;
+
+const Line = ({line, stroke = 'rgb(134, 65, 244)'}) => (
+  <Path key={'line'} d={line} stroke={stroke} strokeWidth={3} fill={'none'} />
+);
 
 export default function HomeDoctor({navigation}) {
   return (
@@ -106,7 +143,7 @@ export default function HomeDoctor({navigation}) {
                 </View>
               </View>
 
-              {/* ASSIGNMENTS FILTER */}
+              {/* DATA FISIK BAYI */}
               <View
                 style={[
                   styles.frame,
@@ -188,7 +225,7 @@ export default function HomeDoctor({navigation}) {
                 />
               </View>
 
-              {/* OPEN ASSIGNMENTS */}
+              {/* RIWAYAT PERKEMBANGAN BAYI */}
 
               <View style={[styles.frame, styles.shadowLarge]}>
                 <TextBase
@@ -199,7 +236,162 @@ export default function HomeDoctor({navigation}) {
                   style={styles.sectionTitle}>
                   Riwayat Perkembangan Bayi
                 </TextBase>
-                <View style={styles.assignmentList}></View>
+                <View style={styles.chartContainer}>
+                  {/* CHART */}
+
+                  <View>
+                    <TextBase bold>Panjang (cm)</TextBase>
+                  </View>
+
+                  <View
+                    style={{
+                      height: 300,
+                      padding: 20,
+                      paddingTop: 6,
+                      flexDirection: 'row',
+                    }}>
+                    <YAxis
+                      data={tinggi}
+                      style={{marginBottom: xAxisHeight}}
+                      contentInset={verticalContentInset}
+                      svg={axesSvg}
+                      yAccessor={({item}) => item}
+                    />
+                    <View style={{flex: 1, marginLeft: 10}}>
+                      {/* <LineChart
+                        style={{flex: 1}}
+                        data={tinggi}
+                        contentInset={verticalContentInset}
+                        svg={{
+                          stroke: 'rgb(134, 65, 244)',
+                          strokeWidth: 3,
+                        }}>
+                        <Grid />
+                      </LineChart> */}
+
+                      <AreaChart
+                        style={{flex: 1}}
+                        data={tinggi}
+                        contentInset={{top: 30, bottom: 30}}
+                        curve={shape.curveLinear}
+                        svg={{fill: 'rgba(65, 210, 77, 0.2)'}}>
+                        <Grid />
+                        <Line stroke={'rgb(65, 210, 77)'} />
+                      </AreaChart>
+                      <XAxis
+                        style={{marginHorizontal: -10, height: xAxisHeight}}
+                        data={umur}
+                        xAccessor={({item}) => item}
+                        formatLabel={(value, index) => `${index} bln`}
+                        contentInset={{left: 10, right: 10}}
+                        svg={axesSvg}
+                      />
+                    </View>
+                  </View>
+
+                  <View>
+                    <TextBase bold>Berat (kg)</TextBase>
+                  </View>
+
+                  <View
+                    style={{
+                      height: 300,
+                      padding: 20,
+                      paddingTop: 6,
+                      flexDirection: 'row',
+                    }}>
+                    <YAxis
+                      data={berat}
+                      style={{marginBottom: xAxisHeight * 2}}
+                      contentInset={verticalContentInset}
+                      svg={axesSvg}
+                    />
+
+                    <View style={{flex: 1, marginLeft: 10}}>
+                      {/* <LineChart
+                        style={{flex: 1}}
+                        data={berat}
+                        contentInset={verticalContentInset}
+                        svg={{stroke: 'rgb(134, 65, 244)'}}>
+                        <Grid />
+                      </LineChart> */}
+
+                      <AreaChart
+                        style={{flex: 1}}
+                        data={berat}
+                        contentInset={{top: 30, bottom: 30}}
+                        curve={shape.curveLinear}
+                        svg={{fill: 'rgba(134, 65, 244, 0.2)'}}>
+                        <Grid />
+                        <Line />
+                      </AreaChart>
+                      <XAxis
+                        style={{marginHorizontal: -10, height: xAxisHeight}}
+                        xAccessor={({item}) => item}
+                        data={umur}
+                        formatLabel={(value, index) => `${value} bln`}
+                        contentInset={{left: 10, right: 10}}
+                        svg={axesSvg}
+                      />
+                      {/* <XAxis
+                        style={{
+                          // width: '100%',
+                          marginHorizontal: -10,
+                          height: 20,
+                        }}
+                        data={umur}
+                        xAccessor={({item}) => item}
+                        formatLabel={(value) => value}
+                        contentInset={{left: 10, right: 10}}
+                        svg={axesSvg}
+                      /> */}
+                    </View>
+                  </View>
+
+                  <View>
+                    <TextBase bold>Kepala (cm)</TextBase>
+                  </View>
+
+                  <View
+                    style={{
+                      height: 300,
+                      padding: 20,
+                      paddingTop: 6,
+                      flexDirection: 'row',
+                    }}>
+                    <YAxis
+                      data={kepala}
+                      style={{marginBottom: xAxisHeight}}
+                      contentInset={verticalContentInset}
+                      svg={axesSvg}
+                    />
+                    <View style={{flex: 1, marginLeft: 10}}>
+                      {/* <LineChart
+                        style={{flex: 1}}
+                        data={kepala}
+                        contentInset={verticalContentInset}
+                        svg={{stroke: 'rgb(134, 65, 244)'}}>
+                        <Grid />
+                      </LineChart> */}
+                      <AreaChart
+                        style={{flex: 1}}
+                        data={kepala}
+                        contentInset={{top: 30, bottom: 30}}
+                        curve={shape.curveLinear}
+                        svg={{fill: 'rgba(58, 192, 210, 0.2)'}}>
+                        <Grid />
+                        <Line stroke={'rgb(58, 192, 210)'} />
+                      </AreaChart>
+                      <XAxis
+                        style={{marginHorizontal: -10, height: xAxisHeight}}
+                        data={umur}
+                        formatLabel={(value, index) => `${index} bln`}
+                        contentInset={{left: 10, right: 10}}
+                        svg={axesSvg}
+                      />
+                    </View>
+                  </View>
+                </View>
               </View>
               <View style={[styles.frame, styles.shadowLarge]}>
                 <TextBase
@@ -441,10 +633,16 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: 'bold',
   },
-  text: {
-    fontSize: 16,
-    color: 'black',
+
+  chartContainer: {
+    flex: 1,
+    // backgroundColor: '#F5FCFF',
+    width: '100%',
   },
+  chart: {
+    flex: 1,
+  },
+
   circle1: {
     backgroundColor: '#1E88E5',
     height: ScreenWidth * 1.25,
@@ -458,7 +656,7 @@ const styles = StyleSheet.create({
   },
   circle2: {
     backgroundColor: '#1E88E5',
-    height: 200,
+    height: 300,
     width: 200,
     borderRadius: 1000,
     position: 'absolute',

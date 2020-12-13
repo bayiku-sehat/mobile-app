@@ -11,7 +11,6 @@ import Account from '../screens/Account';
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
-  console.log(MainStackNavigator);
   return (
     <Tab.Navigator>
       <Tab.Screen
