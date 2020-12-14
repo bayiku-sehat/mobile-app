@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import {AuthContext} from '../navigation/AuthProvider';
+
 
 import {
   SafeAreaView,
@@ -19,12 +23,16 @@ let ScreenWidth = Dimensions.get('window').width;
 
 export default function Login({navigation}) {
   const [focus, setFocus] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  function login() {
-    // alert('Login');
-    // storeData('parent');
-    navigation.replace('Home');
-  }
+  const {login} = useContext(AuthContext);
+
+  // function login() {
+  //   // alert('Login');  
+  //   // storeData('parent');
+  //   navigation.replace('Home');
+  // }
 
   function loginDoctor() {
     navigation.replace('HomeDoctor');
@@ -54,6 +62,9 @@ export default function Login({navigation}) {
                     styles.input,
                     focus === 'username' && styles.inputFocus,
                   ]}
+                  value={email}
+                  autoCapitalize="none"
+                  onChangeText={(userEmail) => setEmail(userEmail)}
                   onFocus={() => setFocus('username')}
                 />
               </View>
@@ -64,13 +75,16 @@ export default function Login({navigation}) {
                     styles.input,
                     focus === 'password' && styles.inputFocus,
                   ]}
+                  value={password}
+                  secureTextEntry={true}
+                  onChangeText={(userPassword) => setPassword(userPassword)}
                   onFocus={() => setFocus('password')}
                 />
               </View>
 
               <ButtonBase
                 // size="xl"
-                onPress={() => login()}
+                onPress={() => login(email, password)}
                 title="Parent Log In"
                 borderRadius={25}
                 width={250}
@@ -84,6 +98,17 @@ export default function Login({navigation}) {
                 borderRadius={25}
                 width={250}
                 marginTop={24}
+              />
+              <FormButton
+                borderRadius={25}
+                width={250}
+                marginTop={24}
+                marginLeft={60}
+                title="New user? Join here"
+                modeValue="text"
+                uppercase={false}
+                labelStyle={styles.navButtonText}
+                onPress={() => navigation.navigate('SignupScreen')}
               />
             </View>
 

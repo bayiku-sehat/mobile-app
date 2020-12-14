@@ -1,7 +1,7 @@
 // import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigation/StackNavigator';
-
+import Providers from './src/navigation/index';
 import React from 'react';
 import {StatusBar} from 'react-native';
 
@@ -16,10 +16,11 @@ import {
 const App = () => {
   return (
     <>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <StatusBar barStyle="dark-content" />
         <MainStackNavigator />
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <Providers/>
     </>
   );
 };
