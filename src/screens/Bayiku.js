@@ -487,13 +487,14 @@ export default function HomeDoctor({navigation}) {
                 <View style={{flexDirection: 'row'}}>
                   <View style={styles.pj}>
                     {/* PJ 1 */}
+
                     <View style={styles.pjItem}>
                       <View style={styles.photoPJContainer}>
                         <Image
                           style={styles.avatarPJ}
                           source={{
                             uri:
-                              'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXMwxqmr-Pqm-i0jEItTTquqwbUwhGjcb0yA&usqp=CAU',
                           }}
                         />
                       </View>
@@ -504,14 +505,16 @@ export default function HomeDoctor({navigation}) {
                         <TextBase>Dokter anak</TextBase>
                       </View>
                     </View>
+
                     {/* PJ 2 */}
-                    <View style={{flexDirection: 'row'}}>
+
+                    <View style={styles.pjItem}>
                       <View style={styles.photoPJContainer}>
                         <Image
                           style={styles.avatarPJ}
                           source={{
                             uri:
-                              'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
+                              'https://img-z.okeinfo.net/okz/500/library/images/2019/07/26/43rz45vrdtojjelpyn8r_12708.jpg',
                           }}
                         />
                       </View>
@@ -790,13 +793,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 12,
-    backgroundColor: 'yellow',
   },
 
   tableContainer: {
     flex: 1,
     padding: 16,
-    paddingVertical: 16,
+    marginVertical: 16,
     backgroundColor: '#fff',
   },
   tableCell: {

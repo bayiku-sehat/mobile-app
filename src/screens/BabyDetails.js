@@ -29,6 +29,8 @@ import {
 import {Path} from 'react-native-svg';
 import * as shape from 'd3-shape';
 
+import {Table, Row, Rows} from 'react-native-table-component';
+
 import CaseListItem from '../components/CaseListItem';
 
 import HomeNavItem from '../components/HomeNavItem';
@@ -53,6 +55,19 @@ const beratStatus = [0, 0, 0, -1, 0, 0, 0];
 const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
 const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
 const umur = [0, 1, 2, 3, 4, 5, 6];
+const tableHead = [
+  'Umur\n(bulan)',
+  'Panjang\n(cm)',
+  'Berat\n(kg)',
+  'Lingkar Kepala\n(cm)',
+];
+
+let tableData = umur.map((el, i) => [
+  umur[i],
+  statusToEmoji(tinggiStatus[i]),
+  berat[i],
+  kepala[i],
+]);
 
 const axesSvg = {fontSize: 10, fill: '#686868'};
 const verticalContentInset = {top: 10, bottom: 10};
@@ -239,9 +254,72 @@ export default function HomeDoctor({navigation}) {
                   style={styles.sectionTitle}>
                   Riwayat Perkembangan Bayi
                 </TextBase>
-                <View style={styles.chartContainer}>
-                  {/* CHART */}
+                {/* TABLE */}
 
+                <View style={styles.tableContainer}>
+                  {/* <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                    <Row
+                      data={tableHead}
+                      style={styles.head}
+                      textStyle={styles.text}
+                    />
+                    <Rows data={tableData} textStyle={styles.text} />
+                  </Table> */}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      borderBottomWidth: 2,
+                      borderBottomColor: '#c8e1ff',
+                    }}>
+                    {tableHead.map((head, i) => (
+                      <View key={`${head}-${i}`} style={styles.tableCell}>
+                        <Text style={styles.text}>{head}</Text>
+                      </View>
+                    ))}
+                  </View>
+                  <View>
+                    {umur.map((row, i) => (
+                      <View key={`${row}-${i}`} style={{flexDirection: 'row'}}>
+                        <View style={styles.tableCell}>
+                          <Text style={styles.text}>{umur[i]}</Text>
+                        </View>
+                        <View style={styles.tableCell}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            {statusToEmoji(tinggiStatus[i])}
+                            <Text style={styles.text}>{tinggi[i]}</Text>
+                          </View>
+                        </View>
+                        <View style={styles.tableCell}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            {statusToEmoji(beratStatus[i])}
+                            <Text style={styles.text}>{berat[i]}</Text>
+                          </View>
+                        </View>
+                        <View style={styles.tableCell}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            {statusToEmoji(kepalaStatus[i])}
+                            <Text style={styles.text}>{kepala[i]}</Text>
+                          </View>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+                {/* CHART */}
+                <View style={styles.chartContainer}>
                   <View>
                     <TextBase bold>Panjang (cm)</TextBase>
                   </View>
@@ -305,7 +383,7 @@ export default function HomeDoctor({navigation}) {
                     }}>
                     <YAxis
                       data={berat}
-                      style={{marginBottom: xAxisHeight * 2}}
+                      style={{marginBottom: xAxisHeight}}
                       contentInset={verticalContentInset}
                       svg={axesSvg}
                     />
@@ -404,9 +482,59 @@ export default function HomeDoctor({navigation}) {
                   // color="#1E88E5"
                   marginTop={6}
                   style={styles.sectionTitle}>
-                  Riwayat Rekam Medis
+                  Penanggung Jawab
                 </TextBase>
-                <View style={styles.caseList}></View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.pj}>
+                    {/* PJ 1 */}
+
+                    <View style={styles.pjItem}>
+                      <View style={styles.photoPJContainer}>
+                        <Image
+                          style={styles.avatarPJ}
+                          source={{
+                            uri:
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXMwxqmr-Pqm-i0jEItTTquqwbUwhGjcb0yA&usqp=CAU',
+                          }}
+                        />
+                      </View>
+                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                        <TextBase bold size={16}>
+                          dr. Camila
+                        </TextBase>
+                        <TextBase>Dokter anak</TextBase>
+                      </View>
+                    </View>
+
+                    {/* PJ 2 */}
+
+                    <View style={styles.pjItem}>
+                      <View style={styles.photoPJContainer}>
+                        <Image
+                          style={styles.avatarPJ}
+                          source={{
+                            uri:
+                              'https://img-z.okeinfo.net/okz/500/library/images/2019/07/26/43rz45vrdtojjelpyn8r_12708.jpg',
+                          }}
+                        />
+                      </View>
+                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                        <TextBase bold size={16}>
+                          Ibu Suliastri
+                        </TextBase>
+                        <TextBase>Petugas Posyandu</TextBase>
+                      </View>
+                    </View>
+                  </View>
+                  <TouchableOpacity style={styles.chat}>
+                    <Icon
+                      name="ios-chatbubble-outline"
+                      color="#686868"
+                      size={40}
+                    />
+                    <TextBase>Diskusi</TextBase>
+                  </TouchableOpacity>
+                </View>
               </View>
               <View style={styles.circle2} />
             </View>
@@ -498,6 +626,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     overflow: 'hidden',
   },
+
+  photoPJContainer: {
+    height: 44,
+    width: 44,
+    borderRadius: 100,
+    overflow: 'hidden',
+  },
   shadowLarge: {
     shadowColor: '#000',
     shadowOffset: {
@@ -513,6 +648,10 @@ const styles = StyleSheet.create({
   avatar: {
     height: 90,
     width: 90,
+  },
+  avatarPJ: {
+    height: 44,
+    width: 44,
   },
 
   data: {
@@ -646,6 +785,30 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
   },
+
+  pj: {flex: 1},
+
+  pjItem: {flexDirection: 'row', paddingVertical: 10},
+  chat: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+  },
+
+  tableContainer: {
+    flex: 1,
+    padding: 16,
+    marginVertical: 16,
+    backgroundColor: '#fff',
+  },
+  tableCell: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#c8e1ff',
+    flex: 1,
+    paddingVertical: 8,
+  },
+  head: {height: 40, backgroundColor: '#f1f8ff'},
+  text: {margin: 6},
 
   circle1: {
     backgroundColor: '#1E88E5',
