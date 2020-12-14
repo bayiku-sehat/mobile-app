@@ -28,23 +28,10 @@ export default function Login({navigation}) {
 
   const {login} = useContext(AuthContext);
 
-  // function login() {
-  //   // alert('Login');  
-  //   // storeData('parent');
-  //   navigation.replace('Home');
-  // }
-
   function loginDoctor() {
     navigation.replace('HomeDoctor');
   }
-  // const storeData = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem('@role', value);
-  //   } catch (e) {
-  //     // saving error
-  //     console.log(e);
-  //   }
-  // };
+  
 
   return (
     <SafeAreaView>

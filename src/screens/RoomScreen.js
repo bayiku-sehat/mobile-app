@@ -81,7 +81,6 @@ export const RoomScreen = ({route}) => {
               name: firebaseData.user.email
             };
           }
-
           return data;
         });
 
@@ -146,9 +145,7 @@ export const RoomScreen = ({route}) => {
   }
 
   return (
-    // <View>
-    //   <Text>{JSON.stringify(chatRoom)}</Text>
-    // </View>
+    <>
     <GiftedChat
       messages={messages}
       onSend={handleSend}
@@ -163,6 +160,7 @@ export const RoomScreen = ({route}) => {
       scrollToBottomComponent={scrollToBottomComponent}
       renderSystemMessage={renderSystemMessage}
     />
+    </>
   );
 };
 

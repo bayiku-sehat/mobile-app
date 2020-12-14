@@ -28,7 +28,7 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
@@ -41,7 +41,7 @@ export default function BottomTabNavigator() {
             />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Account"
         component={Account}

@@ -11,7 +11,9 @@ export default function HomeScreen({navigation}) {
 
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [namaBayi] = useState("bayi3")
+  const [namaRoom, setNamaRoom] = useState([])
+  
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('THREADS')
@@ -42,14 +44,25 @@ export default function HomeScreen({navigation}) {
      */
     return () => unsubscribe();
   }, []);
+
+
+  
+  useEffect(()=>{
+    const filter =threads.filter(el => {  return el.name === namaBayi 
+    })
+    setNamaRoom(filter)
+  },[threads])
+
   if (loading) {
     return <Loading />;
   }
   return (
+    <>
     <View style={styles.container}> 
       <Title style={{textAlign:"center"}}>Daftar Dokter Tersedia</Title>
       <FlatList
-        data={threads}
+        data={namaRoom}
+        // data={threads}
         keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
@@ -68,6 +81,7 @@ export default function HomeScreen({navigation}) {
         )}
       />
     </View>
+    </>
   );
 }
 
