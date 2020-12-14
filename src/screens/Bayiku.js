@@ -494,7 +494,7 @@ export default function HomeDoctor({navigation}) {
                           style={styles.avatarPJ}
                           source={{
                             uri:
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXMwxqmr-Pqm-i0jEItTTquqwbUwhGjcb0yA&usqp=CAU',
+                              'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
                           }}
                         />
                       </View>

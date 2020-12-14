@@ -8,6 +8,9 @@ import BabyDetails from '../screens/BabyDetails';
 import Bayiku from '../screens/Bayiku';
 import JadwalVaksin from '../screens/JadwalVaksin';
 import HubungiDokter from '../screens/HubungiDokter';
+import LeaderBoard from '../screens/LeaderBoard';
+import MyCases from '../screens/MyCases';
+import OpenCases from '../screens/OpenCases';
 import Pengaturan from '../screens/Pengaturan';
 
 import BottomTabNavigator from './TabNavigator';
@@ -41,6 +44,9 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="Bayiku" component={Bayiku} />
       <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />
       <Stack.Screen name="HubungiDokter" component={HubungiDokter} />
+      <Stack.Screen name="MyCases" component={MyCases} />
+      <Stack.Screen name="OpenCases" component={OpenCases} />
+      <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
       <Stack.Screen name="Pengaturan" component={Pengaturan} />
     </Stack.Navigator>
   );

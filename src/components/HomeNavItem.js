@@ -10,6 +10,7 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import TextBase from './TextBase';
 
@@ -31,8 +32,10 @@ export default function HomeNavItem({
         <View style={styles.navIcon}>
           {icon === 'Ionicons' ? (
             <Icon name={name} size={size} color={color} />
-          ) : (
+          ) : icon === 'MaterialCommunityIcons' ? (
             <MaterialCommunityIcon name={name} size={size} color={color} />
+          ) : (
+            <FA5Icon name={name} size={size} color={color} />
           )}
         </View>
         <View style={styles.navTextContainer}>

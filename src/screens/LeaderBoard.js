@@ -23,7 +23,7 @@ import TextBase from '../components/TextBase';
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-export default function HomeDoctor({navigation}) {
+export default function LeaderBoard({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView
@@ -85,7 +85,7 @@ export default function HomeDoctor({navigation}) {
                 <HomeNavItem
                   name="medal"
                   text="Leader Board"
-                  onPress={() => navigation.navigate('LeaderBoard')}
+                  onPress={() => navigation.navigate('Leaderboard')}
                 />
 
                 <HomeNavItem
