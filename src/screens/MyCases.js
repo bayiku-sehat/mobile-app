@@ -1,4 +1,5 @@
 import React from 'react';
+import tailwind from 'tailwind-rn';
 
 import {
   StyleSheet,
@@ -11,11 +12,16 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+
+import {useHeaderHeight} from '@react-navigation/stack';
+
 import {Link} from '@react-navigation/native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CaseListItem from '../components/CaseListItem';
+import MyCaseListItem from '../components/MyCaseListItem';
+import SearchBar from '../components/SearchBar';
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
@@ -24,6 +30,8 @@ let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
 export default function MyCases({navigation}) {
+  const headerHeight = useHeaderHeight();
+
   return (
     <SafeAreaView>
       <ScrollView
@@ -41,158 +49,15 @@ export default function MyCases({navigation}) {
         </View>
         <View style={styles.body}>
           <View style={{flex: 1}}>
-            <View style={[styles.container, styles.inner]}>
-              <View style={styles.circle1}></View>
-              {/* PROFILE */}
-              <View
-                style={[
-                  styles.profileContainer,
-                  styles.shadowLarge,
-                  styles.filter,
-                ]}>
-                <View style={styles.photoContainer}>
-                  <Image
-                    style={styles.avatar}
-                    source={{
-                      uri:
-                        'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
-                    }}
-                  />
-                </View>
-                <View style={styles.data}>
-                  <TextBase bold size={16}>
-                    dr. Camila
-                  </TextBase>
-                  <TextBase light>Dokter</TextBase>
-                  <TextBase>+62 812 9999 9999</TextBase>
-                </View>
-              </View>
+            <View style={[styles.container, tailwind('py-8 px-4')]}>
+              {/* SEARCH */}
+              <SearchBar placeholder="Nama anak atau orang tua/wali" />
 
-              <View style={[styles.homeNavigation, styles.shadowLarge]}>
-                <HomeNavItem
-                  icon="MaterialCommunityIcons"
-                  name="baby-face-outline"
-                  text="My Cases"
-                  onPress={() => navigation.navigate('MyCases')}
-                />
-                <HomeNavItem
-                  icon="MaterialCommunityIcons"
-                  name="emoticon-sad-outline"
-                  text="Open Cases"
-                  onPress={() => navigation.navigate('OpenCases')}
-                />
+              {/* MY CASES LIST */}
 
-                <HomeNavItem
-                  name="medal"
-                  text="Leader Board"
-                  onPress={() => navigation.navigate('Leaderboard')}
-                />
+              <MyCaseListItem navigation={navigation} />
+              <View style={styles.circle1} />
 
-                <HomeNavItem
-                  icon="Ionicons"
-                  name="ios-settings-outline"
-                  text="Pengaturan"
-                  borderBottom={false}
-                  onPress={() => navigation.navigate('Pengaturan')}
-                />
-              </View>
-
-              {/* CASES FILTER */}
-              {/* <View
-                style={[
-                  styles.frame,
-                  styles.shadowLarge,
-                  {flexDirection: 'row'},
-                ]}>
-                <View style={styles.filterItem}>
-                  <Text>MY CASES</Text>
-                </View>
-                <View style={styles.filterItem}>
-                  <Text>ALL</Text>
-                </View>
-                <View style={styles.filterItem}>
-                  <Text>OPEN</Text>
-                </View>
-                <View style={styles.filterItem}>
-                  <Text>CLOSED</Text>
-                </View>
-              </View> */}
-
-              {/* OPEN CASES */}
-
-              <View style={[styles.frame, styles.shadowLarge, {zIndex: 10}]}>
-                <TextBase
-                  bold
-                  size={20}
-                  // color="#1E88E5"
-                  marginTop={6}
-                  style={styles.sectionTitle}>
-                  Open Cases Terlama
-                </TextBase>
-                <View style={{flexDirection: 'row'}}>
-                  <TextBase>Desa/Kel:</TextBase>
-                  <TextBase bold marginLeft={8}>
-                    Pengadegan
-                  </TextBase>
-                </View>
-                <TextBase>Pancoran, Jakarta Selatan</TextBase>
-
-                <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                  <TextBase bold color="red" size={16} marginVertical={6}>
-                    6 bayi
-                  </TextBase>
-                  <TextBase marginLeft={6}>butuh penanganan</TextBase>
-
-                  <TextBase marginLeft={6} bold color="red">
-                    segera
-                  </TextBase>
-                </View>
-
-                <View style={styles.caseList}>
-                  <CaseListItem
-                    name="Daryal Fuaddin"
-                    address="Menteng"
-                    status={-1}
-                    age={6}
-                    updatedAt="4 hari 2 jam"
-                  />
-                  <CaseListItem
-                    name="Adrian"
-                    address="Pondok Indah"
-                    status={-2}
-                    age={10}
-                    updatedAt="3 hari 19 jam"
-                  />
-                  <CaseListItem
-                    name="Yogi"
-                    address="BSD"
-                    status={-3}
-                    age={12}
-                    updatedAt="3 hari 17 jam"
-                  />
-                  <CaseListItem
-                    name="Ogi"
-                    address="Ciputat"
-                    status={-3}
-                    age={15}
-                    updatedAt="3 hari 6 jam"
-                  />
-                  <CaseListItem
-                    name="Septian"
-                    address="Manggarai"
-                    status={-1}
-                    age={18}
-                    updatedAt="3 hari 1 jam"
-                  />
-                  <CaseListItem
-                    name="Ikhrom"
-                    address="Cempaka Putih"
-                    status={-1}
-                    age={2}
-                    updatedAt="2 hari 18 jam"
-                  />
-                </View>
-              </View>
               <View style={styles.circle2} />
             </View>
           </View>
@@ -231,10 +96,63 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   inner: {
-    padding: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
     flex: 1,
     // justifyContent: 'space-around',
     // justifyContent: 'center',
+  },
+  shadowSmall: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  },
+
+  shadowMedium: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+  shadowLarge: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+
+    elevation: 17,
+  },
+
+  shadowLargest: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+  },
+  subsectionTitle: {
+    textAlign: 'left',
+    marginTop: 20,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 
   profileContainer: {
@@ -252,17 +170,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     top: -45,
-  },
-  shadowLarge: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.46,
-    shadowRadius: 11.14,
-
-    elevation: 17,
   },
 
   avatar: {
@@ -341,6 +248,7 @@ const styles = StyleSheet.create({
     left: -100,
     right: -100,
     bottom: -250,
+    zIndex: -1,
   },
   circle2: {
     backgroundColor: '#1E88E5',

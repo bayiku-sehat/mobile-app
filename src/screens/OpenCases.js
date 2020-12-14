@@ -1,4 +1,5 @@
 import React from 'react';
+import tailwind from 'tailwind-rn';
 
 import {
   StyleSheet,
@@ -127,28 +128,20 @@ export default function OpenCases({navigation}) {
                   // color="#1E88E5"
                   marginTop={6}
                   style={styles.sectionTitle}>
-                  Open Cases Terlama
+                  Kasus Yang Sedang Ditangani
                 </TextBase>
-                <View style={{flexDirection: 'row'}}>
-                  <TextBase>Desa/Kel:</TextBase>
-                  <TextBase bold marginLeft={8}>
-                    Pengadegan
-                  </TextBase>
-                </View>
-                <TextBase>Pancoran, Jakarta Selatan</TextBase>
 
-                <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                  <TextBase bold color="red" size={16} marginVertical={6}>
+                <View style={tailwind('flex-row items-baseline my-3')}>
+                  <TextBase style={tailwind('text-lg')}>Total: </TextBase>
+                  <TextBase style={tailwind('font-bold text-blue-500 text-xl')}>
                     6 bayi
-                  </TextBase>
-                  <TextBase marginLeft={6}>butuh penanganan</TextBase>
-
-                  <TextBase marginLeft={6} bold color="red">
-                    segera
                   </TextBase>
                 </View>
 
                 <View style={styles.caseList}>
+                  <TextBase style={styles.subsectionTitle}>
+                    Pengadegan, Pancoran, Jakarta Selatan
+                  </TextBase>
                   <CaseListItem
                     name="Daryal Fuaddin"
                     address="Menteng"
@@ -170,6 +163,10 @@ export default function OpenCases({navigation}) {
                     age={12}
                     updatedAt="3 hari 17 jam"
                   />
+                  <TextBase style={styles.subsectionTitle}>
+                    Kalibata, Pancoran, Jakarta Selatan
+                  </TextBase>
+
                   <CaseListItem
                     name="Ogi"
                     address="Ciputat"

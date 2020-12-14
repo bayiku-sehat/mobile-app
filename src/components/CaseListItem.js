@@ -14,6 +14,7 @@ export default function CaseListItem({
   age,
   updatedAt,
   borderBottom = true,
+  addButton = true,
 }) {
   return (
     <View style={[styles.caseListItem, borderBottom && styles.borderBottom]}>
@@ -39,11 +40,13 @@ export default function CaseListItem({
           <TextBase>Last updated: {updatedAt}</TextBase>
         </View>
       </TouchableOpacity>
-      <View style={styles.actions}>
-        <TouchableOpacity>
-          <Icon name="ios-add" color="#1E88E5" size={24} />
-        </TouchableOpacity>
-      </View>
+      {addButton && (
+        <View style={styles.actions}>
+          <TouchableOpacity>
+            <Icon name="ios-add" color="#1E88E5" size={24} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

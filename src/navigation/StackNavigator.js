@@ -20,7 +20,13 @@ const Stack = createStackNavigator();
 
 export const MainStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={
+        {
+          // headerTransparent: true,
+          // headerTintColor: 'white',
+        }
+      }>
       <Stack.Screen
         name="Login"
         component={Login}
@@ -40,22 +46,50 @@ export const MainStackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="BabyDetails" component={BabyDetails} />
+      <Stack.Screen
+        name="BabyDetails"
+        component={BabyDetails}
+        options={{
+          title: 'Profil Bayi',
+        }}
+      />
       <Stack.Screen name="Bayiku" component={Bayiku} />
-      <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />
-      <Stack.Screen name="HubungiDokter" component={HubungiDokter} />
-      <Stack.Screen name="MyCases" component={MyCases} />
-      <Stack.Screen name="OpenCases" component={OpenCases} />
-      <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
+      <Stack.Screen
+        name="JadwalVaksin"
+        component={JadwalVaksin}
+        options={{
+          title: 'Jadwal Vaksin',
+        }}
+      />
+      <Stack.Screen
+        name="HubungiDokter"
+        component={HubungiDokter}
+        options={{
+          title: 'Hubungi Dokter',
+        }}
+      />
+      <Stack.Screen
+        name="MyCases"
+        component={MyCases}
+        options={{
+          title: 'My Cases',
+        }}
+      />
+      <Stack.Screen
+        name="OpenCases"
+        component={OpenCases}
+        options={{
+          title: 'Open Cases',
+        }}
+      />
+      <Stack.Screen
+        name="LeaderBoard"
+        component={LeaderBoard}
+        options={{
+          title: 'Leader Board',
+        }}
+      />
       <Stack.Screen name="Pengaturan" component={Pengaturan} />
     </Stack.Navigator>
   );
 };
-
-// export const ChatNavigator = () => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Chat" component={Chat} />
-//     </Stack.Navigator>
-//   );
-// };

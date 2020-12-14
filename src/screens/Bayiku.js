@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
   tableContainer: {
     flex: 1,
     padding: 16,
-    marginVertical: 16,
+    marginBottom: 16,
     backgroundColor: '#fff',
   },
   tableCell: {
