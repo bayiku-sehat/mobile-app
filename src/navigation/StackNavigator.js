@@ -15,7 +15,7 @@ import OpenCases from '../screens/OpenCases';
 import Pengaturan from '../screens/Pengaturan';
 import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
-import RoomScreen from '../screens/RoomScreen';
+import {RoomScreen} from '../screens/RoomScreen';
 
 import {IconButton} from 'react-native-paper';
 
@@ -61,18 +61,12 @@ export const MainStackNavigator = () => {
               color="blue"
               onPress={() => navigation.navigate('AddRoomScreen')}
             />
-          ),
-          // ,
-          // headerLeft: () => (
-          //   <IconButton
-          //     icon='logout-variant'
-          //     size={28}
-          //     color='#ffffff'
-          //     // onPress={() => logout()}
-          //   />
-          // )
+          )
         })}
       />
+      <Stack.Screen name="RoomScreen" component={RoomScreen} options={({route})=>({
+        title:route.params.thread.name
+      })} />
       <Stack.Screen name="AddRoomScreen" component={AddRoomScreen} />
       <Stack.Screen name="MyCases" component={MyCases} />
       <Stack.Screen name="OpenCases" component={OpenCases} />

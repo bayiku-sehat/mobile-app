@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import { List, Divider, Title, IconButton } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import Loading from '../components/Loading';
 import useStatsBar from '../helpers/useStatsBar';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   useStatsBar('light-content');
 
   const [threads, setThreads] = useState([]);
@@ -46,7 +46,7 @@ export default function HomeScreen() {
     return <Loading />;
   }
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <Title style={{textAlign:"center"}}>Daftar Dokter Tersedia</Title>
       <FlatList
         data={threads}
@@ -54,7 +54,7 @@ export default function HomeScreen() {
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Room', { thread: item })}
+            onPress={() => navigation.navigate('RoomScreen', { thread: item })}
           >
             <List.Item
               title={item.name}
