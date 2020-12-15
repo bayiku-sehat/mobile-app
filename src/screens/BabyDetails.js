@@ -35,6 +35,7 @@ import CaseListItem from '../components/CaseListItem';
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
+import PhotoPreview from '../components/PhotoPreview';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -130,34 +131,21 @@ export default function HomeDoctor({navigation}) {
                   </TextBase>
                   <TextBase light>6 bulan</TextBase>
                 </View>
-                <TextBase marginBottom={12} bold>
+                {/* <TextBase textAlign="left" bold>
                   Foto
-                </TextBase>
+                </TextBase> */}
                 <View style={[styles.imagePreviewList]}>
                   {[1, 2, 3].map((_, i) => (
-                    <View key={i} style={styles.imagePreviewListItem}>
-                      <Image
-                        style={styles.imagePreview}
-                        source={{
-                          uri:
-                            'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
-                        }}
-                      />
-                    </View>
-                  ))}
-                  <View style={[styles.imagePreviewListItem]}>
-                    <View style={styles.overlayContainer}>
-                      <View style={styles.overlay} />
-                      <Text style={styles.textOverlay}>+7</Text>
-                    </View>
-                    <Image
-                      style={[styles.imagePreview]}
-                      source={{
-                        uri:
-                          'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
-                      }}
+                    <PhotoPreview
+                      key={i}
+                      uri="https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90"
                     />
-                  </View>
+                  ))}
+                  <PhotoPreview
+                    overlay
+                    remaining={6}
+                    uri="https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90"
+                  />
                 </View>
               </View>
 
@@ -675,39 +663,6 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: 'space-around',
     width: '100%',
-  },
-
-  imagePreviewListItem: {
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-
-  overlayContainer: {
-    height: 64,
-    width: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    position: 'absolute',
-  },
-
-  overlay: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: '#0F427D',
-    position: 'absolute',
-    opacity: 0.65,
-  },
-
-  textOverlay: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-
-  imagePreview: {
-    height: 64,
-    aspectRatio: 1,
   },
 
   dataContainer: {

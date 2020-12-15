@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
 
+import axios from 'axios';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {login} from '../store/actions/userActions';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -8,6 +13,7 @@ import {
   View,
   TextInput,
   Dimensions,
+  KeyboardAvoidingView,
 } from 'react-native';
 import ButtonBase from '../components/ButtonBase';
 
@@ -20,14 +26,53 @@ let ScreenWidth = Dimensions.get('window').width;
 export default function Login({navigation}) {
   const [focus, setFocus] = useState(null);
 
-  function login() {
+  const dispatch = useDispatch();
+
+  async function loginParent(payload) {
     // alert('Login');
     // storeData('parent');
-    navigation.replace('Home');
+    dispatch(login({...payload, navigation}));
+    // .then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+
+    // axios({
+    //   url: 'http://localhost:3001/login',
+    //   method: 'POST',
+    //   data: {username: 'melody', password: '123'},
+    // })
+    //   .then(({data}) => {
+    //     console.log(data, '<<< user');
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+
+    // console.log('fetch');
+    // fetch('http://localhost:3001/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({username: 'melody', password: '123'}),
+    // })
   }
 
-  function loginDoctor() {
-    navigation.replace('HomeDoctor');
+  function loginDoctor(payload) {
+    dispatch(login({...payload, navigation}));
+    // .then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data, '<<< login response');
+    //   alert(JSON.stringify(data, null, 2));
+    //   navigation.replace('HomeDoctor');
+    // })
+    // .catch((err) => {
+    //   console.log(err, '<<<< error login');
+    // });
   }
   // const storeData = async (value) => {
   //   try {
@@ -70,7 +115,9 @@ export default function Login({navigation}) {
 
               <ButtonBase
                 // size="xl"
-                onPress={() => login()}
+                onPress={() =>
+                  loginParent({username: 'melody', password: '123'})
+                }
                 title="Parent Log In"
                 borderRadius={25}
                 width={250}
@@ -79,7 +126,9 @@ export default function Login({navigation}) {
 
               <ButtonBase
                 // size="xl"
-                onPress={() => loginDoctor()}
+                onPress={() =>
+                  loginDoctor({username: 'camila', password: '123'})
+                }
                 title="Doctor Log In"
                 borderRadius={25}
                 width={250}

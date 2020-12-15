@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigation/StackNavigator';
 
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, KeyboardAvoidingView, Platform} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './src/store';
 
@@ -19,8 +19,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
+        {/* <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+          style={{flex: 1}}
+          enabled> */}
         <StatusBar barStyle="dark-content" />
         <MainStackNavigator />
+        {/* </KeyboardAvoidingView> */}
       </NavigationContainer>
     </Provider>
   );

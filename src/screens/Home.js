@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -19,6 +19,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 
+import {fetchCurrentUserDetails} from '../store/actions/userActions';
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let ScreenHeight = Dimensions.get('window').height;
@@ -38,8 +40,17 @@ let ScreenWidth = Dimensions.get('window').width;
 // let role = getData();
 export default function Home({navigation}) {
   const dispatch = useDispatch();
-  const {active_user} = useSelector((state) => state.userReducer);
+  const {user} = useSelector((state) => state.userReducer);
   // console.log(role);
+
+  useEffect(() => {
+    dispatch(fetchCurrentUserDetails());
+  }, [dispatch]);
+
+  function logout() {
+    dispatch({type: 'LOGOUT'});
+    navigation.replace('Login');
+  }
 
   return (
     <SafeAreaView>
@@ -49,7 +60,7 @@ export default function Home({navigation}) {
         <View style={{alignItems: 'flex-end'}}>
           <ButtonBase
             size="sm"
-            onPress={() => navigation.replace('Login')}
+            onPress={() => dispatch({type: 'LOGOUT'})}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}

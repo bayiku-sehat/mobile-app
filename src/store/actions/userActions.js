@@ -1,4 +1,4 @@
-// const baseUrl = 'http://localhost:4000/babies'
+import {storeData, getData, clearData} from '../../helpers/asyncStorage';
 
 let apiUrl = 'http://localhost:3001';
 
@@ -6,23 +6,83 @@ export const login = (payload) => {
   console.log(payload, '<<< login payload');
   return (dispatch) => {
     dispatch({type: 'LOGIN_PENDING', payload: true});
-    fetch(apiUrl + '/login', {
+
+    const {username, password, navigation} = payload;
+
+    return fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({username, password}),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data, '<<< login response');
         dispatch({type: 'LOGIN_SUCCESS', payload: data});
+        storeData('user', data);
+        if (data.role.toLowerCase() === 'orang tua') {
+          console.log('role: orang tua');
+          navigation.navigate('Home');
+        } else if (data.role.toLowerCase() === 'dokter') {
+          console.log('role: dokter');
+          navigation.navigate('HomeDoctor');
+        }
       })
       .catch((err) => {
         console.log(err, '<<<< error login');
         dispatch({type: 'LOGIN_ERROR', payload: err});
       })
       .finally((_) => dispatch({type: 'LOGIN_PENDING', payload: false}));
+  };
+};
+
+async function getToken() {
+  try {
+    let user = await getData('user');
+    console.log(user, '<user from asyncstorage');
+    console.log('access)token = ', user.access_token);
+    return user.access_token;
+  } catch (error) {
+    console.log(error, '<< error getting token');
+  }
+}
+
+export const fetchCurrentUserDetails = () => {
+  return async (dispatch) => {
+    dispatch({type: 'FETCH_USER_PENDING', payload: true});
+    try {
+      const token = await getToken();
+      console.log('token:', token);
+      const response = await fetch(apiUrl + '/user-detail', {
+        method: 'GET',
+        headers: {
+          access_token: token,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const user = await response.json();
+
+      console.log(user, '<< user details');
+      dispatch({type: 'FETCH_USER_SUCCESS', payload: user});
+      dispatch({type: 'FETCH_USER_PENDING', payload: false});
+    } catch (error) {
+      console.log(error, '<< error fetching user detail');
+      dispatch({type: 'FETCH_USER_ERROR', payload: error});
+      dispatch({type: 'FETCH_USER_PENDING', payload: false});
+    }
+    // .then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data, '<<< fetch user detail response');
+    // dispatch({type: 'LOGIN_SUCCESS', payload: data});
+    // })
+    // .catch((err) => {
+    //   console.log(err, '<<<< error fetch user detail');
+    // dispatch({type: 'LOGIN_ERROR', payload: err});
+    // }),
+    // .finally((_) => dispatch({type: 'LOGIN_PENDING', payload: false})
+    // });
   };
 };
 

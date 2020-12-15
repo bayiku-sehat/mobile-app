@@ -1,6 +1,8 @@
 import React from 'react';
 import tailwind from 'tailwind-rn';
 
+import {useSelector, useDispatch} from 'react-redux';
+
 import {
   StyleSheet,
   Text,
@@ -32,6 +34,11 @@ let ScreenWidth = Dimensions.get('window').width;
 export default function MyCases({navigation}) {
   const headerHeight = useHeaderHeight();
 
+  const dispatch = useDispatch();
+
+  const {Bayis} = useSelector((state) => state.userReducer.user.details);
+  console.log({Bayis});
+
   return (
     <SafeAreaView>
       <ScrollView
@@ -54,8 +61,10 @@ export default function MyCases({navigation}) {
               <SearchBar placeholder="Nama anak atau orang tua/wali" />
 
               {/* MY CASES LIST */}
+              {Bayis.map((bayi, i) => (
+                <MyCaseListItem key={i} navigation={navigation} bayi={bayi} />
+              ))}
 
-              <MyCaseListItem navigation={navigation} />
               <View style={styles.circle1} />
 
               <View style={styles.circle2} />

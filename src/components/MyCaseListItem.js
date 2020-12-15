@@ -21,8 +21,30 @@ export default function MyCaseListItem({
   age,
   sex,
   guardian,
+  bayi,
   navigation,
 }) {
+  console.log({bayi});
+  function getLowestStatus(bayi) {
+    let lowest = Infinity;
+
+    for (let status of [
+      'status_berat_badan',
+      'status_lingkar_kepala',
+      'status_tinggi',
+    ]) {
+      if (status < lowest) {
+        lowest = status;
+      }
+    }
+
+    return lowest;
+  }
+
+  function getAge(date) {
+    return Math.floor((Date.now() - new Date(date)) / 1000 / 60 / 60 / 24 / 30);
+  }
+
   function statusToBgColor(status) {
     switch (status) {
       case 0:
@@ -37,7 +59,14 @@ export default function MyCaseListItem({
   }
   return (
     <View
-      style={[t.wFull, t.roundedXl, t.bgWhite, t.overflowHidden, t.shadowLg]}>
+      style={[
+        t.wFull,
+        t.roundedXl,
+        t.bgWhite,
+        t.overflowHidden,
+        t.shadowLg,
+        t.mB6,
+      ]}>
       {/* BADGE */}
       <View style={[t.wFull, t.flexRow, t.justifyEnd, t.absolute, t.mT3]}>
         <View
@@ -60,8 +89,8 @@ export default function MyCaseListItem({
               <Image
                 style={tailwind('h-20 w-20')}
                 source={{
-                  uri:
-                    'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
+                  uri: bayi.foto,
+                  // 'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
                 }}
               />
             </View>
@@ -73,11 +102,16 @@ export default function MyCaseListItem({
                 style={tailwind(
                   'text-lg text-gray-800 font-semibold mb-2 w-10/12',
                 )}>
-                Daryal Fuaddin
+                {bayi.nama}
+                {/* Daryal Fuaddin */}
               </TextBase>
               <View style={tailwind('flex-row')}>
-                <TextBase style={tailwind('text-sm')}>6 bulan, </TextBase>
-                <TextBase style={tailwind('text-sm')}>Laki-laki</TextBase>
+                <TextBase style={tailwind('text-sm')}>
+                  {getAge(bayi.tanggal_lahir)} bulan,{' '}
+                </TextBase>
+                <TextBase style={tailwind('text-sm')}>
+                  {bayi.jenis_kelamin}
+                </TextBase>
               </View>
               <TextBase style={tailwind('text-sm')}>Wali: Ibunya</TextBase>
               <TextBase style={tailwind('text-sm')}>

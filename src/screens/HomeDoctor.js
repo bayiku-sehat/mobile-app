@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   StyleSheet,
@@ -11,6 +11,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+
+import {useSelector, useDispatch} from 'react-redux';
 import {Link} from '@react-navigation/native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,85 +22,112 @@ import CaseListItem from '../components/CaseListItem';
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 
+import {fetchCurrentUserDetails} from '../store/actions/userActions';
+
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
 export default function HomeDoctor({navigation}) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCurrentUserDetails());
+  }, [dispatch]);
+
+  const {details} = useSelector((state) => state.userReducer.user);
+
+  if (Object.entries(details).length > 0) {
+    console.log({details});
+  }
+
+  function logout() {
+    console.log('logout dokter');
+    dispatch({type: 'LOGOUT'});
+    navigation.replace('Login');
+  }
   return (
-    <SafeAreaView>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-        <View style={{alignItems: 'flex-end', zIndex: 10}}>
-          <ButtonBase
-            size="sm"
-            onPress={() => navigation.replace('Login')}
-            title="Sign Out"
-            backgroundColor="black"
-            marginTop={10}
-            marginRight={10}
-          />
-        </View>
-        <View style={styles.body}>
-          <View style={{flex: 1}}>
-            <View style={[styles.container, styles.inner]}>
-              <View style={styles.circle1}></View>
-              {/* PROFILE */}
-              <View
-                style={[
-                  styles.profileContainer,
-                  styles.shadowLarge,
-                  styles.filter,
-                ]}>
-                <View style={styles.photoContainer}>
-                  <Image
-                    style={styles.avatar}
-                    source={{
-                      uri:
-                        'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
-                    }}
+    Object.entries(details).length > 0 && (
+      <SafeAreaView>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={styles.scrollView}>
+          <View style={{alignItems: 'flex-end', zIndex: 10}}>
+            <ButtonBase
+              size="sm"
+              onPress={logout}
+              title="Sign Out"
+              backgroundColor="black"
+              marginTop={10}
+              marginRight={10}
+            />
+          </View>
+          <View style={styles.body}>
+            <View style={{flex: 1}}>
+              <View style={[styles.container, styles.inner]}>
+                <View style={styles.circle1}></View>
+                {/* PROFILE */}
+                <View
+                  style={[
+                    styles.profileContainer,
+                    styles.shadowLarge,
+                    styles.filter,
+                  ]}>
+                  <View style={styles.photoContainer}>
+                    <Image
+                      style={styles.avatar}
+                      source={{
+                        uri: details?.foto,
+                        // 'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
+                      }}
+                    />
+                  </View>
+                  <View style={styles.data}>
+                    <TextBase bold size={16}>
+                      {details?.nama}
+                      {/* dr. Camila */}
+                    </TextBase>
+                    <TextBase light>
+                      {details?.role}
+                      {/* Dokter */}
+                    </TextBase>
+                    <TextBase>
+                      {details?.no_hp}
+                      {/* +62 812 9999 9999 */}
+                    </TextBase>
+                  </View>
+                </View>
+
+                <View style={[styles.homeNavigation, styles.shadowLarge]}>
+                  <HomeNavItem
+                    icon="MaterialCommunityIcons"
+                    name="baby-face-outline"
+                    text="My Cases"
+                    onPress={() => navigation.navigate('MyCases')}
+                  />
+                  <HomeNavItem
+                    icon="MaterialCommunityIcons"
+                    name="emoticon-sad-outline"
+                    text="Open Cases"
+                    onPress={() => navigation.navigate('OpenCases')}
+                  />
+
+                  <HomeNavItem
+                    name="medal"
+                    text="Leader Board"
+                    onPress={() => navigation.navigate('LeaderBoard')}
+                  />
+
+                  <HomeNavItem
+                    icon="Ionicons"
+                    name="ios-settings-outline"
+                    text="Pengaturan"
+                    borderBottom={false}
+                    onPress={() => navigation.navigate('Pengaturan')}
                   />
                 </View>
-                <View style={styles.data}>
-                  <TextBase bold size={16}>
-                    dr. Camila
-                  </TextBase>
-                  <TextBase light>Dokter</TextBase>
-                  <TextBase>+62 812 9999 9999</TextBase>
-                </View>
-              </View>
 
-              <View style={[styles.homeNavigation, styles.shadowLarge]}>
-                <HomeNavItem
-                  icon="MaterialCommunityIcons"
-                  name="baby-face-outline"
-                  text="My Cases"
-                  onPress={() => navigation.navigate('MyCases')}
-                />
-                <HomeNavItem
-                  icon="MaterialCommunityIcons"
-                  name="emoticon-sad-outline"
-                  text="Open Cases"
-                  onPress={() => navigation.navigate('OpenCases')}
-                />
-
-                <HomeNavItem
-                  name="medal"
-                  text="Leader Board"
-                  onPress={() => navigation.navigate('LeaderBoard')}
-                />
-
-                <HomeNavItem
-                  icon="Ionicons"
-                  name="ios-settings-outline"
-                  text="Pengaturan"
-                  borderBottom={false}
-                  onPress={() => navigation.navigate('Pengaturan')}
-                />
-              </View>
-
-              {/* CASES FILTER */}
-              {/* <View
+                {/* CASES FILTER */}
+                {/* <View
                 style={[
                   styles.frame,
                   styles.shadowLarge,
@@ -118,87 +147,88 @@ export default function HomeDoctor({navigation}) {
                 </View>
               </View> */}
 
-              {/* OPEN CASES */}
+                {/* OPEN CASES */}
 
-              <View style={[styles.frame, styles.shadowLarge, {zIndex: 10}]}>
-                <TextBase
-                  bold
-                  size={20}
-                  // color="#1E88E5"
-                  marginTop={6}
-                  style={styles.sectionTitle}>
-                  Open Cases Terlama
-                </TextBase>
-                <View style={{flexDirection: 'row'}}>
-                  <TextBase>Desa/Kel:</TextBase>
-                  <TextBase bold marginLeft={8}>
-                    Pengadegan
+                <View style={[styles.frame, styles.shadowLarge, {zIndex: 10}]}>
+                  <TextBase
+                    bold
+                    size={20}
+                    // color="#1E88E5"
+                    marginTop={6}
+                    style={styles.sectionTitle}>
+                    Open Cases Terlama
                   </TextBase>
-                </View>
-                <TextBase>Pancoran, Jakarta Selatan</TextBase>
+                  <View style={{flexDirection: 'row'}}>
+                    <TextBase>Desa/Kel:</TextBase>
+                    <TextBase bold marginLeft={8}>
+                      Pengadegan
+                    </TextBase>
+                  </View>
+                  <TextBase>Pancoran, Jakarta Selatan</TextBase>
 
-                <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                  <TextBase bold color="red" size={16} marginVertical={6}>
-                    6 bayi
-                  </TextBase>
-                  <TextBase marginLeft={6}>butuh penanganan</TextBase>
+                  <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                    <TextBase bold color="red" size={16} marginVertical={6}>
+                      6 bayi
+                    </TextBase>
+                    <TextBase marginLeft={6}>butuh penanganan</TextBase>
 
-                  <TextBase marginLeft={6} bold color="red">
-                    segera
-                  </TextBase>
-                </View>
+                    <TextBase marginLeft={6} bold color="red">
+                      segera
+                    </TextBase>
+                  </View>
 
-                <View style={styles.caseList}>
-                  <CaseListItem
-                    name="Daryal Fuaddin"
-                    address="Menteng"
-                    status={-1}
-                    age={6}
-                    updatedAt="4 hari 2 jam"
-                  />
-                  <CaseListItem
-                    name="Adrian"
-                    address="Pondok Indah"
-                    status={-2}
-                    age={10}
-                    updatedAt="3 hari 19 jam"
-                  />
-                  <CaseListItem
-                    name="Yogi"
-                    address="BSD"
-                    status={-3}
-                    age={12}
-                    updatedAt="3 hari 17 jam"
-                  />
-                  <CaseListItem
-                    name="Ogi"
-                    address="Ciputat"
-                    status={-3}
-                    age={15}
-                    updatedAt="3 hari 6 jam"
-                  />
-                  <CaseListItem
-                    name="Septian"
-                    address="Manggarai"
-                    status={-1}
-                    age={18}
-                    updatedAt="3 hari 1 jam"
-                  />
-                  <CaseListItem
-                    name="Ikhrom"
-                    address="Cempaka Putih"
-                    status={-1}
-                    age={2}
-                    updatedAt="2 hari 18 jam"
-                  />
+                  <View style={styles.caseList}>
+                    <CaseListItem
+                      name="Daryal Fuaddin"
+                      address="Menteng"
+                      status={-1}
+                      age={6}
+                      updatedAt="4 hari 2 jam"
+                    />
+                    <CaseListItem
+                      name="Adrian"
+                      address="Pondok Indah"
+                      status={-2}
+                      age={10}
+                      updatedAt="3 hari 19 jam"
+                    />
+                    <CaseListItem
+                      name="Yogi"
+                      address="BSD"
+                      status={-3}
+                      age={12}
+                      updatedAt="3 hari 17 jam"
+                    />
+                    <CaseListItem
+                      name="Ogi"
+                      address="Ciputat"
+                      status={-3}
+                      age={15}
+                      updatedAt="3 hari 6 jam"
+                    />
+                    <CaseListItem
+                      name="Septian"
+                      address="Manggarai"
+                      status={-1}
+                      age={18}
+                      updatedAt="3 hari 1 jam"
+                    />
+                    <CaseListItem
+                      name="Ikhrom"
+                      address="Cempaka Putih"
+                      status={-1}
+                      age={2}
+                      updatedAt="2 hari 18 jam"
+                    />
+                  </View>
                 </View>
+                <View style={styles.circle2} />
               </View>
-              <View style={styles.circle2} />
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    )
   );
 }
 
