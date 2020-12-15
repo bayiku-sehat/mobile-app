@@ -3,7 +3,6 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
 
-
 import {
   SafeAreaView,
   ScrollView,
@@ -29,7 +28,7 @@ export default function Login({navigation}) {
   const {login} = useContext(AuthContext);
 
   // function login() {
-  //   // alert('Login');  
+  //   // alert('Login');
   //   // storeData('parent');
   //   navigation.replace('Home');
   // }

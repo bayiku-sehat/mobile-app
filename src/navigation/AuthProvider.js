@@ -1,5 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 /**
  * This provider is created
@@ -8,7 +9,7 @@ import auth from '@react-native-firebase/auth';
 
 export const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
 
   return (
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
             console.log(e);
           }
         },
-        register: async (email, password) =>{
+        register: async (email, password) => {
           try {
             await auth().createUserWithEmailAndPassword(email, password);
           } catch (e) {
@@ -36,9 +37,8 @@ export const AuthProvider = ({ children }) => {
           } catch (e) {
             console.error(e);
           }
-        }
-      }}
-    >
+        },
+      }}>
       {children}
     </AuthContext.Provider>
   );
