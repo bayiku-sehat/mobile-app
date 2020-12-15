@@ -1,8 +1,8 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
-
+import firestore from '@react-native-firebase/firestore';
 
 import {
   SafeAreaView,
@@ -25,13 +25,32 @@ export default function Login({navigation}) {
   const [focus, setFocus] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const {login} = useContext(AuthContext);
 
-  function loginDoctor() {
-    navigation.replace('HomeDoctor');
+  const [userLogin, setUserLogin] = useState([]);
+  var userRef = firestore().collection('USERS');
+
+  function loginDoctor(email, password) {
+    firestore()
+      .collection('USERS')
+      .get()
+      .then((querySnapshot) => {
+        // console.log('Total users: ', querySnapshot.size);
+        querySnapshot.forEach((documentSnapshot) => {
+          // console.log(
+          //   'User ID: ',
+          //   documentSnapshot.id,
+          //   documentSnapshot.data(),
+          // );
+          if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
+            console.log(documentSnapshot.data().email)
+            navigation.navigate('HomeDoctor')
+          }else{
+            console.log("password atau email salah")
+          }
+        });
+      });
   }
-  
 
   return (
     <SafeAreaView>
@@ -43,6 +62,7 @@ export default function Login({navigation}) {
             <View style={styles.circle1} />
             <View style={[styles.container, styles.inner]}>
               <View>
+                {/* <Text>{user}</Text> */}
                 <Text style={styles.label}>Username</Text>
                 <TextInput
                   style={[
@@ -80,7 +100,7 @@ export default function Login({navigation}) {
 
               <ButtonBase
                 // size="xl"
-                onPress={() => loginDoctor()}
+                onPress={() => loginDoctor(email, password)}
                 title="Doctor Log In"
                 borderRadius={25}
                 width={250}
