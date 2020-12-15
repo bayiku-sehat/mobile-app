@@ -50,29 +50,29 @@ export default function Login({navigation}) {
   //     }).catch(console.log);
   // }
 
-  function loginDoctor(email, password) {
-    firestore()
-      .collection('USERS')
-      .get()
+  // function loginDoctor(email, password) {
+  //   firestore()
+  //     .collection('USERS')
+  //     .get()
       // console.log('Total users: ', querySnapshot.size);
-        .then((querySnapshot) => {
-        querySnapshot.forEach((documentSnapshot) => {
+        // .then((querySnapshot) => {
+        // querySnapshot.forEach((documentSnapshot) => {
           // console.log(
           //   'User ID: ',
           //   documentSnapshot.id,
           //   documentSnapshot.data(),
           // );
-          if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
-            console.log(documentSnapshot.data().email)
-            // setUserLogin(documentSnapshot.data())
-            navigation.navigate('HomeDoctor',{tes:'halo'})
-          }else{
-            console.log("password atau email salah")
-          }
-        });
+  //         if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
+  //           console.log(documentSnapshot.data().email)
+  //           // setUserLogin(documentSnapshot.data())
+  //           navigation.navigate('HomeDoctor',{tes:'halo'})
+  //         }else{
+  //           console.log("password atau email salah")
+  //         }
+  //       });
         
-      }).catch(console.log);
-  }
+  //     }).catch(console.log);
+  // }
 
   return (
     <SafeAreaView>
@@ -114,20 +114,20 @@ export default function Login({navigation}) {
               <ButtonBase
                 // size="xl"
                 onPress={() => login(email, password)}
-                title="Parent Log In"
+                title="Log In"
                 borderRadius={25}
                 width={250}
                 marginTop={24}
               />
 
-              <ButtonBase
+              {/* <ButtonBase
                 // size="xl"
                 onPress={() => loginDoctor(email, password)}
                 title="Doctor Log In"
                 borderRadius={25}
                 width={250}
                 marginTop={24}
-              />
+              /> */}
               <FormButton
                 borderRadius={25}
                 width={250}

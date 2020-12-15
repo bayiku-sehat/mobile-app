@@ -3,7 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AuthStack from './AuthStack';
 import {MainStackNavigator} from '../navigation/StackNavigatorPatient';
-import {MainStackNavigatorDokter} from '../navigation/StackNavigatorDokter';
+
+
 
 import HomeStack from './HomeStack';
 import {AuthContext} from './AuthProvider';
@@ -62,6 +63,7 @@ export default function Routes() {
   console.log(patient,'pasien')
   console.log(dokter,'dokter')
   return (
+      
     <NavigationContainer>
       {patient.length>0 && user ? <MainStackNavigator user={userLogedIn}/> : <AuthStack />}
      {/* {dokter.length>0 ? <MainStackNavigatorDokter /> : <AuthStack />} */}

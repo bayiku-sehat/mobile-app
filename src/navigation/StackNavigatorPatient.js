@@ -1,4 +1,6 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import  {useDispatch, useSelector} from 'react-redux'
+
 
 import {
   createStackNavigator,
@@ -22,6 +24,7 @@ import Pengaturan from '../screens/Pengaturan';
 import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
 import {RoomScreen} from '../screens/RoomScreen';
+import {addUser} from '../store/action/userAction'
 
 import {IconButton} from 'react-native-paper';
 
@@ -31,7 +34,12 @@ import BottomTabNavigatorDoctor from './TabNavigatorDoctor';
 const Stack = createStackNavigator();
 
 export const MainStackNavigator = ({user}) => {
-  console.log(user,'a')
+  console.log(user,'hasil props')
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(addUser(user))
+  })
   return (
     <Stack.Navigator
     screenOptions={{
@@ -74,10 +82,12 @@ export const MainStackNavigator = ({user}) => {
       <Stack.Screen name="Bayiku" component={Bayiku} />
       <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />
       {/* <Stack.Screen name="HubungiDokter" component={HubungiDokter} /> */}
+      {/* passing data bayi */}
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={({navigation}) => ({
+        options={
+          ({navigation}) => ({
           headerRight: () => (
             <IconButton
               icon="message-plus"
@@ -86,7 +96,8 @@ export const MainStackNavigator = ({user}) => {
               onPress={() => navigation.navigate('AddRoomScreen')}
             />
           )
-        })}
+        })
+      }
       />
       <Stack.Screen name="RoomScreen" component={RoomScreen} options={({route})=>({
         title:route.params.thread.name
@@ -97,6 +108,7 @@ export const MainStackNavigator = ({user}) => {
       <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
       <Stack.Screen name="Pengaturan" component={Pengaturan} />
     </Stack.Navigator>
+    
   );
 };
 

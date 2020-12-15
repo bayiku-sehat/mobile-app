@@ -122,11 +122,17 @@ export const RoomScreen = ({route}) => {
       <Bubble
         {...props}
         wrapperStyle={{
+          left:{
+            backgroundColor: '#4547b5'
+          },
           right: {
             backgroundColor: '#6646ee',
           },
         }}
         textStyle={{
+          left:{
+            color: '#fff'
+          },
           right: {
             color: '#fff',
           },

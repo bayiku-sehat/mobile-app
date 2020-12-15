@@ -75,6 +75,7 @@ export default function Home({navigation}) {
                   <TextBase bold size={16}>
                   { user && user.email}
                   </TextBase>
+                  {/* <Text>{JSON.stringify(user)}</Text> */}
                   <TextBase light>Orang Tua</TextBase>
                   <TextBase>+62 812 1000 1000</TextBase>
                 </View>
