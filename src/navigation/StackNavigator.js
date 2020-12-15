@@ -1,5 +1,12 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {Animated} from 'react-native';
+
+import {
+  createStackNavigator,
+  TransitionSpecs,
+  HeaderStyleInterpolators,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 
 import Home from '../screens/Home';
 import Login from '../screens/Login';
@@ -21,12 +28,18 @@ const Stack = createStackNavigator();
 export const MainStackNavigator = () => {
   return (
     <Stack.Navigator
-      screenOptions={
-        {
-          // headerTransparent: true,
-          // headerTintColor: 'white',
-        }
-      }>
+      screenOptions={{
+        // headerTransparent: true,
+        // headerTintColor: 'white',
+
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+          open: TransitionSpecs.TransitionIOSSpec,
+          close: TransitionSpecs.TransitionIOSSpec,
+        },
+        headerStyleInterpolator: HeaderStyleInterpolators.forStatic,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}>
       <Stack.Screen
         name="Login"
         component={Login}
