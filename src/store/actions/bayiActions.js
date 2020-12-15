@@ -5,44 +5,36 @@ let apiUrl = 'http://localhost:3001';
 export const fetchBabies = (url = `${apiUrl}/bayi`) => {
   console.log({url}, '<<< fetch babies');
   return (dispatch) => {
+    dispatch({type: 'FETCH_BABIES_PENDING', payload: true});
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, '<<<fetch babies', url);
-        dispatch({type: 'SET_BABIES', payload: data});
+        dispatch({type: 'FETCH_BABIES_SUCCESS', payload: data});
       })
       .catch((err) => {
         console.log(err, '<<<< error fetch babies');
-      });
+        dispatch({type: 'FETCH_BABIES_ERROR', payload: err});
+      })
+      .finally((_) => dispatch({type: 'FETCH_BABIES_PENDING', payload: true}));
   };
 };
 
 export const fetchBabyById = (id) => {
   console.log('fetch baby details:', id);
   return (dispatch) => {
+    dispatch({type: 'FETCH_BABY_PENDING', payload: true});
     fetch(`${apiUrl}/bayi/${id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, '<<<fetch baby', id);
-        dispatch({type: 'SET_BABY', payload: data});
+        dispatch({type: 'FETCH_BABY_SUCCESS', payload: data});
       })
       .catch((err) => {
         console.log(err, '<<<< error fetch baby');
-      });
-  };
-};
-export const fetchPerkembangan = (id) => {
-  console.log('fetch perkembangan bayi:', id);
-  return (dispatch) => {
-    fetch(`${apiUrl}/bayi/${id}/perkembangan`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, '<<<fetch baby', id);
-        dispatch({type: 'SET_BABY', payload: data});
+        dispatch({type: 'FETCH_BABY_ERROR', payload: err});
       })
-      .catch((err) => {
-        console.log(err, '<<<< error fetch baby');
-      });
+      .finally((_) => dispatch({type: 'FETCH_BABY_PENDING', payload: true}));
   };
 };
 

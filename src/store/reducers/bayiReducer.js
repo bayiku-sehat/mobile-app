@@ -1,14 +1,25 @@
 const initialState = {
-  babies: [],
   baby: {},
+  babies: [],
 };
 
-export default function babyReducer(state = initialState, {type, payload}) {
+export default function userReducer(state = initialState, {type, payload}) {
   switch (type) {
-    case 'SET_BABIES':
-      return {...state, babies: payload};
-    case 'SET_BABY':
-      return {...state, baby: payload};
+    case 'FETCH_BABY_SUCCESS':
+      return {...state, baby: {...state.baby, ...payload}};
+    case 'FETCH_BABY_PENDING':
+      return {
+        ...state,
+        baby: {...state.baby, isPending: payload},
+      };
+    case 'FETCH_BABY_ERROR':
+      return {...state, baby: {...state.baby, error: payload}};
+    case 'FETCH_BABIES_SUCCESS':
+      return {...state, babies: {...state.babies, ...payload}};
+    case 'FETCH_BABIES_PENDING':
+      return {...state, babies: {...state.babies, isPending: payload}};
+    case 'FETCH_BABIES_ERROR':
+      return {...state, babies: {...state.babies, error: payload}};
     default:
       return state;
   }

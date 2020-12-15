@@ -2,32 +2,59 @@
 
 let apiUrl = 'http://localhost:3001';
 
-export const fetchBabies = (url) => {
-  console.log({url}, '<<< fetch babies');
+export const login = (payload) => {
+  console.log(payload, '<<< login payload');
   return (dispatch) => {
-    fetch(url)
+    dispatch({type: 'LOGIN_PENDING', payload: true});
+    fetch(apiUrl + '/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, '<<<fetch babies', url);
-        dispatch({type: 'SET_BABIES', payload: data});
+        console.log(data, '<<< login response');
+        dispatch({type: 'LOGIN_SUCCESS', payload: data});
       })
       .catch((err) => {
-        console.log(err, '<<<< error fetch babies');
-      });
+        console.log(err, '<<<< error login');
+        dispatch({type: 'LOGIN_ERROR', payload: err});
+      })
+      .finally((_) => dispatch({type: 'LOGIN_PENDING', payload: false}));
   };
 };
 
-export const fetchBabyById = (id) => {
-  console.log('fetch baby details:', id);
+export const fetchUsers = (url) => {
+  console.log({url}, '<<< fetch users');
   return (dispatch) => {
-    fetch(`${apiUrl}/babies?id=${id}`)
+    dispatch({type: 'FETCH_USERS_PENDING', payload: true});
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, '<<<fetch baby', id);
-        dispatch({type: 'SET_BABY', payload: data});
+        console.log(data, '<<<fetch users', url);
+        dispatch({type: 'FETCH_USERS_SUCCESS', payload: data});
       })
       .catch((err) => {
-        console.log(err, '<<<< error fetch baby');
+        console.log(err, '<<<< error fetch users');
+        dispatch({type: 'FETCH_USERS_ERROR', payload: err});
+      })
+      .finally((_) => dispatch({type: 'FETCH_USERS_PENDING', payload: false}));
+  };
+};
+
+export const fetchUserById = (id) => {
+  console.log('fetch user details:', id);
+  return (dispatch) => {
+    fetch(`${apiUrl}/user/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, '<<<fetch user', id);
+        dispatch({type: 'SET_USER', payload: data});
+      })
+      .catch((err) => {
+        console.log(err, '<<<< error fetch user');
       });
   };
 };

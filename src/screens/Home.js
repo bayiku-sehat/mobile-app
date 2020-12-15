@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {useSelector, useDispatch} from 'react-redux';
+
 import {
   StyleSheet,
   Text,
@@ -35,6 +37,8 @@ let ScreenWidth = Dimensions.get('window').width;
 
 // let role = getData();
 export default function Home({navigation}) {
+  const dispatch = useDispatch();
+  const {active_user} = useSelector((state) => state.userReducer);
   // console.log(role);
 
   return (
