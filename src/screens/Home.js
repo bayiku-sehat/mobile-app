@@ -38,6 +38,7 @@ let ScreenWidth = Dimensions.get('window').width;
 export default function Home({navigation}) {
   // console.log(role);
   const {user, logout } = useContext(AuthContext);
+  
   return (
     <SafeAreaView>
       <ScrollView
@@ -47,6 +48,7 @@ export default function Home({navigation}) {
           <ButtonBase
             size="sm"
             onPress={() => logout()}
+            // onPress={navigation.navigate('Login')}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}
@@ -71,7 +73,7 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                  { (user.email)}
+                  { user && user.email}
                   </TextBase>
                   <TextBase light>Orang Tua</TextBase>
                   <TextBase>+62 812 1000 1000</TextBase>

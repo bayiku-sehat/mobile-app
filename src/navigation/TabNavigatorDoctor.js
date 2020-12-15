@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {MainStackNavigator, ChatNavigator} from './StackNavigator';
+// import {MainStackNavigator, ChatNavigator} from './StackNavigator';
 import Home from '../screens/Home';
 import HomeDoctor from '../screens/HomeDoctor';
 import Chat from '../screens/Chat';

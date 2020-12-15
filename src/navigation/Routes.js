@@ -2,15 +2,21 @@ import React, {useContext, useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AuthStack from './AuthStack';
-import {MainStackNavigator} from '../navigation/StackNavigator';
+import {MainStackNavigator} from '../navigation/StackNavigatorPatient';
+import {MainStackNavigatorDokter} from '../navigation/StackNavigatorDokter';
+
 import HomeStack from './HomeStack';
 import {AuthContext} from './AuthProvider';
 import Loading from '../components/Loading';
+import firestore from '@react-native-firebase/firestore';
 
 export default function Routes() {
   const {user, setUser} = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
+  const [patient, setPatient] = useState([]);
+  const [dokter, setDokter] = useState([]);
+  const [userLogedIn,setUserLogedIn] = useState ([])
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -18,6 +24,31 @@ export default function Routes() {
     if (initializing) setInitializing(false);
     setLoading(false);
   }
+
+  //pengecekan ke firestore
+  var userRef = firestore().collection('USERS');
+  useEffect(()=>{
+    firestore()
+    .collection('USERS')
+    .get()
+    .then((querySnapshot) => {
+      if (user.email) {
+        querySnapshot.forEach((documentSnapshot) => {
+          
+          if (user.email === documentSnapshot.data().email) {
+            setUserLogedIn(documentSnapshot.data())
+            if (documentSnapshot.data().role == 'orang tua') {
+              setPatient([documentSnapshot.data()]);
+            } else {
+              setDokter([documentSnapshot.data()]);
+            }
+          }
+        });
+      }
+    })
+    .catch(console.log);
+  },[user])
+  
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -28,10 +59,16 @@ export default function Routes() {
     return <Loading />;
   }
 
+  console.log(patient,'pasien')
+  console.log(dokter,'dokter')
   return (
     <NavigationContainer>
-      {user ? <MainStackNavigator /> : <AuthStack />}
-      {console.log(user)}
+      {patient.length>0 && user ? <MainStackNavigator user={userLogedIn}/> : <AuthStack />}
+     {/* {dokter.length>0 ? <MainStackNavigatorDokter /> : <AuthStack />} */}
     </NavigationContainer>
+ 
+    // <NavigationContainer>
+
+    // </NavigationContainer> 
   );
 }

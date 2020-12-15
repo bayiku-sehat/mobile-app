@@ -1,5 +1,11 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+
+import {
+  createStackNavigator,
+  TransitionSpecs,
+  HeaderStyleInterpolators,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 
 import Home from '../screens/Home';
 import Login from '../screens/Login';
@@ -24,21 +30,39 @@ import BottomTabNavigatorDoctor from './TabNavigatorDoctor';
 
 const Stack = createStackNavigator();
 
-export const MainStackNavigator = () => {
+export const MainStackNavigator = ({user}) => {
+  console.log(user,'a')
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      // headerTransparent: true,
+      // headerTintColor: 'white',
+
+      gestureDirection: 'horizontal',
+      transitionSpec: {
+        open: TransitionSpecs.TransitionIOSSpec,
+        close: TransitionSpecs.TransitionIOSSpec,
+      },
+      headerStyleInterpolator: HeaderStyleInterpolators.forStatic,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    }}>
+    {/* <Stack.Screen
+      name="Login"
+      component={Login}
+      options={{headerShown: false}}
+    /> */}
       {/* <Stack.Screen
-        name="Login"
-        component={Login}
+        name="SignupScreen"
+        component={SignupScreen}
         options={{headerShown: false}}
       /> */}
-      <Stack.Screen
+      {user.role =="orang tua" && <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
         options={{
           headerShown: false,
         }}
-      />
+      /> }
       <Stack.Screen
         name="HomeDoctor"
         component={BottomTabNavigatorDoctor}

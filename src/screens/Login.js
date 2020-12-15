@@ -30,12 +30,32 @@ export default function Login({navigation}) {
   const [userLogin, setUserLogin] = useState([]);
   var userRef = firestore().collection('USERS');
 
+  // function login(email, password) {
+  //   firestore()
+  //     .collection('USERS')
+  //     .get()
+  //       .then((querySnapshot) => {
+  //       querySnapshot.forEach((documentSnapshot) => {
+  //         if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
+  //           // console.log(documentSnapshot.data())
+  //           // setUserLogin(documentSnapshot.data())
+  //           navigation.navigate('Home')
+  //           console.log('masuik')
+  //         }else{
+  //           console.log("password atau email salah")
+  //           // console.log(documentSnapshot.data())
+  //         }
+  //       });
+        
+  //     }).catch(console.log);
+  // }
+
   function loginDoctor(email, password) {
     firestore()
       .collection('USERS')
       .get()
-      .then((querySnapshot) => {
-        // console.log('Total users: ', querySnapshot.size);
+      // console.log('Total users: ', querySnapshot.size);
+        .then((querySnapshot) => {
         querySnapshot.forEach((documentSnapshot) => {
           // console.log(
           //   'User ID: ',
@@ -44,12 +64,14 @@ export default function Login({navigation}) {
           // );
           if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
             console.log(documentSnapshot.data().email)
-            navigation.navigate('HomeDoctor')
+            // setUserLogin(documentSnapshot.data())
+            navigation.navigate('HomeDoctor',{tes:'halo'})
           }else{
             console.log("password atau email salah")
           }
         });
-      });
+        
+      }).catch(console.log);
   }
 
   return (
