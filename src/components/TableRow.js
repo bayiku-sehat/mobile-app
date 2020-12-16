@@ -14,7 +14,7 @@ const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
 const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
 const umur = [0, 1, 2, 3, 4, 5, 6];
 
-export default function TableRow({row,baby,i}) {
+export default function TableRow({row, baby, i}) {
   return (
     <View key={`${row}-${i}`} style={{flexDirection: 'row'}}>
       <View style={styles.tableCell}>

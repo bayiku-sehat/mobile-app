@@ -14,7 +14,6 @@ import Home from '../screens/Home';
 import Login from '../screens/Login';
 import Chat from '../screens/Chat';
 import BabyDetails from '../screens/BabyDetails';
-import Bayiku from '../screens/Bayiku';
 import JadwalVaksin from '../screens/JadwalVaksin';
 import HubungiDokter from '../screens/HubungiDokter';
 import LeaderBoard from '../screens/LeaderBoard';
@@ -69,7 +68,6 @@ export const MainStackNavigator = () => {
           title: 'Profil Bayi',
         }}
       />
-      <Stack.Screen name="Bayiku" component={Bayiku} />
       <Stack.Screen
         name="JadwalVaksin"
         component={JadwalVaksin}
