@@ -25,6 +25,7 @@ import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
 import {RoomScreen} from '../screens/RoomScreen';
 import {addUser} from '../store/action/userAction'
+import MyBabiesList from '../screens/MyBabiesList';
 
 import {IconButton} from 'react-native-paper';
 
@@ -34,6 +35,7 @@ import BottomTabNavigatorDoctor from './TabNavigatorDoctor';
 const Stack = createStackNavigator();
 
 export const MainStackNavigator = ({user}) => {
+  const {role} = useSelector((state) => state.userReducer.user.details);
   // console.log(user,'hasil props')
   const dispatch = useDispatch()
 
@@ -66,23 +68,46 @@ export const MainStackNavigator = ({user}) => {
         options={{headerShown: false}}
       /> */}
       
-      {user.role =="orang tua" && <Stack.Screen
+      {user.role =="Orang Tua" && <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
         options={{
           headerShown: false,
         }}
       /> }
-      {user.role ==="dokter" &&  <Stack.Screen
+      {user.role ==="Dokter" &&  <Stack.Screen
         name="HomeDoctor"
         component={BottomTabNavigatorDoctor}
         options={{
           headerShown: false,
         }}
       />}
-      <Stack.Screen name="BabyDetails" component={BabyDetails} />
-      <Stack.Screen name="Bayiku" component={Bayiku} />
-      <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />
+      <Stack.Screen
+        name="BabyDetails"
+        component={BabyDetails}
+        options={{
+          title: 'Profil Bayi',
+        }}
+      />
+      <Stack.Screen
+        name="MyBabiesList"
+        component={MyBabiesList}
+        options={{
+          title:
+            role?.toLowerCase() === 'orang tua'
+              ? 'Bayiku'
+              : role?.toLowerCase() === 'dokter'
+              ? 'My Cases'
+              : 'Daftar Bayi',
+        }}
+      />
+      <Stack.Screen
+        name="JadwalVaksin"
+        component={JadwalVaksin}
+        options={{
+          title: 'Jadwal Vaksin',
+        }}
+      />
       {/* <Stack.Screen name="HubungiDokter" component={HubungiDokter} /> */}
       {/* passing data bayi */}
       <Stack.Screen
@@ -107,7 +132,13 @@ export const MainStackNavigator = ({user}) => {
       <Stack.Screen name="AddRoomScreen" component={AddRoomScreen} />
       <Stack.Screen name="MyCases" component={MyCases} />
       <Stack.Screen name="OpenCases" component={OpenCases} />
-      <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
+      <Stack.Screen
+        name="LeaderBoard"
+        component={LeaderBoard}
+        options={{
+          title: 'Leader Board',
+        }}
+      />
       <Stack.Screen name="Pengaturan" component={Pengaturan} />
     </Stack.Navigator>
     

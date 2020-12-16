@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux'
 import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {List, Divider, Title, IconButton} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
@@ -7,15 +8,21 @@ import useStatsBar from '../helpers/useStatsBar';
 import {useSelector} from 'react-redux';
 import ButtonBase from '../components/ButtonBase';
 
+import bayiReducer from '../store/reducers/bayiReducer'
+
+import {fetchBabies} from '../store/action/bayiActions'
+
 export default function HomeScreen({navigation}) {
+  const dispatch = useDispatch()
   useStatsBar('light-content');
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [namaBayi, setnamaBayi] = useState('Daryal');
+  // const [namaBayi, setnamaBayi] = useState('Daryal');
   const [namaRoom, setNamaRoom] = useState([]);
-  const userLogedin = useSelector((state) => state.userReducer.user);
+  const userLogedin = useSelector((state) => state.userReducer.usera);
   const namaRoomBayi = userLogedin.user.bayis;
   // console.log(namaRoomBayi,'dihomescreen')
+  const namaBayi =useSelector((state)=>state.bayiReducer.babies)
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -49,40 +56,71 @@ export default function HomeScreen({navigation}) {
   }, []);
 
   const generateRoom = () => {
-    namaRoomBayi.map((roomBayi) => {
+    dispatch(fetchBabies())
+   
+
+    // namaRoomBayi.map((roomBayi) => {
       // console.log(roomBayi,'dalam');
-      firestore()
-        .collection('THREADS')
-        .add({
-          name: roomBayi,
-          latestMessage: {
-            text: `You have joined the room ${roomBayi}.`,
-            createdAt: new Date().getTime(),
-          },
-        })
-        .then((docRef) => {
-          docRef.collection('MESSAGES').add({
-            text: `You have joined the room ${roomBayi}.`,
-            createdAt: new Date().getTime(),
-            system: true,
-          });
-        });
-    });
+  //     firestore()
+  //       .collection('THREADS')
+  //       .add({
+  //         name: roomBayi,
+  //         latestMessage: {
+  //           text: `You have joined the room ${roomBayi}.`,
+  //           createdAt: new Date().getTime(),
+  //         },
+  //       })
+  //       .then((docRef) => {
+  //         docRef.collection('MESSAGES').add({
+  //           text: `You have joined the room ${roomBayi}.`,
+  //           createdAt: new Date().getTime(),
+  //           system: true,
+  //         });
+  //       });
+    // });
   };
 
-  useEffect(() => {
-    let temp = [];
-    for (let i = 0; i < namaRoomBayi.length; i++) {
-      const filter = threads.filter((el) => {
-        return el.name === namaRoomBayi[i];
-      });
-      // const newList = temp.concat(filter);
-      temp.push(filter);
+  //ini dipikrkan setelah di klik generate harus nambah ke firestore,
+  // kalau bersamaan dia gk muncul, kalau di useEffectnanti malah tiap reload page nambah mulu chatnya
+  useEffect(()=>{
+    console.log(namaBayi[0])
+    namaRoomBayi.map((roomBayi) => {
+          console.log(roomBayi.nama,'dalam');
+      //     firestore()
+      //       .collection('THREADS')
+      //       .add({
+      //         name: roomBayi,
+      //         latestMessage: {
+      //           text: `You have joined the room ${roomBayi}.`,
+      //           createdAt: new Date().getTime(),
+      //         },
+      //       })
+      //       .then((docRef) => {
+      //         docRef.collection('MESSAGES').add({
+      //           text: `You have joined the room ${roomBayi}.`,
+      //           createdAt: new Date().getTime(),
+      //           system: true,
+      //         });
+      //       });
+        });
+  },[namaBayi])
 
+  useEffect(() => {
+    if(namaRoomBayi){
+      let temp = [];
+      for (let i = 0; i < namaRoomBayi.length; i++) {
+        const filter = threads.filter((el) => {
+          return el.name === namaRoomBayi[i];
+        });
+        // const newList = temp.concat(filter);
+        temp.push(filter);
+  
+      }
+      // console.log(temp, 'ne');
+      // setNamaRoom(temp);
+      setNamaRoom(temp)
     }
-    // console.log(temp, 'ne');
-    // setNamaRoom(temp);
-    setNamaRoom(temp)
+    
   }, [threads]);
 
   let tampunganRoom= []
@@ -100,25 +138,22 @@ export default function HomeScreen({navigation}) {
     <>
       {/* <Text>{JSON.stringify(namaRoom[2][1])}</Text> */}
       {/* <Text>{JSON.stringify(threads[2].latestMessage)}</Text> */}
+  <Text>{JSON.stringify(namaBayi[0].nama)}</Text>
       <View style={styles.container}>
         <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
         {namaRoom.length == 0 && (
           <ButtonBase
             // size="xl"
             onPress={() => generateRoom()}
-            title="Tampilkan Chat"
+            title="Mulai Konsultasi"
+            // marginRight= "1000"
             borderRadius={25}
             width={250}
             marginTop={24}
+            marginLeft={70}
           />
         )}
-       {/* {namaRoom.map(satuan=>{
-          satuan.map(datum=>{
-           console.log(satuan)
-          <Text>{datum}</Text>
-            
-          })
-        })} */}
+  
        
        <FlatList
             data={tampunganRoom}

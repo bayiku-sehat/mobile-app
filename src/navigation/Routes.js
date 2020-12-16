@@ -13,6 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 
 export default function Routes() {
   const {user, setUser} = useContext(AuthContext);
+  
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const [patient, setPatient] = useState([]);
@@ -35,10 +36,9 @@ export default function Routes() {
     .then((querySnapshot) => {
       if (user.email) {
         querySnapshot.forEach((documentSnapshot) => {
-          
           if (user.email === documentSnapshot.data().email) {
             setUserLogedIn(documentSnapshot.data())
-            if (documentSnapshot.data().role == 'orang tua') {
+            if (documentSnapshot.data().role == 'Orang Tua') {
               setPatient([documentSnapshot.data()]);
             } else {
               setDokter([documentSnapshot.data()]);

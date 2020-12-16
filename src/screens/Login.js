@@ -30,6 +30,12 @@ export default function Login({navigation}) {
   const [userLogin, setUserLogin] = useState([]);
   var userRef = firestore().collection('USERS');
 
+  //  login = (payload)=> {
+  //   // useContext(AuthContext)
+  //   console.log(payload,'a')
+  //   dispatch(login({...payload, navigation}));
+  // }
+
   // function login(email, password) {
   //   firestore()
   //     .collection('USERS')
