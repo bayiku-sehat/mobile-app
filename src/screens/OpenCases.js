@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
     top: ScreenWidth * -0.85,
     left: -100,
     right: -100,
+    zIndex: -1,
     bottom: -250,
   },
   circle2: {

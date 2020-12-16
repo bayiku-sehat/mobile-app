@@ -710,6 +710,7 @@ const styles = StyleSheet.create({
   dataInput: {
     height: 40,
     width: 40,
+    flex: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     padding: 0,
@@ -787,6 +788,7 @@ const styles = StyleSheet.create({
     left: -100,
     right: -100,
     bottom: -250,
+    zIndex: -1,
   },
   circle2: {
     backgroundColor: '#1E88E5',

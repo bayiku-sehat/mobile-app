@@ -13,8 +13,6 @@ import {
   ScrollView,
 } from 'react-native';
 import ButtonBase from '../components/ButtonBase';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
@@ -26,22 +24,13 @@ import {fetchCurrentUserDetails} from '../store/actions/userActions';
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-// const getData = async () => {
-//   try {
-//     const value = await AsyncStorage.getItem('@role');
-//     if (value !== null) {
-//       // value previously stored
-//     }
-//   } catch (e) {
-//     // error reading value
-//   }
-// };
-
-// let role = getData();
 export default function Home({navigation}) {
   const dispatch = useDispatch();
-  const {user} = useSelector((state) => state.userReducer);
-  // console.log(role);
+  const {details} = useSelector((state) => state.userReducer.user);
+
+  if (Object.keys(details).length > 0) {
+    console.log(details);
+  }
 
   useEffect(() => {
     dispatch(fetchCurrentUserDetails());
@@ -60,7 +49,7 @@ export default function Home({navigation}) {
         <View style={{alignItems: 'flex-end'}}>
           <ButtonBase
             size="sm"
-            onPress={() => dispatch({type: 'LOGOUT'})}
+            onPress={logout}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}
@@ -85,10 +74,10 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    {user.details.nama}
+                    {details?.nama}
                   </TextBase>
-                  <TextBase light>{user.details.role}</TextBase>
-                  <TextBase>{user.details.no_hp}</TextBase>
+                  <TextBase light>{details?.role}</TextBase>
+                  <TextBase>{details?.no_hp}</TextBase>
                 </View>
               </View>
 
@@ -220,6 +209,7 @@ const styles = StyleSheet.create({
     top: ScreenWidth * -0.85,
     left: -100,
     right: -100,
+    zIndex: -1,
     bottom: -250,
   },
   circle2: {

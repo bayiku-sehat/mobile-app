@@ -10,7 +10,7 @@ export const login = (payload) => {
 
     const {username, password, navigation} = payload;
 
-    return fetch('http://localhost:3001/login', {
+    fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,11 +39,12 @@ export const login = (payload) => {
 };
 
 export const fetchCurrentUserDetails = () => {
+  console.log('fetching user details');
   return async (dispatch) => {
     dispatch({type: 'FETCH_USER_PENDING', payload: true});
     try {
       const token = await getToken();
-      console.log('token:', token);
+
       const response = await fetch(apiUrl + '/user-detail', {
         method: 'GET',
         headers: {

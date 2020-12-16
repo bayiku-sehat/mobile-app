@@ -88,26 +88,26 @@ export const updatePerkembanganBayi = (payload) => {
       .then((data) => {
         console.log(data, '<<<< updated baby');
         console.log(getState().bayiReducer.baby[id]);
-        // let updatedBabies = {...getState().bayiReducer.baby[id]}
-        // let updatedBabies = getState().bayiReducer.baby.map((el) => {
-        //   if (+el.id === +data.id) {
-        //     return data;
-        //   }
-        // });
+        //   let updatedBabies = {...getState().bayiReducer.baby[id]}
+        //   let updatedBabies = getState().bayiReducer.baby.map((el) => {
+        //     if (+el.id === +data.id) {
+        //       return data;
+        //     }
+        //   });
 
-        // console.log(updatedBabies);
-        // let updatedBabies = getState().babyReducer.bayi.map((baby) => {
-        //   if (+baby.id === +data.id) {
-        //     return data;
-        //   }
-        // });
-        // dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({type: 'EDIT_BABY_ERROR', payload: error});
-      })
-      .finally((_) => dispatch({type: 'EDIT_BABY_PENDING', payload: false}));
+        //   console.log(updatedBabies);
+        //   let updatedBabies = getState().babyReducer.bayi.map((baby) => {
+        //     if (+baby.id === +data.id) {
+        //       return data;
+        //     }
+        //   });
+        //   dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
+      });
+    // .catch((error) => {
+    //   console.log(error);
+    //   dispatch({type: 'EDIT_BABY_ERROR', payload: error});
+    // })
+    // .finally((_) => dispatch({type: 'EDIT_BABY_PENDING', payload: false}));
   };
 };
 
