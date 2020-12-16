@@ -88,10 +88,10 @@ export default function HomeScreen({navigation}) {
   let tampunganRoom= []
   namaRoom.map(satuan=>{
     satuan.map(satu=>{
-      tempa.push(satu)
+      tampunganRoom.push(satu)
     })
   })
-  console.log(tempa)
+  // console.log(tempa)
 
   if (loading) {
     return <Loading />;
@@ -140,37 +140,6 @@ export default function HomeScreen({navigation}) {
             )}
           />     
       </View>
-      {/* <View style={styles.container}>
-        <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
-        {namaRoom.length == 0 && <ButtonBase
-          // size="xl"
-          onPress={() => generateRoom()}
-          title="Tampilkan Chat"
-          borderRadius={25}
-          width={250}
-          marginTop={24}
-        /> }
-        
-        <FlatList
-          data={namaRoom}
-          // data={threads}
-          keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={() => <Divider />}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
-              <List.Item
-                title={item.name}
-                description={item.latestMessage.text}
-                titleNumberOfLines={1}
-                titleStyle={styles.listTitle}
-                descriptionStyle={styles.listDescription}
-                descriptionNumberOfLines={1}
-              />
-            </TouchableOpacity>
-          )}
-        />
-      </View> */}
     </>
   );
 }
