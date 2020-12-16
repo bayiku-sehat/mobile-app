@@ -74,9 +74,9 @@ export default function BabyDetails({route, navigation}) {
   console.log({baby});
 
   const [input, setInput] = useState({
-    kepala: baby.lingkar_kepala,
-    tinggi: baby.tinggi,
-    berat: baby.berat_badan,
+    kepala: baby?.lingkar_kepala,
+    tinggi: baby?.tinggi,
+    berat: baby?.berat_badan,
   });
 
   function handleInput(payload) {
