@@ -15,7 +15,7 @@ export default function HomeScreen({navigation}) {
   const [namaRoom, setNamaRoom] = useState([]);
   const userLogedin = useSelector((state) => state.userReducer.user);
   const namaRoomBayi = userLogedin.user.bayis;
-  console.log(namaRoomBayi,'dihomescreen')
+  // console.log(namaRoomBayi,'dihomescreen')
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -48,59 +48,99 @@ export default function HomeScreen({navigation}) {
     return () => unsubscribe();
   }, []);
 
-  const generateRoom = ()=> {
+  const generateRoom = () => {
     namaRoomBayi.map((roomBayi) => {
       // console.log(roomBayi,'dalam');
       firestore()
-      .collection('THREADS')
-      .add({
-        name: roomBayi,
-        latestMessage: {
-          text: `You have joined the room ${roomBayi}.`,
-          createdAt: new Date().getTime(),
-        },
-      })
-      .then((docRef) => {
-        docRef.collection('MESSAGES').add({
-          text: `You have joined the room ${roomBayi}.`,
-          createdAt: new Date().getTime(),
-          system: true,
+        .collection('THREADS')
+        .add({
+          name: roomBayi,
+          latestMessage: {
+            text: `You have joined the room ${roomBayi}.`,
+            createdAt: new Date().getTime(),
+          },
+        })
+        .then((docRef) => {
+          docRef.collection('MESSAGES').add({
+            text: `You have joined the room ${roomBayi}.`,
+            createdAt: new Date().getTime(),
+            system: true,
+          });
         });
-      });
     });
-  }
-    
+  };
 
   useEffect(() => {
-    // console.log(namaRoomBayi)
-    // console.log(threads[0])
-    // for (let i = 0; i < threads.length; i++) {
-    //   for (let y = 0; y < namaRoomBayi.length; y++) {
+    let temp = [];
+    for (let i = 0; i < namaRoomBayi.length; i++) {
+      const filter = threads.filter((el) => {
+        return el.name === namaRoomBayi[i];
+      });
+      // const newList = temp.concat(filter);
+      temp.push(filter);
 
-    //     if (threads[i].name == namaRoomBayi[y]) {
-    //       setNamaRoom(namaRoomBayi[y]);
-    //     }
-    //   }
-    // }
-    for (let i = 0 ; i < namaRoomBayi.length; i ++){
-      const filter =threads.filter(el => {  return el.name === namaRoomBayi[i]
-      })
-      setNamaRoom(filter)
     }
-    // const filter =threads.filter(el => {  return el.name === namaBayi
-    // })
-    // console.log(namaRoom)
-    // setNamaRoom(filter)
+    // console.log(temp, 'ne');
+    // setNamaRoom(temp);
+    setNamaRoom(temp)
   }, [threads]);
+
+  let tampunganRoom= []
+  namaRoom.map(satuan=>{
+    satuan.map(satu=>{
+      tempa.push(satu)
+    })
+  })
+  console.log(tempa)
 
   if (loading) {
     return <Loading />;
   }
   return (
     <>
-      {/* <Text>{JSON.stringify(namaRoom)}</Text>
-  <Text>{JSON.stringify(threads)}</Text> */}
+      {/* <Text>{JSON.stringify(namaRoom[2][1])}</Text> */}
+      {/* <Text>{JSON.stringify(threads[2].latestMessage)}</Text> */}
       <View style={styles.container}>
+        <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
+        {namaRoom.length == 0 && (
+          <ButtonBase
+            // size="xl"
+            onPress={() => generateRoom()}
+            title="Tampilkan Chat"
+            borderRadius={25}
+            width={250}
+            marginTop={24}
+          />
+        )}
+       {/* {namaRoom.map(satuan=>{
+          satuan.map(datum=>{
+           console.log(satuan)
+          <Text>{datum}</Text>
+            
+          })
+        })} */}
+       
+       <FlatList
+            data={tampunganRoom}
+            // data={threads}
+            keyExtractor={(item) => item._id}
+            ItemSeparatorComponent={() => <Divider />}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
+                <List.Item
+                  title={item.name}
+                  description={item.latestMessage.text}
+                  titleNumberOfLines={1}
+                  titleStyle={styles.listTitle}
+                  descriptionStyle={styles.listDescription}
+                  descriptionNumberOfLines={1}
+                />
+              </TouchableOpacity>
+            )}
+          />     
+      </View>
+      {/* <View style={styles.container}>
         <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
         {namaRoom.length == 0 && <ButtonBase
           // size="xl"
@@ -130,7 +170,7 @@ export default function HomeScreen({navigation}) {
             </TouchableOpacity>
           )}
         />
-      </View>
+      </View> */}
     </>
   );
 }
