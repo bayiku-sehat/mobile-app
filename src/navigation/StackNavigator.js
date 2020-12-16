@@ -1,6 +1,8 @@
 import React from 'react';
 import {Animated} from 'react-native';
 
+import {useSelector} from 'react-redux';
+
 import {
   createStackNavigator,
   TransitionSpecs,
@@ -16,7 +18,7 @@ import Bayiku from '../screens/Bayiku';
 import JadwalVaksin from '../screens/JadwalVaksin';
 import HubungiDokter from '../screens/HubungiDokter';
 import LeaderBoard from '../screens/LeaderBoard';
-import MyCases from '../screens/MyCases';
+import MyBabiesList from '../screens/MyBabiesList';
 import OpenCases from '../screens/OpenCases';
 import Pengaturan from '../screens/Pengaturan';
 
@@ -26,6 +28,7 @@ import BottomTabNavigatorDoctor from './TabNavigatorDoctor';
 const Stack = createStackNavigator();
 
 export const MainStackNavigator = () => {
+  const {role} = useSelector((state) => state.userReducer.user.details);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -82,10 +85,15 @@ export const MainStackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="MyCases"
-        component={MyCases}
+        name="MyBabiesList"
+        component={MyBabiesList}
         options={{
-          title: 'My Cases',
+          title:
+            role?.toLowerCase() === 'orang tua'
+              ? 'Bayiku'
+              : role?.toLowerCase() === 'dokter'
+              ? 'My Cases'
+              : 'Daftar Bayi',
         }}
       />
       <Stack.Screen

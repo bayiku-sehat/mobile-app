@@ -1,5 +1,7 @@
 // const baseUrl = 'http://localhost:4000/babies'
 
+import getToken from '../../helpers/getToken';
+
 let apiUrl = 'http://localhost:3001';
 
 export const fetchBabies = (url = `${apiUrl}/bayi`) => {
@@ -22,9 +24,15 @@ export const fetchBabies = (url = `${apiUrl}/bayi`) => {
 
 export const fetchBabyById = (id) => {
   console.log('fetch baby details:', id);
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: 'FETCH_BABY_PENDING', payload: true});
-    fetch(`${apiUrl}/bayi/${id}`)
+    fetch(`${apiUrl}/bayi/${id}`, {
+      method: 'GET',
+      headers: {
+        access_token: await getToken(),
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data, '<<<fetch baby', id);
@@ -34,7 +42,7 @@ export const fetchBabyById = (id) => {
         console.log(err, '<<<< error fetch baby');
         dispatch({type: 'FETCH_BABY_ERROR', payload: err});
       })
-      .finally((_) => dispatch({type: 'FETCH_BABY_PENDING', payload: true}));
+      .finally((_) => dispatch({type: 'FETCH_BABY_PENDING', payload: false}));
   };
 };
 
@@ -63,6 +71,8 @@ export const editBaby = (payload) => {
   delete payload.id;
   console.log(payload, '<< after delete id');
   return (dispatch, getState) => {
+    dispatch({type: 'EDIT_BABY_PENDING', payload: true});
+
     fetch(apiUrl + '/babies/' + id, {
       method: 'PUT',
       headers: {
@@ -78,8 +88,13 @@ export const editBaby = (payload) => {
             return data;
           }
         });
-        dispatch({type: 'SET_BABIES', payload: updatedBabies});
-      });
+        dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({type: 'EDIT_BABY_ERROR', payload: error});
+      })
+      .finally((_) => dispatch({type: 'EDIT_BABY_PENDING', payload: false}));
   };
 };
 

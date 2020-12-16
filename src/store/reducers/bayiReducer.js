@@ -6,7 +6,8 @@ const initialState = {
 export default function userReducer(state = initialState, {type, payload}) {
   switch (type) {
     case 'FETCH_BABY_SUCCESS':
-      return {...state, baby: {...state.baby, ...payload}};
+      console.log({...state, baby: {...state.baby, [payload.id]: payload}});
+      return {...state, baby: {...state.baby, [payload.id]: payload}};
     case 'FETCH_BABY_PENDING':
       return {
         ...state,

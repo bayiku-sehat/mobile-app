@@ -1,4 +1,5 @@
 import {storeData, getData, clearData} from '../../helpers/asyncStorage';
+import getToken from '../../helpers/getToken';
 
 let apiUrl = 'http://localhost:3001';
 
@@ -36,17 +37,6 @@ export const login = (payload) => {
       .finally((_) => dispatch({type: 'LOGIN_PENDING', payload: false}));
   };
 };
-
-async function getToken() {
-  try {
-    let user = await getData('user');
-    console.log(user, '<user from asyncstorage');
-    console.log('access)token = ', user.access_token);
-    return user.access_token;
-  } catch (error) {
-    console.log(error, '<< error getting token');
-  }
-}
 
 export const fetchCurrentUserDetails = () => {
   return async (dispatch) => {

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+
+import {useSelector, useDispatch} from 'react-redux';
 
 import {
   StyleSheet,
@@ -18,6 +20,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import statusToEmoji from '../helpers/statusToEmoji';
+import convertDate from '../helpers/convertDate';
+import getAge from '../helpers/getAge';
 
 import {
   Grid,
@@ -29,6 +33,8 @@ import {
 import {Path} from 'react-native-svg';
 import * as shape from 'd3-shape';
 
+import {t} from 'react-native-tailwindcss';
+
 import {Table, Row, Rows} from 'react-native-table-component';
 
 import CaseListItem from '../components/CaseListItem';
@@ -36,6 +42,7 @@ import CaseListItem from '../components/CaseListItem';
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 import PhotoPreview from '../components/PhotoPreview';
+import PjCard from '../components/PjCard';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -78,7 +85,28 @@ const Line = ({line, stroke = 'rgb(134, 65, 244)'}) => (
   <Path key={'line'} d={line} stroke={stroke} strokeWidth={3} fill={'none'} />
 );
 
-export default function HomeDoctor({navigation}) {
+export default function BabyDetails({route, navigation}) {
+  const {role} = useSelector((state) => state.userReducer.user.details);
+
+  const {baby} = route.params;
+  console.log({baby});
+
+  const [input, setInput] = useState({
+    kepala: baby.lingkar_kepala,
+    tinggi: baby.tinggi,
+    berat: baby.berat_badan,
+  });
+
+  function handleInput(payload) {
+    console.log(payload);
+    const {name, value} = payload;
+    console.log({...input, [name]: value});
+    setInput({...input, [name]: value});
+  }
+
+  function handleUpdateData() {
+    alert(input);
+  }
   return (
     <SafeAreaView>
       <ScrollView
@@ -118,8 +146,7 @@ export default function HomeDoctor({navigation}) {
                     <Image
                       style={styles.avatar}
                       source={{
-                        uri:
-                          'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
+                        uri: baby.foto,
                       }}
                     />
                   </View>
@@ -127,25 +154,61 @@ export default function HomeDoctor({navigation}) {
 
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    Daryal Fuaddin
+                    {baby.nama}
                   </TextBase>
-                  <TextBase light>6 bulan</TextBase>
+                  <TextBase light>{getAge(baby.tanggal_lahir)} bulan</TextBase>
                 </View>
-                {/* <TextBase textAlign="left" bold>
-                  Foto
-                </TextBase> */}
+                <View style={[t.wFull, t.pL4]}>
+                  <TextBase bold>Galeri Foto</TextBase>
+                </View>
                 <View style={[styles.imagePreviewList]}>
                   {[1, 2, 3].map((_, i) => (
-                    <PhotoPreview
-                      key={i}
-                      uri="https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90"
-                    />
+                    <PhotoPreview key={i} uri={baby.foto} />
                   ))}
-                  <PhotoPreview
-                    overlay
-                    remaining={6}
-                    uri="https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90"
-                  />
+                  <PhotoPreview overlay remaining={6} uri={baby.foto} />
+                </View>
+              </View>
+
+              {/* PENANGGUNG JAWAB */}
+
+              <View style={[styles.frame, styles.shadowLarge]}>
+                <TextBase
+                  bold
+                  size={20}
+                  // color="#1E88E5"
+                  marginTop={6}
+                  style={styles.sectionTitle}>
+                  Penanggung Jawab
+                </TextBase>
+                <View style={[t.flexCol, t.itemsEnd]}>
+                  <View style={[t.flexRow, t.justifyBetween, t.flexWrap]}>
+                    {baby.Users?.map((pj, i) => (
+                      <PjCard key={i} pj={pj} />
+                    ))}
+                  </View>
+
+                  {/* CHAT BUTTON */}
+                  <TouchableOpacity
+                    style={[
+                      t.itemsEnd,
+                      t.justifyCenter,
+                      t.mR2,
+                      t.mT2,
+                      t.pY2,
+                      t.pX10,
+                      t.flexRow,
+                      t.border,
+                      t.borderGray500,
+                      t.roundedFull,
+                      t.minW0,
+                    ]}>
+                    <Icon
+                      name="ios-chatbubble-outline"
+                      color="#686868"
+                      size={18}
+                    />
+                    <TextBase style={[t.mL2]}>Diskusi</TextBase>
+                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -164,9 +227,28 @@ export default function HomeDoctor({navigation}) {
                   style={styles.sectionTitle}>
                   Data Fisik Bayi
                 </TextBase>
-                <View style={styles.tanggalUpdate}>
-                  <TextBase>Tanggal update terakhir: </TextBase>
-                  <TextBase bold>13 Desember 2020</TextBase>
+                <View style={[t.mB4]}>
+                  <TextBase style={[t.fontBold, t.mB2]}>
+                    Update terakhir{' '}
+                  </TextBase>
+                  <View style={[t.flexRow]}>
+                    <View style={[t.w18]}>
+                      <TextBase>Tanggal: </TextBase>
+                    </View>
+                    <View style={[t.flexRow]}>
+                      <TextBase bold>{convertDate(baby.updatedAt)}</TextBase>
+                    </View>
+                  </View>
+
+                  <View style={[t.flexRow]}>
+                    <View style={[t.w18]}>
+                      <TextBase>Oleh: </TextBase>
+                    </View>
+                    <View style={[t.flexRow]}>
+                      <TextBase bold>{baby.User.nama} </TextBase>
+                      <TextBase bold>({baby.User.role})</TextBase>
+                    </View>
+                  </View>
                 </View>
                 <View style={styles.dataContainer}>
                   <View style={styles.dataItemContainer}>
@@ -175,7 +257,10 @@ export default function HomeDoctor({navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        value="40"
+                        defaultValue={input.kepala}
+                        onChangeText={(value) =>
+                          handleInput({value, name: 'kepala'})
+                        }
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
@@ -193,7 +278,10 @@ export default function HomeDoctor({navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        value="59"
+                        defaultValue={input.tinggi}
+                        onChangeText={(value) =>
+                          handleInput({value, name: 'tinggi'})
+                        }
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
@@ -211,7 +299,10 @@ export default function HomeDoctor({navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        value="6"
+                        defaultValue={input.berat}
+                        onChangeText={(value) =>
+                          handleInput({value, name: 'berat'})
+                        }
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
@@ -228,6 +319,7 @@ export default function HomeDoctor({navigation}) {
                   title="Update Data"
                   borderRadius={100}
                   marginBottom={12}
+                  onPress={handleUpdateData}
                 />
               </View>
 
@@ -463,67 +555,7 @@ export default function HomeDoctor({navigation}) {
                   </View>
                 </View>
               </View>
-              <View style={[styles.frame, styles.shadowLarge]}>
-                <TextBase
-                  bold
-                  size={20}
-                  // color="#1E88E5"
-                  marginTop={6}
-                  style={styles.sectionTitle}>
-                  Penanggung Jawab
-                </TextBase>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={styles.pj}>
-                    {/* PJ 1 */}
 
-                    <View style={styles.pjItem}>
-                      <View style={styles.photoPJContainer}>
-                        <Image
-                          style={styles.avatarPJ}
-                          source={{
-                            uri:
-                              'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
-                          }}
-                        />
-                      </View>
-                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
-                        <TextBase bold size={16}>
-                          dr. Camila
-                        </TextBase>
-                        <TextBase>Dokter anak</TextBase>
-                      </View>
-                    </View>
-
-                    {/* PJ 2 */}
-
-                    <View style={styles.pjItem}>
-                      <View style={styles.photoPJContainer}>
-                        <Image
-                          style={styles.avatarPJ}
-                          source={{
-                            uri:
-                              'https://img-z.okeinfo.net/okz/500/library/images/2019/07/26/43rz45vrdtojjelpyn8r_12708.jpg',
-                          }}
-                        />
-                      </View>
-                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
-                        <TextBase bold size={16}>
-                          Ibu Suliastri
-                        </TextBase>
-                        <TextBase>Petugas Posyandu</TextBase>
-                      </View>
-                    </View>
-                  </View>
-                  <TouchableOpacity style={styles.chat}>
-                    <Icon
-                      name="ios-chatbubble-outline"
-                      color="#686868"
-                      size={40}
-                    />
-                    <TextBase>Diskusi</TextBase>
-                  </TouchableOpacity>
-                </View>
-              </View>
               <View style={styles.circle2} />
             </View>
           </View>
@@ -681,10 +713,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-  tanggalUpdate: {
-    flexDirection: 'row',
-    marginBottom: 12,
-  },
   dataText: {
     textAlign: 'center',
     color: 'white',

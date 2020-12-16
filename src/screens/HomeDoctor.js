@@ -102,7 +102,7 @@ export default function HomeDoctor({navigation}) {
                     icon="MaterialCommunityIcons"
                     name="baby-face-outline"
                     text="My Cases"
-                    onPress={() => navigation.navigate('MyCases')}
+                    onPress={() => navigation.navigate('MyBabiesList')}
                   />
                   <HomeNavItem
                     icon="MaterialCommunityIcons"

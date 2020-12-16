@@ -3,7 +3,6 @@ import React from 'react';
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function statusToEmoji(value, index) {
-  console.log({value});
   switch (value) {
     case -1:
       return <FA5Icon name="frown" color="#ffbd15" size={18} />;

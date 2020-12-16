@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchBabyById} from '../store/actions/bayiActions';
+
 import {t} from 'react-native-tailwindcss';
 
 import {
@@ -15,7 +19,9 @@ import tailwind from 'tailwind-rn';
 
 import StatusEmoji from './StatusEmoji';
 
-export default function MyCaseListItem({
+import getAge from '../helpers/getAge';
+
+export default function BabyCard({
   status = -2,
   name,
   age,
@@ -24,7 +30,28 @@ export default function MyCaseListItem({
   bayi,
   navigation,
 }) {
-  console.log({bayi});
+  const {role} = useSelector((state) => state.userReducer.user.details);
+  const {baby} = useSelector((state) => state.bayiReducer);
+
+  const [wali, setWali] = useState('');
+  const [alamat, setAlamat] = useState('');
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBabyById(bayi.id));
+  }, [dispatch, bayi.id]);
+
+  useEffect(() => {
+    baby[bayi.id]?.Users?.map((user) => {
+      if (user.role.toLowerCase() === 'orang tua') {
+        console.log('orang tua :', user.nama);
+        setWali(user.nama);
+        setAlamat(user.alamat);
+      }
+    });
+  }, [baby, bayi.id]);
+
   function getLowestStatus(bayi) {
     let lowest = Infinity;
 
@@ -39,10 +66,6 @@ export default function MyCaseListItem({
     }
 
     return lowest;
-  }
-
-  function getAge(date) {
-    return Math.floor((Date.now() - new Date(date)) / 1000 / 60 / 60 / 24 / 30);
   }
 
   function statusToBgColor(status) {
@@ -79,7 +102,9 @@ export default function MyCaseListItem({
 
       {/* TOP SECTION */}
       <Pressable
-        onPress={() => navigation.navigate('BabyDetails')}
+        onPress={() =>
+          navigation.navigate('BabyDetails', {baby: baby[bayi.id]})
+        }
         onStartShouldSetResponderCapture={(evt) => false}>
         <View style={tailwind('p-3')}>
           <View style={tailwind('flex-row items-center')}>
@@ -113,10 +138,16 @@ export default function MyCaseListItem({
                   {bayi.jenis_kelamin}
                 </TextBase>
               </View>
-              <TextBase style={tailwind('text-sm')}>Wali: Ibunya</TextBase>
-              <TextBase style={tailwind('text-sm')}>
-                Pengadegan, Pancoran, Jakarta Selatan
-              </TextBase>
+              {role && role.toLowerCase() !== 'orang tua' && (
+                <>
+                  <TextBase style={tailwind('text-sm')}>
+                    Wali: {wali ? wali : ''}
+                  </TextBase>
+                  <TextBase style={tailwind('text-sm')}>
+                    {alamat ? alamat : ''}
+                  </TextBase>
+                </>
+              )}
             </View>
           </View>
         </View>
@@ -155,14 +186,14 @@ export default function MyCaseListItem({
         <Pressable
           style={({pressed}) => [
             tailwind(
-              `w-5/12 py-2 border border-gray-500 rounded-full justify-center items-center ${
+              `w-5/12 py-2 mt-4 border border-gray-500 rounded-full justify-center items-center ${
                 pressed ? 'bg-blue-500' : 'bg-white'
               }`,
             ),
           ]}>
           {({pressed}) => (
             <TextBase style={tailwind(`${pressed ? 'text-white' : ''}`)}>
-              Hubungi
+              Diskusi
             </TextBase>
           )}
         </Pressable>

@@ -31,13 +31,13 @@ import TextBase from '../components/TextBase';
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-export default function MyCases({navigation}) {
+export default function MyBabiesList({navigation}) {
   const headerHeight = useHeaderHeight();
 
   const dispatch = useDispatch();
 
-  const {Bayis} = useSelector((state) => state.userReducer.user.details);
-  console.log({Bayis});
+  const {Bayis, role} = useSelector((state) => state.userReducer.user.details);
+  console.log({role, Bayis});
 
   return (
     <SafeAreaView>

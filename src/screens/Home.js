@@ -85,10 +85,10 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    Bu Melody
+                    {user.details.nama}
                   </TextBase>
-                  <TextBase light>Orang Tua</TextBase>
-                  <TextBase>+62 812 1000 1000</TextBase>
+                  <TextBase light>{user.details.role}</TextBase>
+                  <TextBase>{user.details.no_hp}</TextBase>
                 </View>
               </View>
 
@@ -98,7 +98,7 @@ export default function Home({navigation}) {
                   icon="MaterialCommunityIcons"
                   name="baby-face-outline"
                   text="Bayiku"
-                  onPress={() => navigation.navigate('Bayiku')}
+                  onPress={() => navigation.navigate('MyBabiesList')}
                 />
                 <HomeNavItem
                   name="ios-calendar-outline"
