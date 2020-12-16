@@ -34,12 +34,13 @@ import BottomTabNavigatorDoctor from './TabNavigatorDoctor';
 const Stack = createStackNavigator();
 
 export const MainStackNavigator = ({user}) => {
-  console.log(user,'hasil props')
+  // console.log(user,'hasil props')
   const dispatch = useDispatch()
 
   useEffect(()=>{
     dispatch(addUser(user))
   })
+  console.log(user.role)
   return (
     <Stack.Navigator
     screenOptions={{
@@ -64,6 +65,7 @@ export const MainStackNavigator = ({user}) => {
         component={SignupScreen}
         options={{headerShown: false}}
       /> */}
+      
       {user.role =="orang tua" && <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
@@ -71,13 +73,13 @@ export const MainStackNavigator = ({user}) => {
           headerShown: false,
         }}
       /> }
-      <Stack.Screen
+      {user.role ==="dokter" &&  <Stack.Screen
         name="HomeDoctor"
         component={BottomTabNavigatorDoctor}
         options={{
           headerShown: false,
         }}
-      />
+      />}
       <Stack.Screen name="BabyDetails" component={BabyDetails} />
       <Stack.Screen name="Bayiku" component={Bayiku} />
       <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />

@@ -25,7 +25,7 @@ let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
 export default function HomeDoctor({route, navigation}) {
-  console.log(route)
+  // console.log(route)
   const {user, logout } = useContext(AuthContext);
  
   return (
@@ -66,7 +66,7 @@ export default function HomeDoctor({route, navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    dr. Camila
+                    {user && user.email}
                   </TextBase>
                   <TextBase light>Dokter</TextBase>
                   <TextBase>+62 812 9999 9999</TextBase>

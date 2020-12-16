@@ -45,6 +45,9 @@ export default function Routes() {
             }
           }
         });
+      }else{
+        setPatient([])
+        setDokter([])
       }
     })
     .catch(console.log);
