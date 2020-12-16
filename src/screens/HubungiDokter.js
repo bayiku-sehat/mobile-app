@@ -11,6 +11,8 @@ import {
   ScrollView,
 } from 'react-native';
 import ButtonBase from '../components/ButtonBase';
+import {RoomScreen} from '../screens/RoomScreen';
+import { HomeScreen } from '../screens/HomeScreen'
 
 console.log('home');
 
@@ -19,19 +21,10 @@ let ScreenWidth = Dimensions.get('window').width;
 
 export default function HubungiDokter() {
   return (
-    <SafeAreaView>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-        <View style={styles.body}>
-          <View style={{flex: 1}}>
-            <View style={[styles.container, styles.inner]}>
-              <Text>HubungiDokter</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    // 
+    // <RoomScreen />
+    <>
+    </>
   );
 }
 

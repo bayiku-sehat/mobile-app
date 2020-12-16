@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect,useContext } from 'react';
+import { AuthContext } from '../navigation/AuthProvider';
 
 import {
   StyleSheet,
@@ -23,7 +24,10 @@ import TextBase from '../components/TextBase';
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
-export default function HomeDoctor({navigation}) {
+export default function HomeDoctor({route, navigation}) {
+  // console.log(route)
+  const {user, logout } = useContext(AuthContext);
+ 
   return (
     <SafeAreaView>
       <ScrollView
@@ -32,7 +36,7 @@ export default function HomeDoctor({navigation}) {
         <View style={{alignItems: 'flex-end', zIndex: 10}}>
           <ButtonBase
             size="sm"
-            onPress={() => navigation.replace('Login')}
+            onPress={() => logout()}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}
@@ -50,6 +54,7 @@ export default function HomeDoctor({navigation}) {
                   styles.shadowLarge,
                   styles.filter,
                 ]}>
+                  {/* <Text>{JSON.stringify(params.tes)}</Text> */}
                 <View style={styles.photoContainer}>
                   <Image
                     style={styles.avatar}
@@ -61,7 +66,7 @@ export default function HomeDoctor({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    dr. Camila
+                    {user && user.email}
                   </TextBase>
                   <TextBase light>Dokter</TextBase>
                   <TextBase>+62 812 9999 9999</TextBase>

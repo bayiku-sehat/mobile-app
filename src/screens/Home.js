@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext}from 'react';
+import { AuthContext } from '../navigation/AuthProvider';
 
 import {
   StyleSheet,
@@ -36,7 +37,8 @@ let ScreenWidth = Dimensions.get('window').width;
 // let role = getData();
 export default function Home({navigation}) {
   // console.log(role);
-
+  const {user, logout } = useContext(AuthContext);
+  
   return (
     <SafeAreaView>
       <ScrollView
@@ -45,7 +47,8 @@ export default function Home({navigation}) {
         <View style={{alignItems: 'flex-end'}}>
           <ButtonBase
             size="sm"
-            onPress={() => navigation.replace('Login')}
+            onPress={() => logout()}
+            // onPress={navigation.navigate('Login')}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}
@@ -70,8 +73,9 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    Bu Melody
+                  { user && user.email}
                   </TextBase>
+                  {/* <Text>{JSON.stringify(user)}</Text> */}
                   <TextBase light>Orang Tua</TextBase>
                   <TextBase>+62 812 1000 1000</TextBase>
                 </View>
@@ -94,7 +98,9 @@ export default function Home({navigation}) {
                 <HomeNavItem
                   name="ios-call-outline"
                   text="Hubungi Dokter"
-                  onPress={() => navigation.navigate('HubungiDokter')}
+                  // onPress={() => navigation.navigate('HubungiDokter')
+                  onPress={() => navigation.navigate('HomeScreen')}
+                
                 />
 
                 <HomeNavItem
