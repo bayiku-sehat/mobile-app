@@ -1,5 +1,5 @@
-import React, {useContext}from 'react';
-import { AuthContext } from '../navigation/AuthProvider';
+import React, {useContext} from 'react';
+import {AuthContext} from '../navigation/AuthProvider';
 
 import {
   StyleSheet,
@@ -37,7 +37,7 @@ let ScreenWidth = Dimensions.get('window').width;
 // let role = getData();
 export default function Home({navigation}) {
   // console.log(role);
-  const {user, logout } = useContext(AuthContext);
+  const {user, logout} = useContext(AuthContext);
   return (
     <SafeAreaView>
       <ScrollView
@@ -71,7 +71,7 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                  { (user.email)}
+                    {user.email}
                   </TextBase>
                   <TextBase light>Orang Tua</TextBase>
                   <TextBase>+62 812 1000 1000</TextBase>
@@ -96,8 +96,7 @@ export default function Home({navigation}) {
                   name="ios-call-outline"
                   text="Hubungi Dokter"
                   // onPress={() => navigation.navigate('HubungiDokter')
-                  onPress={() => navigation.navigate('HomeScreen')}
-                
+                  onPress={() => navigation.navigate('TanyaDokter')}
                 />
 
                 <HomeNavItem

@@ -22,7 +22,9 @@ let ScreenWidth = Dimensions.get('window').width;
 export default function HubungiDokter() {
   return (
     // 
-    <RoomScreen chatRoom={detailChat} />
+    // <RoomScreen />
+    <>
+    </>
   );
 }
 

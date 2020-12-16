@@ -36,14 +36,6 @@ export default function Login({navigation}) {
   function loginDoctor() {
     navigation.replace('HomeDoctor');
   }
-  // const storeData = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem('@role', value);
-  //   } catch (e) {
-  //     // saving error
-  //     console.log(e);
-  //   }
-  // };
 
   return (
     <SafeAreaView>

@@ -7,6 +7,7 @@ import SignupScreen from '../screens/SignupScreen';
 import Chat from '../screens/Chat';
 import BabyDetails from '../screens/BabyDetails';
 import Bayiku from '../screens/Bayiku';
+import TanyaDokter from '../screens/TanyaDokter';
 import JadwalVaksin from '../screens/JadwalVaksin';
 import HubungiDokter from '../screens/HubungiDokter';
 import LeaderBoard from '../screens/LeaderBoard';
@@ -49,6 +50,7 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="BabyDetails" component={BabyDetails} />
       <Stack.Screen name="Bayiku" component={Bayiku} />
       <Stack.Screen name="JadwalVaksin" component={JadwalVaksin} />
+      <Stack.Screen name="TanyaDokter" component={TanyaDokter} />
       {/* <Stack.Screen name="HubungiDokter" component={HubungiDokter} /> */}
       <Stack.Screen
         name="HomeScreen"
@@ -61,12 +63,16 @@ export const MainStackNavigator = () => {
               color="blue"
               onPress={() => navigation.navigate('AddRoomScreen')}
             />
-          )
+          ),
         })}
       />
-      <Stack.Screen name="RoomScreen" component={RoomScreen} options={({route})=>({
-        title:route.params.thread.name
-      })} />
+      <Stack.Screen
+        name="RoomScreen"
+        component={RoomScreen}
+        options={({route}) => ({
+          title: route.params.thread.name,
+        })}
+      />
       <Stack.Screen name="AddRoomScreen" component={AddRoomScreen} />
       <Stack.Screen name="MyCases" component={MyCases} />
       <Stack.Screen name="OpenCases" component={OpenCases} />

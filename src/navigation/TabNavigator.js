@@ -1,12 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+//import HomeScreen from '../screens/HomeScreen'
 
 import {MainStackNavigator, ChatNavigator} from './StackNavigator';
 import Home from '../screens/Home';
 import HomeDoctor from '../screens/HomeDoctor';
 import Chat from '../screens/Chat';
-import HomeScreen from '../screens/HomeScreen'
+import HomeScreen from '../screens/HomeScreen';
 import Account from '../screens/Account';
 
 const Tab = createBottomTabNavigator();
@@ -28,7 +29,7 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
@@ -41,7 +42,7 @@ export default function BottomTabNavigator() {
             />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Account"
         component={Account}

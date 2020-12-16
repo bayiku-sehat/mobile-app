@@ -19,9 +19,9 @@ import {
 import {IconButton} from 'react-native-paper';
 import {AuthContext} from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-import useStatsBar from '../helpers/useStatsBar'
+import useStatsBar from '../helpers/useStatsBar';
 
-export const RoomScreen = ({route}) => {
+export const ChatScreen = ({route}) => {
   useStatsBar('light-content');
   const [messages, setMessages] = useState([]);
   const {thread} = route.params;
@@ -40,8 +40,8 @@ export const RoomScreen = ({route}) => {
         createdAt: new Date().getTime(),
         user: {
           _id: currentUser.uid,
-          email: currentUser.email
-        }
+          email: currentUser.email,
+        },
       });
 
     await firestore()
@@ -51,10 +51,10 @@ export const RoomScreen = ({route}) => {
         {
           latestMessage: {
             text,
-            createdAt: new Date().getTime()
-          }
+            createdAt: new Date().getTime(),
+          },
         },
-        { merge: true }
+        {merge: true},
       );
   }
 
@@ -64,21 +64,21 @@ export const RoomScreen = ({route}) => {
       .doc(thread._id)
       .collection('MESSAGES')
       .orderBy('createdAt', 'desc')
-      .onSnapshot(querySnapshot => {
-        const messages = querySnapshot.docs.map(doc => {
+      .onSnapshot((querySnapshot) => {
+        const messages = querySnapshot.docs.map((doc) => {
           const firebaseData = doc.data();
 
           const data = {
             _id: doc.id,
             text: '',
             createdAt: new Date().getTime(),
-            ...firebaseData
+            ...firebaseData,
           };
 
           if (!firebaseData.system) {
             data.user = {
               ...firebaseData.user,
-              name: firebaseData.user.email
+              name: firebaseData.user.email,
             };
           }
           return data;
@@ -146,20 +146,20 @@ export const RoomScreen = ({route}) => {
 
   return (
     <>
-    <GiftedChat
-      messages={messages}
-      onSend={handleSend}
-      user={{ _id: currentUser.uid }}
-      placeholder='Type your message here...'
-      alwaysShowSend
-      showUserAvatar
-      scrollToBottom
-      renderBubble={renderBubble}
-      renderLoading={renderLoading}
-      renderSend={renderSend}
-      scrollToBottomComponent={scrollToBottomComponent}
-      renderSystemMessage={renderSystemMessage}
-    />
+      <GiftedChat
+        messages={messages}
+        onSend={handleSend}
+        user={{_id: currentUser.uid}}
+        placeholder="Type your message here..."
+        alwaysShowSend
+        showUserAvatar
+        scrollToBottom
+        renderBubble={renderBubble}
+        renderLoading={renderLoading}
+        renderSend={renderSend}
+        scrollToBottomComponent={scrollToBottomComponent}
+        renderSystemMessage={renderSystemMessage}
+      />
     </>
   );
 };
