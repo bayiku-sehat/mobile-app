@@ -65,8 +65,54 @@ export const addBaby = (newBaby) => {
   };
 };
 
-export const editBaby = (payload) => {
-  console.log('edit baby:', payload);
+export const updatePerkembanganBayi = (payload) => {
+  console.log('update perkembangan baby:', payload);
+  const {id} = payload;
+  delete payload.id;
+  console.log(payload, '<< after delete id');
+  console.log(id, '<< id');
+  return async (dispatch, getState) => {
+    dispatch({type: 'EDIT_BABY_PENDING', payload: true});
+
+    console.log(apiUrl + '/bayi/' + id + '/perkembangan');
+
+    fetch(apiUrl + '/bayi/' + id + '/perkembangan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        headers: await getToken(),
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, '<<<< updated baby');
+        console.log(getState().bayiReducer.baby[id]);
+        // let updatedBabies = {...getState().bayiReducer.baby[id]}
+        // let updatedBabies = getState().bayiReducer.baby.map((el) => {
+        //   if (+el.id === +data.id) {
+        //     return data;
+        //   }
+        // });
+
+        // console.log(updatedBabies);
+        // let updatedBabies = getState().babyReducer.bayi.map((baby) => {
+        //   if (+baby.id === +data.id) {
+        //     return data;
+        //   }
+        // });
+        // dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({type: 'EDIT_BABY_ERROR', payload: error});
+      })
+      .finally((_) => dispatch({type: 'EDIT_BABY_PENDING', payload: false}));
+  };
+};
+
+export const editVerifikasiBayi = (payload) => {
+  console.log('edit verifikasi baby:', payload);
   const {id} = payload;
   delete payload.id;
   console.log(payload, '<< after delete id');

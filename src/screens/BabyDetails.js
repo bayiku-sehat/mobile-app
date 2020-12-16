@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 
 import {useSelector, useDispatch} from 'react-redux';
+import {updatePerkembanganBayi} from '../store/actions/bayiActions';
 
+import Table from '../components/Table';
 import {
   StyleSheet,
   Text,
@@ -35,11 +37,6 @@ import * as shape from 'd3-shape';
 
 import {t} from 'react-native-tailwindcss';
 
-import {Table, Row, Rows} from 'react-native-table-component';
-
-import CaseListItem from '../components/CaseListItem';
-
-import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 import PhotoPreview from '../components/PhotoPreview';
 import PjCard from '../components/PjCard';
@@ -50,15 +47,6 @@ let ScreenWidth = Dimensions.get('window').width;
 const tinggi = [47, 51, 52.5, 56, 57.5, 60, 62];
 const tinggiStatus = [0, 0, -1, 0, -1, 0, 0];
 const berat = [3, 3.6, 4, 4.5, 5.5, 6.7, 7.8];
-const beratObj = [
-  {v: 3, s: 0},
-  {v: 3.6, s: 0},
-  {v: 4, s: 0},
-  {v: 4.5, s: -1},
-  {v: 5.5, s: 0},
-  {v: 6.7, s: 0},
-  {v: 7.8, s: 0},
-];
 const beratStatus = [0, 0, 0, -1, 0, 0, 0];
 const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
 const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
@@ -70,13 +58,6 @@ const tableHead = [
   'Lingkar Kepala\n(cm)',
 ];
 
-let tableData = umur.map((el, i) => [
-  umur[i],
-  statusToEmoji(tinggiStatus[i]),
-  berat[i],
-  kepala[i],
-]);
-
 const axesSvg = {fontSize: 10, fill: '#686868'};
 const verticalContentInset = {top: 10, bottom: 10};
 const xAxisHeight = 30;
@@ -87,6 +68,7 @@ const Line = ({line, stroke = 'rgb(134, 65, 244)'}) => (
 
 export default function BabyDetails({route, navigation}) {
   const {role} = useSelector((state) => state.userReducer.user.details);
+  const dispatch = useDispatch();
 
   const {baby} = route.params;
   console.log({baby});
@@ -105,7 +87,8 @@ export default function BabyDetails({route, navigation}) {
   }
 
   function handleUpdateData() {
-    alert(input);
+    let payload = {id: baby.id, ...input};
+    dispatch(updatePerkembanganBayi(payload));
   }
   return (
     <SafeAreaView>
@@ -344,6 +327,7 @@ export default function BabyDetails({route, navigation}) {
                       textStyle={styles.text}
                     />
                     <Rows data={tableData} textStyle={styles.text} />
+                    
                   </Table> */}
                   <View
                     style={{
