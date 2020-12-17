@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import {AuthContext} from '../navigation/AuthProvider';
+import firestore from '@react-native-firebase/firestore';
 
 import {
   SafeAreaView,
@@ -19,24 +23,56 @@ let ScreenWidth = Dimensions.get('window').width;
 
 export default function Login({navigation}) {
   const [focus, setFocus] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const {login} = useContext(AuthContext);
 
-  function login() {
-    // alert('Login');
-    // storeData('parent');
-    navigation.replace('Home');
-  }
+  const [userLogin, setUserLogin] = useState([]);
+  var userRef = firestore().collection('USERS');
 
-  function loginDoctor() {
-    navigation.replace('HomeDoctor');
-  }
-  // const storeData = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem('@role', value);
-  //   } catch (e) {
-  //     // saving error
-  //     console.log(e);
-  //   }
-  // };
+  // function login(email, password) {
+  //   firestore()
+  //     .collection('USERS')
+  //     .get()
+  //       .then((querySnapshot) => {
+  //       querySnapshot.forEach((documentSnapshot) => {
+  //         if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
+  //           // console.log(documentSnapshot.data())
+  //           // setUserLogin(documentSnapshot.data())
+  //           navigation.navigate('Home')
+  //           console.log('masuik')
+  //         }else{
+  //           console.log("password atau email salah")
+  //           // console.log(documentSnapshot.data())
+  //         }
+  //       });
+        
+  //     }).catch(console.log);
+  // }
+
+  // function loginDoctor(email, password) {
+  //   firestore()
+  //     .collection('USERS')
+  //     .get()
+      // console.log('Total users: ', querySnapshot.size);
+        // .then((querySnapshot) => {
+        // querySnapshot.forEach((documentSnapshot) => {
+          // console.log(
+          //   'User ID: ',
+          //   documentSnapshot.id,
+          //   documentSnapshot.data(),
+          // );
+  //         if(email === documentSnapshot.data().email && password === documentSnapshot.data().password){
+  //           console.log(documentSnapshot.data().email)
+  //           // setUserLogin(documentSnapshot.data())
+  //           navigation.navigate('HomeDoctor',{tes:'halo'})
+  //         }else{
+  //           console.log("password atau email salah")
+  //         }
+  //       });
+        
+  //     }).catch(console.log);
+  // }
 
   return (
     <SafeAreaView>
@@ -48,12 +84,16 @@ export default function Login({navigation}) {
             <View style={styles.circle1} />
             <View style={[styles.container, styles.inner]}>
               <View>
+                {/* <Text>{user}</Text> */}
                 <Text style={styles.label}>Username</Text>
                 <TextInput
                   style={[
                     styles.input,
                     focus === 'username' && styles.inputFocus,
                   ]}
+                  value={email}
+                  autoCapitalize="none"
+                  onChangeText={(userEmail) => setEmail(userEmail)}
                   onFocus={() => setFocus('username')}
                 />
               </View>
@@ -64,26 +104,40 @@ export default function Login({navigation}) {
                     styles.input,
                     focus === 'password' && styles.inputFocus,
                   ]}
+                  value={password}
+                  secureTextEntry={true}
+                  onChangeText={(userPassword) => setPassword(userPassword)}
                   onFocus={() => setFocus('password')}
                 />
               </View>
 
               <ButtonBase
                 // size="xl"
-                onPress={() => login()}
-                title="Parent Log In"
+                onPress={() => login(email, password)}
+                title="Log In"
                 borderRadius={25}
                 width={250}
                 marginTop={24}
               />
 
-              <ButtonBase
+              {/* <ButtonBase
                 // size="xl"
-                onPress={() => loginDoctor()}
+                onPress={() => loginDoctor(email, password)}
                 title="Doctor Log In"
                 borderRadius={25}
                 width={250}
                 marginTop={24}
+              /> */}
+              <FormButton
+                borderRadius={25}
+                width={250}
+                marginTop={24}
+                marginLeft={60}
+                title="New user? Join here"
+                modeValue="text"
+                uppercase={false}
+                labelStyle={styles.navButtonText}
+                onPress={() => navigation.navigate('SignupScreen')}
               />
             </View>
 

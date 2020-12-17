@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "371861147882",
+    "project_id": "bayisehat-chat",
+    "storage_bucket": "bayisehat-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371861147882:android:b63f57cf04dd6fdc1c0793",
+        "android_client_info": {
+          "package_name": "com.bayikusehat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371861147882-2kvup9a31lugfq5si1vai6a9qr5hbqdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF7ndC9upcAhxuKhN4Zvcm9kXd4pToVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371861147882-2kvup9a31lugfq5si1vai6a9qr5hbqdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
