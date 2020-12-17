@@ -1,6 +1,7 @@
 import {clearData} from '../../helpers/asyncStorage';
 
 const initialState = {
+  usera: [],
   user: {
     isLoggedIn: false,
     loginPending: false,
@@ -16,7 +17,7 @@ const initialState = {
   userError: '',
 };
 
-export default function userReducer(state = initialState, {type, payload}) {
+export const userReducer = (state = initialState, {type, payload}) => {
   switch (type) {
     case 'LOGIN_SUCCESS':
       return {
@@ -80,7 +81,9 @@ export default function userReducer(state = initialState, {type, payload}) {
       return {...state, user: {...state.user, userPending: payload}};
     case 'FETCH_USER_ERROR':
       return {...state, user: {...state.user, userError: payload}};
+    case 'FETCH_USER':
+      return {...state, usera: payload};
     default:
       return state;
   }
-}
+};

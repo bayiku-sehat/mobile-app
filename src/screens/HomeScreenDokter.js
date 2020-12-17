@@ -57,7 +57,7 @@ export default function HomeScreenDokter({navigation}) {
   return (
     <>
     <View style={styles.container}> 
-      <Title style={{textAlign:"center"}}></Title>
+      <Title style={{textAlign:"center"}}>Daftar kontak pasien telemedis</Title>
       <FlatList
         // data={namaRoom}
         data={threads}

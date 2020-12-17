@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {List, Divider, Title, IconButton} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
@@ -6,23 +7,25 @@ import Loading from '../components/Loading';
 import useStatsBar from '../helpers/useStatsBar';
 import {useSelector} from 'react-redux';
 import ButtonBase from '../components/ButtonBase';
+import {fetchCurrentUserDetails} from '../store/action/userActions';
 
 export default function HomeScreen({navigation}) {
+  const dispatch = useDispatch();
   useStatsBar('light-content');
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [namaBayi, setnamaBayi] = useState('Daryal');
   const [namaRoom, setNamaRoom] = useState([]);
-  const userLogedin = useSelector((state) => state.userReducer.user);
-  const namaRoomBayi = userLogedin.user.bayis;
-  // console.log(namaRoomBayi,'dihomescreen')
+  const userLogedin = useSelector((state) => state.userReducer.usera);
+  const namaBayi = useSelector((state) => state.userReducer.user.details.Bayis);
+  const [roomChat, setRoomChat] = useState([]);
 
   useEffect(() => {
+    //dispatch(fetchBabies());
     const unsubscribe = firestore()
       .collection('THREADS')
       .orderBy('latestMessage.createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
-        const threads = querySnapshot.docs.map((documentSnapshot) => {
+        const threads = querySnapshot.docs?.map((documentSnapshot) => {
           return {
             _id: documentSnapshot.id,
             // give defaults
@@ -48,97 +51,105 @@ export default function HomeScreen({navigation}) {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    let temp = [];
+    console.log(threads, 'thread');
+    for (let i = 0; i < namaRoom.length; i++) {
+      console.log('masuk');
+      const filter = threads.filter((el) => {
+        console.log('masuk filter', el.name);
+        console.log(el.name, '======', namaRoom[i], 'nama');
+        return el.name === namaRoom[i];
+      });
+      console.log(filter, 'data filter');
+      temp.push(filter);
+    }
+    setRoomChat(temp);
+  }, [threads]);
+
   const generateRoom = () => {
-    namaRoomBayi.map((roomBayi) => {
-      // console.log(roomBayi,'dalam');
+    dispatch(fetchCurrentUserDetails());
+
+    namaBayi?.map((roomBayi) => {
+      console.log(roomBayi, 'dalam');
       firestore()
         .collection('THREADS')
         .add({
-          name: roomBayi,
+          name: roomBayi.nama,
           latestMessage: {
-            text: `You have joined the room ${roomBayi}.`,
+            text: `You have joined the room ${roomBayi.nama}.`,
             createdAt: new Date().getTime(),
           },
         })
         .then((docRef) => {
           docRef.collection('MESSAGES').add({
-            text: `You have joined the room ${roomBayi}.`,
+            text: `You have joined the room ${roomBayi.nama}.`,
             createdAt: new Date().getTime(),
             system: true,
           });
         });
     });
+
+    // let tampungan = [];
+    // namaBayi?.map((bayi) => {
+    //   tampungan.push(bayi.nama);
+    // });
+    // setNamaRoom(tampungan);
   };
 
   useEffect(() => {
-    let temp = [];
-    for (let i = 0; i < namaRoomBayi.length; i++) {
-      const filter = threads.filter((el) => {
-        return el.name === namaRoomBayi[i];
-      });
-      // const newList = temp.concat(filter);
-      temp.push(filter);
-
-    }
-    // console.log(temp, 'ne');
-    // setNamaRoom(temp);
-    setNamaRoom(temp)
+    let tampungan = [];
+    namaBayi?.map((bayi) => {
+      tampungan.push(bayi.nama);
+    });
+    setNamaRoom(tampungan);
   }, [threads]);
-
-  let tampunganRoom= []
-  namaRoom.map(satuan=>{
-    satuan.map(satu=>{
-      tampunganRoom.push(satu)
-    })
-  })
-  // console.log(tempa)
 
   if (loading) {
     return <Loading />;
   }
+  console.log(namaBayi, 'namaBayi');
+  console.log(namaRoom, 'nama room');
+  let tampunganRoom = [];
+  roomChat.map((room) => {
+    room.map((namaAnak) => {
+      tampunganRoom.push(namaAnak);
+    });
+  });
+
+  console.log(namaBayi);
   return (
     <>
-      {/* <Text>{JSON.stringify(namaRoom[2][1])}</Text> */}
-      {/* <Text>{JSON.stringify(threads[2].latestMessage)}</Text> */}
       <View style={styles.container}>
         <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
-        {namaRoom.length == 0 && (
+        {namaBayi.length == 0 && (
           <ButtonBase
-            // size="xl"
             onPress={() => generateRoom()}
-            title="Tampilkan Chat"
+            title="Mulai Konsultasi"
             borderRadius={25}
             width={250}
-            marginTop={24}
+            marginTop={48}
+            marginLeft={70}
           />
         )}
-       {/* {namaRoom.map(satuan=>{
-          satuan.map(datum=>{
-           console.log(satuan)
-          <Text>{datum}</Text>
-            
-          })
-        })} */}
-       
-       <FlatList
-            data={tampunganRoom}
-            // data={threads}
-            keyExtractor={(item) => item._id}
-            ItemSeparatorComponent={() => <Divider />}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
-                <List.Item
-                  title={item.name}
-                  description={item.latestMessage.text}
-                  titleNumberOfLines={1}
-                  titleStyle={styles.listTitle}
-                  descriptionStyle={styles.listDescription}
-                  descriptionNumberOfLines={1}
-                />
-              </TouchableOpacity>
-            )}
-          />     
+        <FlatList
+          data={tampunganRoom}
+          keyExtractor={(item) => item?._id}
+          ItemSeparatorComponent={() => <Divider />}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
+              <List.Item
+                title={item?.name}
+                description={item?.latestMessage.text}
+                titleNumberOfLines={1}
+                titleStyle={styles.listTitle}
+                descriptionStyle={styles.listDescription}
+                descriptionNumberOfLines={1}
+              />
+            </TouchableOpacity>
+          )}
+        />
       </View>
     </>
   );

@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
+import {useSelector, useDispatch} from 'react-redux';
+import {login} from '../store/action/userActions'
 
 /**
  * This provider is created
@@ -7,8 +9,8 @@ import auth from '@react-native-firebase/auth';
  */
 
 export const AuthContext = createContext({});
-
 export const AuthProvider = ({ children }) => {
+  const dispatch = useDispatch()
   const [user, setUser] = useState(null);
 
   return (
@@ -19,6 +21,10 @@ export const AuthProvider = ({ children }) => {
         login: async (email, password) => {
           try {
             await auth().signInWithEmailAndPassword(email, password);
+            let payload={
+              username:email,password
+            }
+           await dispatch(login(payload));
           } catch (e) {
             console.log(e);
           }

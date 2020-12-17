@@ -1,6 +1,7 @@
-import React, {useContext}from 'react';
-import { AuthContext } from '../navigation/AuthProvider';
-
+import React, {useContext, useEffect} from 'react';
+import {AuthContext} from '../navigation/AuthProvider';
+import {fetchBabies} from '../store/action/bayiActions';
+import {useDispatch} from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -37,8 +38,13 @@ let ScreenWidth = Dimensions.get('window').width;
 // let role = getData();
 export default function Home({navigation}) {
   // console.log(role);
-  const {user, logout } = useContext(AuthContext);
-  
+  const {user, logout} = useContext(AuthContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBabies);
+  });
+
   return (
     <SafeAreaView>
       <ScrollView
@@ -73,7 +79,7 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                  { user && user.email}
+                    {user && user.email}
                   </TextBase>
                   {/* <Text>{JSON.stringify(user)}</Text> */}
                   <TextBase light>Orang Tua</TextBase>
@@ -100,7 +106,6 @@ export default function Home({navigation}) {
                   text="Hubungi Dokter"
                   // onPress={() => navigation.navigate('HubungiDokter')
                   onPress={() => navigation.navigate('HomeScreen')}
-                
                 />
 
                 <HomeNavItem
