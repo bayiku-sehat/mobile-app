@@ -1,7 +1,11 @@
 import React from 'react';
 
+import {useSelector} from 'react-redux';
+
 import {View, Text, StyleSheet} from 'react-native';
 import TableRow from './TableRow';
+
+import getAge from '../helpers/getAge';
 
 const umur = [0, 1, 2, 3, 4, 5, 6];
 
@@ -12,7 +16,19 @@ const tableHead = [
   'Lingkar Kepala\n(cm)',
 ];
 
-export default function Table({baby}) {
+export default function Table({baby, id}) {
+  const bayi = useSelector((state) => state.bayiReducer.baby[id]);
+
+  console.log('TABLE:', baby);
+
+  let u = [];
+
+  bayi.Perkembangans.map((el) => {
+    u.unshift(getAge(el.updatedAt));
+  });
+
+  console.log(u, '..... UMUR');
+
   return (
     <View style={styles.tableContainer}>
       <View
@@ -30,7 +46,7 @@ export default function Table({baby}) {
       </View>
       <View>
         {umur.map((row, i) => (
-          <TableRow key={i} row={row} baby={baby} i={i} />
+          <TableRow key={i} row={row} bayi={bayi} baby={baby} i={i} />
         ))}
       </View>
     </View>

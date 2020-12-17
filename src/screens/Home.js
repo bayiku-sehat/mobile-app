@@ -46,11 +46,13 @@ export default function Home({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(login({username: 'melody@gmail.com', password: '123456'}));
-    dispatch(fetchBabies());
+    // dispatch(login({username: 'melody@gmail.com', password: '123456'}));
+    // dispatch(fetchBabies());
+    dispatch(fetchCurrentUserDetails());
   }, [dispatch]);
 
   const {details} = useSelector((state) => state.userReducer.user);
+  console.log(details, ' << DETAILS');
 
   return (
     <SafeAreaView>

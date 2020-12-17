@@ -24,7 +24,7 @@ export const login = (payload) => {
         const u = await getData('user');
         console.log(u, '<<<<< user');
         dispatch({type: 'LOGIN_SUCCESS', payload: data});
-        dispatch(fetchCurrentUserDetails());
+        // dispatch(fetchCurrentUserDetails());
         if (data.role.toLowerCase() === 'orang tua') {
           console.log('role: orang tua');
           // navigation.navigate('Home');

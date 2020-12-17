@@ -17,18 +17,18 @@ const initialState = {
   userError: '',
 };
 
-export const userReducer = (state = initialState, action) => {
-  switch (action.type) {
+export const userReducer = (state = initialState, {type, payload}) => {
+  switch (type) {
     case 'LOGIN_SUCCESS':
       return {
         ...state,
         user: {
           ...state.user,
           isLoggedIn: true,
-          access_token: action.payload.access_token,
+          access_token: payload.access_token,
           loginError: '',
           loginPending: false,
-          id: action.payload.id,
+          id: payload.id,
         },
       };
     case 'LOGIN_PENDING':
@@ -45,7 +45,7 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         user: {
           ...state.user,
-          loginError: action.payload,
+          loginError: payload,
         },
       };
 
@@ -66,28 +66,28 @@ export const userReducer = (state = initialState, action) => {
     case 'FETCH_USERS_SUCCESS':
       return {
         ...state,
-        users: action.payload,
+        users: payload,
         usersError: '',
         userPending: false,
       };
     case 'FETCH_USERS_PENDING':
-      return {...state, users: {...state.users, usersPending: action.payload}};
+      return {...state, users: {...state.users, usersPending: payload}};
     case 'FETCH_USERS_ERROR':
-      return {...state, users: {...state.users, usersError: action.payload}};
+      return {...state, users: {...state.users, usersError: payload}};
 
     case 'FETCH_USER_SUCCESS':
       return {
         ...state,
-        user: {...state.user, details: action.payload},
+        user: {...state.user, details: payload},
         userError: '',
         userPending: false,
       };
     case 'FETCH_USER_PENDING':
-      return {...state, user: {...state.user, userPending: action.payload}};
+      return {...state, user: {...state.user, userPending: payload}};
     case 'FETCH_USER_ERROR':
-      return {...state, user: {...state.user, userError: action.payload}};
+      return {...state, user: {...state.user, userError: payload}};
     case 'FETCH_USER':
-      return {...state, usera: action.payload};
+      return {...state, usera: payload};
     default:
       return state;
   }

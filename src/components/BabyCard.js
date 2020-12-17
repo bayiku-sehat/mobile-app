@@ -47,7 +47,7 @@ export default function BabyCard({
   useEffect(() => {
     baby[bayi.id]?.Users?.map((user) => {
       if (user.role.toLowerCase() === 'orang tua') {
-        console.log('orang tua :', user.nama);
+        // console.log('orang tua :', user.nama);
         setWali(user.nama);
         setAlamat(user.alamat);
       }
@@ -62,13 +62,13 @@ export default function BabyCard({
       'status_lingkar_kepala',
       'status_tinggi',
     ]) {
-      console.log(bayi[st], lowest);
+      // console.log(bayi[st], lowest);
       if (bayi[st] < lowest) {
         lowest = bayi[st];
       }
     }
 
-    console.log(bayi, lowest);
+    // console.log(bayi, lowest);
 
     return lowest;
   }

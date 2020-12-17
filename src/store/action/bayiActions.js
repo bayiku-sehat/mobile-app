@@ -94,21 +94,21 @@ export const updatePerkembanganBayi = (payload) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, '<<<< updated baby');
-        console.log(getState().bayiReducer.baby[id]);
-        // let updatedBabies = {...getState().bayiReducer.baby[id]}
+        let updatedBabies = {...getState().bayiReducer.baby, [id]: data};
         // let updatedBabies = getState().bayiReducer.baby.map((el) => {
         //   if (+el.id === +data.id) {
         //     return data;
         //   }
         // });
 
-        // console.log(updatedBabies);
         // let updatedBabies = getState().babyReducer.bayi.map((baby) => {
         //   if (+baby.id === +data.id) {
         //     return data;
         //   }
         // });
-        // dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
+        console.log(updatedBabies, 'updated babies');
+        dispatch({type: 'EDIT_BABY_SUCCESS', payload: updatedBabies});
+        // console.log(getState().bayiReducer.baby[id]);
       })
       .catch((error) => {
         console.log(error);

@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+
+import {AuthContext} from '../navigation/AuthProvider';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {updatePerkembanganBayi} from '../store/action/bayiActions';
@@ -69,14 +71,24 @@ const Line = ({line, stroke = 'rgb(134, 65, 244)'}) => (
 );
 
 export default function BabyDetails({route, navigation}) {
+  const {user, logout} = useContext(AuthContext);
+
   const {role} = useSelector((state) => state.userReducer.user.details);
   const {baby} = useSelector((state) => state.bayiReducer);
   const dispatch = useDispatch();
 
   const {id} = route.params;
-  console.log({id});
+  console.log(baby[id], '>>>>> BABY DETAILS');
+
+  const [l, setL] = useState(baby[id]?.lingkar_kepala);
+  const [tg, setTg] = useState(baby[id]?.tinggi);
+  const [b, setB] = useState(baby[id]?.berat_badan);
+  const [sl, setSL] = useState(baby[id]?.status_lingkar_kepala);
+  const [st, setST] = useState(baby[id]?.status_tinggi);
+  const [sb, setSB] = useState(baby[id]?.status_berat_badan);
 
   useEffect(() => {
+    console.log('fetching baby:', id);
     dispatch(fetchBabyById(id));
   }, [dispatch, id]);
 
@@ -95,12 +107,23 @@ export default function BabyDetails({route, navigation}) {
   function handleInput(payload) {
     console.log(payload);
     const {name, value} = payload;
-    console.log({...input, [name]: value});
-    setInput({...input, [name]: value});
+    switch (name) {
+      case 'tinggi':
+        setTg(value);
+        break;
+      case 'berat_badan':
+        setB(value);
+        break;
+      case 'lingkar_kepala':
+        setL(value);
+        break;
+    }
+    // console.log({...input, [name]: value});
+    // setInput({...input, [name]: value});
   }
 
   function handleUpdateData() {
-    let payload = {id, ...input};
+    let payload = {id, tinggi: tg, berat_badan: b, lingkar_kepala: l};
     dispatch(updatePerkembanganBayi(payload));
   }
   return (
@@ -111,7 +134,7 @@ export default function BabyDetails({route, navigation}) {
         <View style={{alignItems: 'flex-end', zIndex: 10}}>
           <ButtonBase
             size="sm"
-            onPress={() => navigation.replace('Login')}
+            onPress={() => logout()}
             title="Sign Out"
             backgroundColor="black"
             marginTop={10}
@@ -131,7 +154,7 @@ export default function BabyDetails({route, navigation}) {
                 ]}>
                 <View style={styles.badgesContainer}>
                   <View style={[styles.badge, styles.success]}>
-                    <Text style={[styles.badgeText]}>Normal</Text>
+                    <Text style={[styles.badgeText]}>Potensi Stunting</Text>
                   </View>
                   <View style={[styles.badge, styles.danger]}>
                     <Text style={[styles.badgeText]}>Unverified</Text>
@@ -187,6 +210,7 @@ export default function BabyDetails({route, navigation}) {
 
                   {/* CHAT BUTTON */}
                   <TouchableOpacity
+                    onPress={() => navigation.navigate('HomeScreen')}
                     style={[
                       t.itemsEnd,
                       t.justifyCenter,
@@ -200,12 +224,12 @@ export default function BabyDetails({route, navigation}) {
                       t.roundedFull,
                       t.minW0,
                     ]}>
-                    <Icon
+                    {/* <Icon
                       name="ios-chatbubble-outline"
                       color="#686868"
                       size={18}
-                    />
-                    <TextBase style={[t.mL2]}>Diskusi</TextBase>
+                    /> */}
+                    <TextBase style={[t.mL2, {fontSize: 16}]}>Diskusi</TextBase>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -245,44 +269,31 @@ export default function BabyDetails({route, navigation}) {
                       <TextBase>Oleh: </TextBase>
                     </View>
                     <View style={[t.flexRow]}>
-                      <TextBase bold>{baby[id]?.User.nama} </TextBase>
-                      <TextBase bold>({baby[id]?.User.role})</TextBase>
+                      <TextBase bold>{baby[id]?.User?.nama} </TextBase>
+                      <TextBase bold>({baby[id]?.User?.role})</TextBase>
+                    </View>
+                  </View>
+                  <View style={[t.flexRow]}>
+                    <View style={[t.w18]}>
+                      <TextBase>Umur bayi: </TextBase>
+                    </View>
+                    <View style={[t.flexRow]}>
+                      <TextBase bold>
+                        {getAge(baby[id]?.tanggal_lahir)} bulan
+                      </TextBase>
                     </View>
                   </View>
                 </View>
+
                 <View style={styles.dataContainer}>
                   <View style={styles.dataItemContainer}>
                     <View style={styles.dataTitle}>
-                      <Text style={styles.dataText}>Kepala</Text>
+                      <Text style={styles.dataText}>Panjang</Text>
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        defaultValue={input.lingkar_kepala}
-                        onChangeText={(value) =>
-                          handleInput({value, name: 'lingkar_kepala'})
-                        }
-                        numeric
-                        keyboardType={'numeric'}
-                        style={styles.dataInput}
-                      />
-                      <Text style={styles.dataInputUnit}> cm</Text>
-                    </View>
-                    <StatusEmoji
-                      value={status.lingkar_kepala}
-                      style={styles.statusIcon}
-                    />
-                    {/* <FA5Icon
-                      name="smile"
-                      style={[styles.statusIcon, {color: 'green'}]}
-                    /> */}
-                  </View>
-                  <View style={styles.dataItemContainer}>
-                    <View style={styles.dataTitle}>
-                      <Text style={styles.dataText}>Tinggi</Text>
-                    </View>
-                    <View style={styles.dataInputContainer}>
-                      <TextInput
-                        defaultValue={input.tinggi}
+                        defaultValue={tg}
+                        // defaultValue={input.tinggi}
                         onChangeText={(value) =>
                           handleInput({value, name: 'tinggi'})
                         }
@@ -292,22 +303,26 @@ export default function BabyDetails({route, navigation}) {
                       />
                       <Text style={styles.dataInputUnit}> cm</Text>
                     </View>
-                    <StatusEmoji
-                      value={status.tinggi}
-                      style={styles.statusIcon}
-                    />
+                    {baby[id]?.tinggi && (
+                      <StatusEmoji
+                        value={baby[id]?.status_tinggi}
+                        style={styles.statusIcon}
+                      />
+                    )}
                     {/* <FA5Icon
                       name="frown"
                       style={[styles.statusIcon, {color: 'orange'}]}
                     /> */}
                   </View>
+
                   <View style={styles.dataItemContainer}>
                     <View style={styles.dataTitle}>
                       <Text style={styles.dataText}>Berat</Text>
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        defaultValue={input.berat_badan}
+                        // defaultValue={input.berat_badan}
+                        defaultValue={b}
                         onChangeText={(value) =>
                           handleInput({value, name: 'berat_badan'})
                         }
@@ -317,10 +332,41 @@ export default function BabyDetails({route, navigation}) {
                       />
                       <Text style={styles.dataInputUnit}> kg</Text>
                     </View>
-                    <StatusEmoji
-                      value={status.berat_badan}
-                      style={styles.statusIcon}
-                    />
+                    {baby[id]?.berat_badan && (
+                      <StatusEmoji
+                        value={baby[id]?.status_berat_badan}
+                        style={styles.statusIcon}
+                      />
+                    )}
+                    {/* <FA5Icon
+                      name="smile"
+                      style={[styles.statusIcon, {color: 'green'}]}
+                    /> */}
+                  </View>
+
+                  <View style={styles.dataItemContainer}>
+                    <View style={styles.dataTitle}>
+                      <Text style={styles.dataText}>Kepala</Text>
+                    </View>
+                    <View style={styles.dataInputContainer}>
+                      <TextInput
+                        defaultValue={l}
+                        // defaultValue={input.lingkar_kepala}
+                        onChangeText={(value) =>
+                          handleInput({value, name: 'lingkar_kepala'})
+                        }
+                        numeric
+                        keyboardType={'numeric'}
+                        style={styles.dataInput}
+                      />
+                      <Text style={styles.dataInputUnit}> cm</Text>
+                    </View>
+                    {baby[id]?.lingkar_kepala && (
+                      <StatusEmoji
+                        value={baby[id]?.status_lingkar_kepala}
+                        style={styles.statusIcon}
+                      />
+                    )}
                     {/* <FA5Icon
                       name="smile"
                       style={[styles.statusIcon, {color: 'green'}]}
@@ -347,6 +393,8 @@ export default function BabyDetails({route, navigation}) {
                   Riwayat Perkembangan Bayi
                 </TextBase>
                 {/* TABLE */}
+
+                {/* <Table baby={baby[id]} id={id} /> */}
 
                 <View style={styles.tableContainer}>
                   {/* <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>

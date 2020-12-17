@@ -1,5 +1,5 @@
 const initialState = {
-  baby: {},
+  baby: {isPending: false, error: ''},
   babies: [],
 };
 
@@ -8,7 +8,7 @@ export default function userReducer(state = initialState, {type, payload}) {
     case 'FETCH_BABY_SUCCESS':
       console.log({...state, baby: {...state.baby, [payload.id]: payload}});
       return {...state, baby: {...state.baby, [payload.id]: payload}};
-      // console.log('reducer')
+    // console.log('reducer')
     case 'FETCH_BABY_PENDING':
       return {
         ...state,
@@ -22,6 +22,13 @@ export default function userReducer(state = initialState, {type, payload}) {
       return {...state, babies: {...state.babies, isPending: payload}};
     case 'FETCH_BABIES_ERROR':
       return {...state, babies: {...state.babies, error: payload}};
+
+    case 'EDIT_BABY_SUCCESS':
+      return {...state, baby: payload};
+    case 'EDIT_BABY_PENDING':
+      return {...state, baby: {...state.baby, isPending: payload}};
+    case 'EDIT_BABY_ERROR':
+      return {...state, baby: {...state.baby, error: payload}};
     default:
       return state;
   }
