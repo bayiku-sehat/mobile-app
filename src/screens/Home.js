@@ -2,7 +2,8 @@ import React, {useContext, useEffect} from 'react';
 import {AuthContext} from '../navigation/AuthProvider';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {login} from '../store/action/userActions';
+import {login, fetchCurrentUserDetails} from '../store/action/userActions';
+import {fetchBabies} from '../store/action/bayiActions';
 
 import {
   StyleSheet,
@@ -20,8 +21,6 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
-
-import {fetchBabies} from '../store/action/bayiActions';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -90,8 +89,8 @@ export default function Home({navigation}) {
                     {user && user.email}
                   </TextBase>
                   {/* <Text>{JSON.stringify(user)}</Text> */}
-                  <TextBase light>Orang Tua</TextBase>
-                  <TextBase>+62 812 1000 1000</TextBase>
+                  <TextBase light>{details?.role}</TextBase>
+                  <TextBase>{details?.no_hp}</TextBase>
                 </View>
               </View>
 

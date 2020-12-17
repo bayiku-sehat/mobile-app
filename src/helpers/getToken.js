@@ -1,6 +1,7 @@
 import {getData} from './asyncStorage';
 
 export default async function getToken() {
+  console.log('get token');
   try {
     let user = await getData('user');
     console.log(user, '<< user from asyncstorage');

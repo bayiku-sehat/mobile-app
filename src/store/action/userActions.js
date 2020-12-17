@@ -18,11 +18,13 @@ export const login = (payload) => {
       body: JSON.stringify({username, password}),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         console.log(data, '<<< login response');
         storeData('user', data);
+        const u = await getData('user');
+        console.log(u, '<<<<< user');
         dispatch({type: 'LOGIN_SUCCESS', payload: data});
-        fetchCurrentUserDetails();
+        dispatch(fetchCurrentUserDetails());
         if (data.role.toLowerCase() === 'orang tua') {
           console.log('role: orang tua');
           // navigation.navigate('Home');

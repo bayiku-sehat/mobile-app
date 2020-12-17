@@ -40,6 +40,7 @@ export default function BabyCard({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(bayi.id, '<<<< id bayi');
     dispatch(fetchBabyById(bayi.id));
   }, [dispatch, bayi.id]);
 
@@ -56,15 +57,18 @@ export default function BabyCard({
   function getLowestStatus(bayi) {
     let lowest = Infinity;
 
-    for (let status of [
+    for (let st of [
       'status_berat_badan',
       'status_lingkar_kepala',
       'status_tinggi',
     ]) {
-      if (status < lowest) {
-        lowest = status;
+      console.log(bayi[st], lowest);
+      if (bayi[st] < lowest) {
+        lowest = bayi[st];
       }
     }
+
+    console.log(bayi, lowest);
 
     return lowest;
   }
@@ -93,18 +97,26 @@ export default function BabyCard({
       ]}>
       {/* BADGE */}
       <View style={[t.wFull, t.flexRow, t.justifyEnd, t.absolute, t.mT3]}>
-        <View
-          style={tailwind(
-            `rounded-l-full py-1 pl-2 w-12 ${statusToBgColor(-2)}`,
-          )}>
-          <StatusEmoji value={-2} size={26} color="white" />
-        </View>
+        {baby && baby[bayi.id] && (
+          <View
+            style={tailwind(
+              `rounded-l-full py-1 pl-2 w-12 ${statusToBgColor(
+                getLowestStatus(baby[bayi.id]),
+              )}`,
+            )}>
+            <StatusEmoji
+              value={getLowestStatus(baby[bayi.id])}
+              size={26}
+              color="white"
+            />
+          </View>
+        )}
       </View>
 
       {/* TOP SECTION */}
       <Pressable
         onPress={() =>
-          navigation.navigate('BabyDetails', {baby: baby[bayi.id]})
+          navigation.navigate('BabyDetails', {baby: baby[bayi.id], id: bayi.id})
         }
         onStartShouldSetResponderCapture={(evt) => false}>
         <View style={tailwind('p-3')}>

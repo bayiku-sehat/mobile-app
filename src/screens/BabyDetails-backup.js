@@ -1,9 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {updatePerkembanganBayi} from '../store/action/bayiActions';
-
-import Table from '../components/Table';
 import {
   StyleSheet,
   Text,
@@ -18,12 +14,10 @@ import {
 import {Link} from '@react-navigation/native';
 import ButtonBase from '../components/ButtonBase';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import StatusEmoji from '../components/StatusEmoji';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import statusToEmoji from '../helpers/statusToEmoji';
-import convertDate from '../helpers/convertDate';
-import getAge from '../helpers/getAge';
 
 import {
   Grid,
@@ -35,13 +29,12 @@ import {
 import {Path} from 'react-native-svg';
 import * as shape from 'd3-shape';
 
-import {t} from 'react-native-tailwindcss';
+import {Table, Row, Rows} from 'react-native-table-component';
 
+import CaseListItem from '../components/CaseListItem';
+
+import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
-import PhotoPreview from '../components/PhotoPreview';
-import PjCard from '../components/PjCard';
-
-import {fetchBabyById} from '../store/action/bayiActions';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -49,6 +42,15 @@ let ScreenWidth = Dimensions.get('window').width;
 const tinggi = [47, 51, 52.5, 56, 57.5, 60, 62];
 const tinggiStatus = [0, 0, -1, 0, -1, 0, 0];
 const berat = [3, 3.6, 4, 4.5, 5.5, 6.7, 7.8];
+const beratObj = [
+  {v: 3, s: 0},
+  {v: 3.6, s: 0},
+  {v: 4, s: 0},
+  {v: 4.5, s: -1},
+  {v: 5.5, s: 0},
+  {v: 6.7, s: 0},
+  {v: 7.8, s: 0},
+];
 const beratStatus = [0, 0, 0, -1, 0, 0, 0];
 const kepala = [32, 34.1, 35.8, 37.5, 40, 41.6, 43];
 const kepalaStatus = [0, -1, -1, 0, 0, 0, 0];
@@ -60,6 +62,13 @@ const tableHead = [
   'Lingkar Kepala\n(cm)',
 ];
 
+let tableData = umur.map((el, i) => [
+  umur[i],
+  statusToEmoji(tinggiStatus[i]),
+  berat[i],
+  kepala[i],
+]);
+
 const axesSvg = {fontSize: 10, fill: '#686868'};
 const verticalContentInset = {top: 10, bottom: 10};
 const xAxisHeight = 30;
@@ -68,41 +77,7 @@ const Line = ({line, stroke = 'rgb(134, 65, 244)'}) => (
   <Path key={'line'} d={line} stroke={stroke} strokeWidth={3} fill={'none'} />
 );
 
-export default function BabyDetails({route, navigation}) {
-  const {role} = useSelector((state) => state.userReducer.user.details);
-  const {baby} = useSelector((state) => state.bayiReducer);
-  const dispatch = useDispatch();
-
-  const {id} = route.params;
-  console.log({id});
-
-  useEffect(() => {
-    dispatch(fetchBabyById(id));
-  }, [dispatch, id]);
-
-  const [input, setInput] = useState({
-    lingkar_kepala: baby[id]?.lingkar_kepala,
-    tinggi: baby[id]?.tinggi,
-    berat_badan: baby[id]?.berat_badan,
-  });
-
-  const [status, setStatus] = useState({
-    lingkar_kepala: baby[id]?.status_lingkar_kepala,
-    tinggi: baby[id]?.status_tinggi,
-    berat_badan: baby[id]?.status_berat_badan,
-  });
-
-  function handleInput(payload) {
-    console.log(payload);
-    const {name, value} = payload;
-    console.log({...input, [name]: value});
-    setInput({...input, [name]: value});
-  }
-
-  function handleUpdateData() {
-    let payload = {id, ...input};
-    dispatch(updatePerkembanganBayi(payload));
-  }
+export default function HomeDoctor({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView
@@ -142,7 +117,8 @@ export default function BabyDetails({route, navigation}) {
                     <Image
                       style={styles.avatar}
                       source={{
-                        uri: baby[id]?.foto,
+                        uri:
+                          'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
                       }}
                     />
                   </View>
@@ -150,63 +126,38 @@ export default function BabyDetails({route, navigation}) {
 
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                    {baby[id]?.nama}
+                    Daryal Fuaddin
                   </TextBase>
-                  <TextBase light>
-                    {getAge(baby[id]?.tanggal_lahir)} bulan
-                  </TextBase>
+                  <TextBase light>6 bulan</TextBase>
                 </View>
-                <View style={[t.wFull, t.pL4]}>
-                  <TextBase bold>Galeri Foto</TextBase>
-                </View>
+                <TextBase marginBottom={12} bold>
+                  Foto
+                </TextBase>
                 <View style={[styles.imagePreviewList]}>
                   {[1, 2, 3].map((_, i) => (
-                    <PhotoPreview key={i} uri={baby[id]?.foto} />
+                    <View key={i} style={styles.imagePreviewListItem}>
+                      <Image
+                        style={styles.imagePreview}
+                        source={{
+                          uri:
+                            'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
+                        }}
+                      />
+                    </View>
                   ))}
-                  <PhotoPreview overlay remaining={6} uri={baby[id]?.foto} />
-                </View>
-              </View>
-
-              {/* PENANGGUNG JAWAB */}
-
-              <View style={[styles.frame, styles.shadowLarge]}>
-                <TextBase
-                  bold
-                  size={20}
-                  // color="#1E88E5"
-                  marginTop={6}
-                  style={styles.sectionTitle}>
-                  Penanggung Jawab
-                </TextBase>
-                <View style={[t.flexCol, t.itemsEnd]}>
-                  <View style={[t.flexRow, t.justifyBetween, t.flexWrap]}>
-                    {baby[id]?.Users?.map((pj, i) => (
-                      <PjCard key={i} pj={pj} />
-                    ))}
-                  </View>
-
-                  {/* CHAT BUTTON */}
-                  <TouchableOpacity
-                    style={[
-                      t.itemsEnd,
-                      t.justifyCenter,
-                      t.mR2,
-                      t.mT2,
-                      t.pY2,
-                      t.pX10,
-                      t.flexRow,
-                      t.border,
-                      t.borderGray500,
-                      t.roundedFull,
-                      t.minW0,
-                    ]}>
-                    <Icon
-                      name="ios-chatbubble-outline"
-                      color="#686868"
-                      size={18}
+                  <View style={[styles.imagePreviewListItem]}>
+                    <View style={styles.overlayContainer}>
+                      <View style={styles.overlay} />
+                      <Text style={styles.textOverlay}>+7</Text>
+                    </View>
+                    <Image
+                      style={[styles.imagePreview]}
+                      source={{
+                        uri:
+                          'https://akcdn.detik.net.id/visual/2020/04/15/5cc7028a-5809-4d5d-b951-ae8bb43674c0_43.jpeg?w=400&q=90',
+                      }}
                     />
-                    <TextBase style={[t.mL2]}>Diskusi</TextBase>
-                  </TouchableOpacity>
+                  </View>
                 </View>
               </View>
 
@@ -225,30 +176,9 @@ export default function BabyDetails({route, navigation}) {
                   style={styles.sectionTitle}>
                   Data Fisik Bayi
                 </TextBase>
-                <View style={[t.mB4]}>
-                  <TextBase style={[t.fontBold, t.mB2]}>
-                    Update terakhir
-                  </TextBase>
-                  <View style={[t.flexRow]}>
-                    <View style={[t.w18]}>
-                      <TextBase>Tanggal: </TextBase>
-                    </View>
-                    <View style={[t.flexRow]}>
-                      <TextBase bold>
-                        {convertDate(baby[id]?.updatedAt)}
-                      </TextBase>
-                    </View>
-                  </View>
-
-                  <View style={[t.flexRow]}>
-                    <View style={[t.w18]}>
-                      <TextBase>Oleh: </TextBase>
-                    </View>
-                    <View style={[t.flexRow]}>
-                      <TextBase bold>{baby[id]?.User.nama} </TextBase>
-                      <TextBase bold>({baby[id]?.User.role})</TextBase>
-                    </View>
-                  </View>
+                <View style={styles.tanggalUpdate}>
+                  <TextBase>Tanggal update terakhir: </TextBase>
+                  <TextBase bold>13 Desember 2020</TextBase>
                 </View>
                 <View style={styles.dataContainer}>
                   <View style={styles.dataItemContainer}>
@@ -257,24 +187,17 @@ export default function BabyDetails({route, navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        defaultValue={input.lingkar_kepala}
-                        onChangeText={(value) =>
-                          handleInput({value, name: 'lingkar_kepala'})
-                        }
+                        value="40"
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
                       />
                       <Text style={styles.dataInputUnit}> cm</Text>
                     </View>
-                    <StatusEmoji
-                      value={status.lingkar_kepala}
-                      style={styles.statusIcon}
-                    />
-                    {/* <FA5Icon
+                    <FA5Icon
                       name="smile"
                       style={[styles.statusIcon, {color: 'green'}]}
-                    /> */}
+                    />
                   </View>
                   <View style={styles.dataItemContainer}>
                     <View style={styles.dataTitle}>
@@ -282,24 +205,17 @@ export default function BabyDetails({route, navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        defaultValue={input.tinggi}
-                        onChangeText={(value) =>
-                          handleInput({value, name: 'tinggi'})
-                        }
+                        value="59"
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
                       />
                       <Text style={styles.dataInputUnit}> cm</Text>
                     </View>
-                    <StatusEmoji
-                      value={status.tinggi}
-                      style={styles.statusIcon}
-                    />
-                    {/* <FA5Icon
+                    <FA5Icon
                       name="frown"
                       style={[styles.statusIcon, {color: 'orange'}]}
-                    /> */}
+                    />
                   </View>
                   <View style={styles.dataItemContainer}>
                     <View style={styles.dataTitle}>
@@ -307,31 +223,23 @@ export default function BabyDetails({route, navigation}) {
                     </View>
                     <View style={styles.dataInputContainer}>
                       <TextInput
-                        defaultValue={input.berat_badan}
-                        onChangeText={(value) =>
-                          handleInput({value, name: 'berat_badan'})
-                        }
+                        value="6"
                         numeric
                         keyboardType={'numeric'}
                         style={styles.dataInput}
                       />
                       <Text style={styles.dataInputUnit}> kg</Text>
                     </View>
-                    <StatusEmoji
-                      value={status.berat_badan}
-                      style={styles.statusIcon}
-                    />
-                    {/* <FA5Icon
+                    <FA5Icon
                       name="smile"
                       style={[styles.statusIcon, {color: 'green'}]}
-                    /> */}
+                    />
                   </View>
                 </View>
                 <ButtonBase
                   title="Update Data"
                   borderRadius={100}
                   marginBottom={12}
-                  onPress={handleUpdateData}
                 />
               </View>
 
@@ -356,7 +264,6 @@ export default function BabyDetails({route, navigation}) {
                       textStyle={styles.text}
                     />
                     <Rows data={tableData} textStyle={styles.text} />
-                    
                   </Table> */}
                   <View
                     style={{
@@ -383,10 +290,7 @@ export default function BabyDetails({route, navigation}) {
                               flexDirection: 'row',
                               alignItems: 'center',
                             }}>
-                            {statusToEmoji({
-                              value: tinggiStatus[i],
-                              style: [styles.statusIcon],
-                            })}
+                            {statusToEmoji(tinggiStatus[i])}
                             <Text style={styles.text}>{tinggi[i]}</Text>
                           </View>
                         </View>
@@ -396,10 +300,7 @@ export default function BabyDetails({route, navigation}) {
                               flexDirection: 'row',
                               alignItems: 'center',
                             }}>
-                            {statusToEmoji({
-                              value: beratStatus[i],
-                              style: [styles.statusIcon],
-                            })}
+                            {statusToEmoji(beratStatus[i])}
                             <Text style={styles.text}>{berat[i]}</Text>
                           </View>
                         </View>
@@ -409,10 +310,7 @@ export default function BabyDetails({route, navigation}) {
                               flexDirection: 'row',
                               alignItems: 'center',
                             }}>
-                            {statusToEmoji({
-                              value: kepalaStatus[i],
-                              style: [styles.statusIcon],
-                            })}
+                            {statusToEmoji(kepalaStatus[i])}
                             <Text style={styles.text}>{kepala[i]}</Text>
                           </View>
                         </View>
@@ -577,7 +475,67 @@ export default function BabyDetails({route, navigation}) {
                   </View>
                 </View>
               </View>
+              <View style={[styles.frame, styles.shadowLarge]}>
+                <TextBase
+                  bold
+                  size={20}
+                  // color="#1E88E5"
+                  marginTop={6}
+                  style={styles.sectionTitle}>
+                  Penanggung Jawab
+                </TextBase>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.pj}>
+                    {/* PJ 1 */}
 
+                    <View style={styles.pjItem}>
+                      <View style={styles.photoPJContainer}>
+                        <Image
+                          style={styles.avatarPJ}
+                          source={{
+                            uri:
+                              'https://steemitimages.com/640x0/https://img.esteem.ws/adh8217cds.jpg',
+                          }}
+                        />
+                      </View>
+                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                        <TextBase bold size={16}>
+                          dr. Camila
+                        </TextBase>
+                        <TextBase>Dokter anak</TextBase>
+                      </View>
+                    </View>
+
+                    {/* PJ 2 */}
+
+                    <View style={styles.pjItem}>
+                      <View style={styles.photoPJContainer}>
+                        <Image
+                          style={styles.avatarPJ}
+                          source={{
+                            uri:
+                              'https://img-z.okeinfo.net/okz/500/library/images/2019/07/26/43rz45vrdtojjelpyn8r_12708.jpg',
+                          }}
+                        />
+                      </View>
+                      <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                        <TextBase bold size={16}>
+                          Ibu Suliastri
+                        </TextBase>
+                        <TextBase>Petugas Posyandu</TextBase>
+                      </View>
+                    </View>
+                  </View>
+                  <TouchableOpacity style={styles.chat}>
+                    <Icon
+                      name="ios-chatbubble-outline"
+                      color="#686868"
+                      size={40}
+                    />
+                    <TextBase>Diskusi</TextBase>
+                  </TouchableOpacity>
+                </View>
+              </View>
               <View style={styles.circle2} />
             </View>
           </View>
@@ -719,6 +677,39 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
+  imagePreviewListItem: {
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+
+  overlayContainer: {
+    height: 64,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    position: 'absolute',
+  },
+
+  overlay: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#0F427D',
+    position: 'absolute',
+    opacity: 0.65,
+  },
+
+  textOverlay: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+
+  imagePreview: {
+    height: 64,
+    aspectRatio: 1,
+  },
+
   dataContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -735,6 +726,10 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
+  tanggalUpdate: {
+    flexDirection: 'row',
+    marginBottom: 12,
+  },
   dataText: {
     textAlign: 'center',
     color: 'white',
@@ -748,7 +743,6 @@ const styles = StyleSheet.create({
   dataInput: {
     height: 40,
     width: 40,
-    flex: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     padding: 0,
@@ -826,7 +820,6 @@ const styles = StyleSheet.create({
     left: -100,
     right: -100,
     bottom: -250,
-    zIndex: -1,
   },
   circle2: {
     backgroundColor: '#1E88E5',
