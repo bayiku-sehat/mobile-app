@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux';
 import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {List, Divider, Title, IconButton} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
@@ -8,12 +8,13 @@ import useStatsBar from '../helpers/useStatsBar';
 import {useSelector} from 'react-redux';
 import ButtonBase from '../components/ButtonBase';
 
-import bayiReducer from '../store/reducers/bayiReducer'
+import bayiReducer from '../store/reducers/bayiReducer';
 
-import {fetchBabies} from '../store/action/bayiActions'
+import {fetchBabies} from '../store/action/bayiActions';
 
 export default function HomeScreen({navigation}) {
-  const dispatch = useDispatch()
+  console.log('homescreen');
+  const dispatch = useDispatch();
   useStatsBar('light-content');
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,9 +23,10 @@ export default function HomeScreen({navigation}) {
   const userLogedin = useSelector((state) => state.userReducer.usera);
   const namaRoomBayi = userLogedin.user.bayis;
   // console.log(namaRoomBayi,'dihomescreen')
-  const namaBayi =useSelector((state)=>state.bayiReducer.babies)
+  const namaBayi = useSelector((state) => state.bayiReducer.babies);
 
   useEffect(() => {
+    console.log({userLogedin});
     const unsubscribe = firestore()
       .collection('THREADS')
       .orderBy('latestMessage.createdAt', 'desc')
@@ -56,36 +58,35 @@ export default function HomeScreen({navigation}) {
   }, []);
 
   const generateRoom = () => {
-    dispatch(fetchBabies())
-   
+    dispatch(fetchBabies());
 
     // namaRoomBayi.map((roomBayi) => {
-      // console.log(roomBayi,'dalam');
-  //     firestore()
-  //       .collection('THREADS')
-  //       .add({
-  //         name: roomBayi,
-  //         latestMessage: {
-  //           text: `You have joined the room ${roomBayi}.`,
-  //           createdAt: new Date().getTime(),
-  //         },
-  //       })
-  //       .then((docRef) => {
-  //         docRef.collection('MESSAGES').add({
-  //           text: `You have joined the room ${roomBayi}.`,
-  //           createdAt: new Date().getTime(),
-  //           system: true,
-  //         });
-  //       });
+    // console.log(roomBayi,'dalam');
+    //     firestore()
+    //       .collection('THREADS')
+    //       .add({
+    //         name: roomBayi,
+    //         latestMessage: {
+    //           text: `You have joined the room ${roomBayi}.`,
+    //           createdAt: new Date().getTime(),
+    //         },
+    //       })
+    //       .then((docRef) => {
+    //         docRef.collection('MESSAGES').add({
+    //           text: `You have joined the room ${roomBayi}.`,
+    //           createdAt: new Date().getTime(),
+    //           system: true,
+    //         });
+    //       });
     // });
   };
 
   //ini dipikrkan setelah di klik generate harus nambah ke firestore,
   // kalau bersamaan dia gk muncul, kalau di useEffectnanti malah tiap reload page nambah mulu chatnya
-  useEffect(()=>{
-    console.log(namaBayi[0])
+  useEffect(() => {
+    console.log(namaBayi[0]);
     namaRoomBayi.map((roomBayi) => {
-          console.log(roomBayi.nama,'dalam');
+      console.log(roomBayi.nama, 'dalam');
       //     firestore()
       //       .collection('THREADS')
       //       .add({
@@ -102,11 +103,11 @@ export default function HomeScreen({navigation}) {
       //           system: true,
       //         });
       //       });
-        });
-  },[namaBayi])
+    });
+  }, [namaBayi]);
 
   useEffect(() => {
-    if(namaRoomBayi){
+    if (namaRoomBayi) {
       let temp = [];
       for (let i = 0; i < namaRoomBayi.length; i++) {
         const filter = threads.filter((el) => {
@@ -114,21 +115,19 @@ export default function HomeScreen({navigation}) {
         });
         // const newList = temp.concat(filter);
         temp.push(filter);
-  
       }
       // console.log(temp, 'ne');
       // setNamaRoom(temp);
-      setNamaRoom(temp)
+      setNamaRoom(temp);
     }
-    
   }, [threads]);
 
-  let tampunganRoom= []
-  namaRoom.map(satuan=>{
-    satuan.map(satu=>{
-      tampunganRoom.push(satu)
-    })
-  })
+  let tampunganRoom = [];
+  namaRoom.map((satuan) => {
+    satuan.map((satu) => {
+      tampunganRoom.push(satu);
+    });
+  });
   // console.log(tempa)
 
   if (loading) {
@@ -138,7 +137,7 @@ export default function HomeScreen({navigation}) {
     <>
       {/* <Text>{JSON.stringify(namaRoom[2][1])}</Text> */}
       {/* <Text>{JSON.stringify(threads[2].latestMessage)}</Text> */}
-  <Text>{JSON.stringify(namaBayi[0].nama)}</Text>
+      <Text>{JSON.stringify(namaBayi[0].nama)}</Text>
       <View style={styles.container}>
         <Title style={{textAlign: 'center'}}>Konsultasi Dengan Dokter</Title>
         {namaRoom.length == 0 && (
@@ -153,27 +152,26 @@ export default function HomeScreen({navigation}) {
             marginLeft={70}
           />
         )}
-  
-       
-       <FlatList
-            data={tampunganRoom}
-            // data={threads}
-            keyExtractor={(item) => item._id}
-            ItemSeparatorComponent={() => <Divider />}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
-                <List.Item
-                  title={item.name}
-                  description={item.latestMessage.text}
-                  titleNumberOfLines={1}
-                  titleStyle={styles.listTitle}
-                  descriptionStyle={styles.listDescription}
-                  descriptionNumberOfLines={1}
-                />
-              </TouchableOpacity>
-            )}
-          />     
+
+        <FlatList
+          data={tampunganRoom}
+          // data={threads}
+          keyExtractor={(item) => item._id}
+          ItemSeparatorComponent={() => <Divider />}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('RoomScreen', {thread: item})}>
+              <List.Item
+                title={item.name}
+                description={item.latestMessage.text}
+                titleNumberOfLines={1}
+                titleStyle={styles.listTitle}
+                descriptionStyle={styles.listDescription}
+                descriptionNumberOfLines={1}
+              />
+            </TouchableOpacity>
+          )}
+        />
       </View>
     </>
   );

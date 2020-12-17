@@ -1,5 +1,8 @@
-import React, {useContext}from 'react';
-import { AuthContext } from '../navigation/AuthProvider';
+import React, {useContext, useEffect} from 'react';
+import {AuthContext} from '../navigation/AuthProvider';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {login} from '../store/action/userActions';
 
 import {
   StyleSheet,
@@ -18,6 +21,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import HomeNavItem from '../components/HomeNavItem';
 import TextBase from '../components/TextBase';
 
+import {fetchBabies} from '../store/action/bayiActions';
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let ScreenHeight = Dimensions.get('window').height;
@@ -29,7 +34,7 @@ let ScreenWidth = Dimensions.get('window').width;
 //     if (value !== null) {
 //       // value previously stored
 //     }
-//   } catch (e) {
+//   } catch (e) {r
 //     // error reading value
 //   }
 // };
@@ -37,8 +42,17 @@ let ScreenWidth = Dimensions.get('window').width;
 // let role = getData();
 export default function Home({navigation}) {
   // console.log(role);
-  const {user, logout } = useContext(AuthContext);
-  
+  const {user, logout} = useContext(AuthContext);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(login({username: 'melody@gmail.com', password: '123456'}));
+    dispatch(fetchBabies());
+  }, [dispatch]);
+
+  const {details} = useSelector((state) => state.userReducer.user);
+
   return (
     <SafeAreaView>
       <ScrollView
@@ -73,7 +87,7 @@ export default function Home({navigation}) {
                 </View>
                 <View style={styles.data}>
                   <TextBase bold size={16}>
-                  { user && user.email}
+                    {user && user.email}
                   </TextBase>
                   {/* <Text>{JSON.stringify(user)}</Text> */}
                   <TextBase light>Orang Tua</TextBase>
@@ -87,7 +101,7 @@ export default function Home({navigation}) {
                   icon="MaterialCommunityIcons"
                   name="baby-face-outline"
                   text="Bayiku"
-                  onPress={() => navigation.navigate('Bayiku')}
+                  onPress={() => navigation.navigate('MyBabiesList')}
                 />
                 <HomeNavItem
                   name="ios-calendar-outline"
@@ -100,7 +114,6 @@ export default function Home({navigation}) {
                   text="Hubungi Dokter"
                   // onPress={() => navigation.navigate('HubungiDokter')
                   onPress={() => navigation.navigate('HomeScreen')}
-                
                 />
 
                 <HomeNavItem

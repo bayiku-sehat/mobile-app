@@ -1,5 +1,7 @@
+import {clearData} from '../../helpers/asyncStorage';
+
 const initialState = {
-  usera:[],
+  usera: [],
   user: {
     isLoggedIn: false,
     loginPending: false,
@@ -13,20 +15,20 @@ const initialState = {
   usersError: '',
   userPending: false,
   userError: '',
-}
+};
 
-export const userReducer = (state= initialState, action) => {
-  switch(action.type){
-  case 'LOGIN_SUCCESS':
+export const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
         user: {
           ...state.user,
           isLoggedIn: true,
-          access_token: payload.access_token,
+          access_token: action.payload.access_token,
           loginError: '',
           loginPending: false,
-          id: payload.id,
+          id: action.payload.id,
         },
       };
     case 'LOGIN_PENDING':
@@ -43,7 +45,7 @@ export const userReducer = (state= initialState, action) => {
         ...state,
         user: {
           ...state.user,
-          loginError: payload,
+          loginError: action.payload,
         },
       };
 
@@ -62,26 +64,31 @@ export const userReducer = (state= initialState, action) => {
       };
 
     case 'FETCH_USERS_SUCCESS':
-      return {...state, users: payload, usersError: '', userPending: false};
+      return {
+        ...state,
+        users: action.payload,
+        usersError: '',
+        userPending: false,
+      };
     case 'FETCH_USERS_PENDING':
-      return {...state, users: {...state.users, usersPending: payload}};
+      return {...state, users: {...state.users, usersPending: action.payload}};
     case 'FETCH_USERS_ERROR':
-      return {...state, users: {...state.users, usersError: payload}};
+      return {...state, users: {...state.users, usersError: action.payload}};
 
     case 'FETCH_USER_SUCCESS':
       return {
         ...state,
-        user: {...state.user, details: payload},
+        user: {...state.user, details: action.payload},
         userError: '',
         userPending: false,
       };
     case 'FETCH_USER_PENDING':
-      return {...state, user: {...state.user, userPending: payload}};
+      return {...state, user: {...state.user, userPending: action.payload}};
     case 'FETCH_USER_ERROR':
-      return {...state, user: {...state.user, userError: payload}};
-    case "FETCH_USER" :
-      return {...state, usera: action.payload}
+      return {...state, user: {...state.user, userError: action.payload}};
+    case 'FETCH_USER':
+      return {...state, usera: action.payload};
     default:
-      return state
+      return state;
   }
-}
+};

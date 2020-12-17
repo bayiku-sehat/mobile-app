@@ -61,7 +61,7 @@ export default function MyBabiesList({navigation}) {
               <SearchBar placeholder="Nama anak atau orang tua/wali" />
 
               {/* MY CASES LIST */}
-              {Bayis.map((bayi, i) => (
+              {Bayis?.map((bayi, i) => (
                 <BabyCard key={i} navigation={navigation} bayi={bayi} />
               ))}
 

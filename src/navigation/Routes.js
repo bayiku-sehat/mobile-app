@@ -4,8 +4,6 @@ import auth from '@react-native-firebase/auth';
 import AuthStack from './AuthStack';
 import {MainStackNavigator} from '../navigation/StackNavigatorPatient';
 
-
-
 import HomeStack from './HomeStack';
 import {AuthContext} from './AuthProvider';
 import Loading from '../components/Loading';
@@ -13,12 +11,13 @@ import firestore from '@react-native-firebase/firestore';
 
 export default function Routes() {
   const {user, setUser} = useContext(AuthContext);
-  
+
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const [patient, setPatient] = useState([]);
   const [dokter, setDokter] = useState([]);
-  const [userLogedIn,setUserLogedIn] = useState ([])
+  const [petugas, setPetugas] = useState([]);
+  const [userLogedIn, setUserLogedIn] = useState([]);
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -29,30 +28,32 @@ export default function Routes() {
 
   //pengecekan ke firestore
   var userRef = firestore().collection('USERS');
-  useEffect(()=>{
+  useEffect(() => {
     firestore()
-    .collection('USERS')
-    .get()
-    .then((querySnapshot) => {
-      if (user.email) {
-        querySnapshot.forEach((documentSnapshot) => {
-          if (user.email === documentSnapshot.data().email) {
-            setUserLogedIn(documentSnapshot.data())
-            if (documentSnapshot.data().role == 'Orang Tua') {
-              setPatient([documentSnapshot.data()]);
-            } else {
-              setDokter([documentSnapshot.data()]);
+      .collection('USERS')
+      .get()
+      .then((querySnapshot) => {
+        if (user.email) {
+          querySnapshot.forEach((documentSnapshot) => {
+            if (user.email === documentSnapshot.data().email) {
+              setUserLogedIn(documentSnapshot.data());
+              if (documentSnapshot.data().role == 'Orang Tua') {
+                setPatient([documentSnapshot.data()]);
+              } else if (documentSnapshot.data().role == 'Dokter') {
+                setDokter([documentSnapshot.data()]);
+              } else {
+                setPetugas([documentSnapshot.data()]);
+              }
             }
-          }
-        });
-      }else{
-        setPatient([])
-        setDokter([])
-      }
-    })
-    .catch(console.log);
-  },[user])
-  
+          });
+        } else {
+          setPatient([]);
+          setDokter([]);
+          setPetugas([]);
+        }
+      })
+      .catch(console.log);
+  }, [user]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -63,17 +64,21 @@ export default function Routes() {
     return <Loading />;
   }
 
-  console.log(patient,'pasien')
-  console.log(dokter,'dokter')
+  console.log(patient, 'pasien');
+  console.log(dokter, 'dokter');
+  console.log({user});
   return (
-      
     <NavigationContainer>
-      {patient.length>0 && user ? <MainStackNavigator user={userLogedIn}/> : <AuthStack />}
-     {/* {dokter.length>0 ? <MainStackNavigatorDokter /> : <AuthStack />} */}
+      {patient.length > 0 && user ? (
+        <MainStackNavigator user={userLogedIn} />
+      ) : (
+        <AuthStack />
+      )}
+      {/* {dokter.length>0 ? <MainStackNavigatorDokter /> : <AuthStack />} */}
     </NavigationContainer>
- 
+
     // <NavigationContainer>
 
-    // </NavigationContainer> 
+    // </NavigationContainer>
   );
 }

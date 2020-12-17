@@ -8,16 +8,17 @@ let apiUrl = 'http://localhost:3001';
 export const fetchBabies = (url = `${apiUrl}/bayi`) => {
   console.log({url}, '<<< fetch babies');
   return (dispatch) => {
-    console.log(getData('user').access_token,'halo')
+    console.log(getData('user').access_token, 'halo');
     dispatch({type: 'FETCH_BABIES_PENDING', payload: true});
-    fetch(url,{
-      headers:{
-        access_token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibWVsb2R5QGdtYWlsLmNvbSIsInJvbGUiOiJPcmFuZyBUdWEiLCJpYXQiOjE2MDgxNDk4NzF9.CETz3MmQXZfATNEX_XYbLN6iSgjOnScITRE4VrmZh8A"
-      }
+    fetch(url, {
+      headers: {
+        access_token:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibWVsb2R5QGdtYWlsLmNvbSIsInJvbGUiOiJPcmFuZyBUdWEiLCJpYXQiOjE2MDgxNDk4NzF9.CETz3MmQXZfATNEX_XYbLN6iSgjOnScITRE4VrmZh8A',
+      },
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data, '<<<fetch babies', url);
+        console.log(data, '<<<fetch babies', url);
         dispatch({type: 'FETCH_BABIES_SUCCESS', payload: data});
       })
       .catch((err) => {

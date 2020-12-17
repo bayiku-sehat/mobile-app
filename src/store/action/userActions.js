@@ -22,6 +22,7 @@ export const login = (payload) => {
         console.log(data, '<<< login response');
         storeData('user', data);
         dispatch({type: 'LOGIN_SUCCESS', payload: data});
+        fetchCurrentUserDetails();
         if (data.role.toLowerCase() === 'orang tua') {
           console.log('role: orang tua');
           // navigation.navigate('Home');
@@ -39,11 +40,12 @@ export const login = (payload) => {
 };
 
 export const fetchCurrentUserDetails = () => {
+  console.log('fetch current user details');
   return async (dispatch) => {
     dispatch({type: 'FETCH_USER_PENDING', payload: true});
     try {
       const token = await getToken();
-      console.log('token:', token);
+      console.log('fetch user details. token:', token);
       const response = await fetch(apiUrl + '/user-detail', {
         method: 'GET',
         headers: {
